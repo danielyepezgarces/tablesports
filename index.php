@@ -16,7 +16,7 @@ $tables = [
         ],
         [
             'name' => 'Liga BetPlay – Reclasificación',
-            'link' => 'colombia/masculina/reclasificacion.php',
+            'link' => 'colombia/masculina/primera-a-reclasificacion.php',
             'icon' => '📊',
             'color' => '#22c55e'
         ],
