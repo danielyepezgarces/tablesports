@@ -1,4 +1,10 @@
 <?php
+$countries = [
+    'CO' => [
+        'name' => 'Colombia',
+        'flag' => '🇨🇴'
+    ]
+];
 // Tablas por país usando código ISO
 $tables = [
     'CO' => [
@@ -7,6 +13,12 @@ $tables = [
             'link' => 'colombia/masculina/primera-a.php',
             'icon' => '⚽',
             'color' => '#3b82f6'
+        ],
+        [
+            'name' => 'Liga BetPlay – Reclasificación',
+            'link' => 'colombia/masculina/reclasificacion.php',
+            'icon' => '📊',
+            'color' => '#22c55e'
         ],
         [
             'name' => 'Liga BetPlay Femenina – Primera',
@@ -121,7 +133,10 @@ a { text-decoration:none; color:inherit; }
 <div class="accordion">
     <?php foreach($tables as $iso => $list): ?>
         <div class="accordion-item">
-            <div class="accordion-header"><?php echo $iso; ?></div>
+            <div class="accordion-header">
+               <?php echo $countries[$iso]['flag']; ?>
+               <?php echo $countries[$iso]['name']; ?>
+            </div>
             <div class="accordion-content">
                 <?php foreach($list as $t): ?>
                     <a href="<?php echo $t['link']; ?>">
