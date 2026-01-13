@@ -22,7 +22,7 @@ $tables = [
         ],
         [
             "name" => "Liga BetPlay – Descenso",
-            "link" => "colombia/masculina/descenso.php",
+            "link" => "colombia/masculina/primera-a-descenso.php",
             "icon" => "🚨",
             "color" => "#ef4444",
         ],
