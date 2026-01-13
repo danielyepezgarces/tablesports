@@ -1,38 +1,44 @@
 <?php
 $countries = [
-    'CO' => [
-        'name' => 'Colombia',
-        'flag' => '🇨🇴'
-    ]
+    "CO" => [
+        "name" => "Colombia",
+        "flag" => "🇨🇴",
+    ],
 ];
 // Tablas por país usando código ISO
 $tables = [
-    'CO' => [
+    "CO" => [
         [
-            'name' => 'Liga BetPlay Masculina – Primera A',
-            'link' => 'colombia/masculina/primera-a.php',
-            'icon' => '⚽',
-            'color' => '#3b82f6'
+            "name" => "Liga BetPlay Masculina – Primera A",
+            "link" => "colombia/masculina/primera-a.php",
+            "icon" => "⚽",
+            "color" => "#3b82f6",
         ],
         [
-            'name' => 'Liga BetPlay – Reclasificación',
-            'link' => 'colombia/masculina/primera-a-reclasificacion.php',
-            'icon' => '📊',
-            'color' => '#22c55e'
+            "name" => "Liga BetPlay – Reclasificación",
+            "link" => "colombia/masculina/primera-a-reclasificacion.php",
+            "icon" => "📊",
+            "color" => "#22c55e",
         ],
         [
-            'name' => 'Liga BetPlay Femenina – Primera',
-            'link' => 'colombia/femenina/primera.php',
-            'icon' => '🏆',
-            'color' => '#ec4899'
+            "name" => "Liga BetPlay – Descenso",
+            "link" => "colombia/masculina/descenso.php",
+            "icon" => "🚨",
+            "color" => "#ef4444",
         ],
         [
-            'name' => 'Torneo Dimayor',
-            'link' => 'colombia/dimayor/torneo.php',
-            'icon' => '🥇',
-            'color' => '#facc15'
-        ]
-    ]
+            "name" => "Liga BetPlay Femenina – Primera",
+            "link" => "colombia/femenina/primera.php",
+            "icon" => "🏆",
+            "color" => "#ec4899",
+        ],
+        [
+            "name" => "Torneo Dimayor",
+            "link" => "colombia/dimayor/torneo.php",
+            "icon" => "🥇",
+            "color" => "#facc15",
+        ],
+    ],
 ];
 ?>
 <!DOCTYPE html>
@@ -131,18 +137,22 @@ a { text-decoration:none; color:inherit; }
 <h1>TableSports 🏟️</h1>
 
 <div class="accordion">
-    <?php foreach($tables as $iso => $list): ?>
+    <?php foreach ($tables as $iso => $list): ?>
         <div class="accordion-item">
             <div class="accordion-header">
-               <?php echo $countries[$iso]['flag']; ?>
-               <?php echo $countries[$iso]['name']; ?>
+               <?php echo $countries[$iso]["flag"]; ?>
+               <?php echo $countries[$iso]["name"]; ?>
             </div>
             <div class="accordion-content">
-                <?php foreach($list as $t): ?>
-                    <a href="<?php echo $t['link']; ?>">
+                <?php foreach ($list as $t): ?>
+                    <a href="<?php echo $t["link"]; ?>">
                         <div class="card">
-                            <div class="icon" style="background: <?php echo $t['color']; ?>;"><?php echo $t['icon']; ?></div>
-                            <div class="card-title"><?php echo $t['name']; ?></div>
+                            <div class="icon" style="background: <?php echo $t[
+                                "color"
+                            ]; ?>;"><?php echo $t["icon"]; ?></div>
+                            <div class="card-title"><?php echo $t[
+                                "name"
+                            ]; ?></div>
                         </div>
                     </a>
                 <?php endforeach; ?>
