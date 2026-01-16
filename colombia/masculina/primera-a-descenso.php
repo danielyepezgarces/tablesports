@@ -21,12 +21,16 @@ $pageHtml = @file_get_contents($pageUrl, false, stream_context_create([
     ]
 ]));
 
-if (!$pageHtml) die('Error: No se pudo cargar Dimayor.');
+if (!$pageHtml) {
+    die('Error: No se pudo cargar Dimayor.');
+}
 
 // 2️⃣ Extraer nonce dinámico
 preg_match('/const nonce\s*=\s*"([a-z0-9]+)"/', $pageHtml, $m);
 $nonce = $m[1] ?? '';
-if (!$nonce) die('Error: No se pudo obtener el nonce.');
+if (!$nonce) {
+    die('Error: No se pudo obtener el nonce.');
+}
 
 // 3️⃣ Datos POST – DESCENSO
 $postData = [
@@ -55,7 +59,9 @@ curl_setopt_array($ch, [
 ]);
 
 $response = curl_exec($ch);
-if (curl_errno($ch)) die('Error cURL: ' . curl_error($ch));
+if (curl_errno($ch)) {
+    die('Error cURL: ' . curl_error($ch));
+}
 curl_close($ch);
 
 // 5️⃣ Decodificar JSON
@@ -66,17 +72,22 @@ if (!($json['success'] ?? false)) {
 
 // 6️⃣ Obtener HTML
 $html = $json['data']['html'] ?? '';
-if (!$html) die('Error: Tabla no encontrada.');
+if (!$html) {
+    die('Error: Tabla no encontrada.');
+}
 
-// 7️⃣ Limpiar HTML (logos + texto)
+// 7️⃣ Limpiar HTML + redondear decimales
 $dom = new DOMDocument();
 libxml_use_internal_errors(true);
 $dom->loadHTML(mb_convert_encoding($html, 'HTML-ENTITIES', 'UTF-8'));
 libxml_clear_errors();
 
 $xpath = new DOMXPath($dom);
-$nodes = $xpath->query('//td[contains(@class,"team-name-cell")]');
 
+/**
+ * 🔹 Limpiar nombres de equipos (logos + texto)
+ */
+$nodes = $xpath->query('//td[contains(@class,"team-name-cell")]');
 foreach ($nodes as $td) {
     // Quitar logos
     $imgs = $td->getElementsByTagName('img');
@@ -90,7 +101,20 @@ foreach ($nodes as $td) {
     $td->nodeValue = $text;
 }
 
-// 8️⃣ Extraer tabla
+/**
+ * 🔹 Redondear ratios (0,0000 → 0,000)
+ */
+$strongs = $xpath->query('//td/strong');
+foreach ($strongs as $strong) {
+    $text = trim($strong->textContent);
+
+    if (preg_match('/^\d+,\d+$/', $text)) {
+        $number = (float) str_replace(',', '.', $text);
+        $strong->nodeValue = number_format($number, 3, ',', '.');
+    }
+}
+
+// 8️⃣ Extraer tabla final
 $tableHtml = '';
 $tables = $dom->getElementsByTagName('table');
 if ($tables->length > 0) {
@@ -104,13 +128,38 @@ if ($tables->length > 0) {
 <title>Tabla de Descenso – Liga BetPlay</title>
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <style>
-body { font-family: system-ui; background:#0f172a; color:#e5e7eb; padding:20px; }
-h1 { text-align:center; margin-bottom:20px; color:#ef4444; }
-.table-wrapper { overflow-x:auto; }
-table { width:100%; border-collapse:collapse; background:#020617; }
-th, td { padding:10px; text-align:center; border-bottom:1px solid #1e293b; }
-th { color:#f87171; font-size:12px; text-transform:uppercase; }
-tr:hover { background:#020617; }
+body {
+    font-family: system-ui;
+    background: #0f172a;
+    color: #e5e7eb;
+    padding: 20px;
+}
+h1 {
+    text-align: center;
+    margin-bottom: 20px;
+    color: #ef4444;
+}
+.table-wrapper {
+    overflow-x: auto;
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #020617;
+}
+th, td {
+    padding: 10px;
+    text-align: center;
+    border-bottom: 1px solid #1e293b;
+}
+th {
+    color: #f87171;
+    font-size: 12px;
+    text-transform: uppercase;
+}
+tr:hover {
+    background: #020617;
+}
 </style>
 </head>
 <body>
