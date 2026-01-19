@@ -320,3 +320,6 @@ $LinksPorEquipo = [
     ],
    
 ];
+
+return $LinksPorEquipo;
+
