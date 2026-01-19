@@ -1,69 +1,3 @@
-<?php
-/**
- * Liga BetPlay Masculina – Goleadores
- * Fuente: WinSports
- */
-
-$apiUrl = 'https://www.winsports.co/api/rankings/player?tournamentId=5l22b8pqde1bdxk6377auk3ro&stat=Goles&competitionId=2ty8ihceabty8yddmu31iuuej';
-
-// 1️⃣ Obtener datos vía cURL
-$ch = curl_init();
-curl_setopt_array($ch, [
-    CURLOPT_URL => $apiUrl,
-    CURLOPT_RETURNTRANSFER => true,
-    CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_TIMEOUT => 20,
-    CURLOPT_HTTPHEADER => [
-        "User-Agent: Mozilla/5.0 (X11; Linux x86_64)",
-        "Accept: application/json",
-        "Referer: https://www.winsports.co/"
-    ],
-]);
-
-$response = curl_exec($ch);
-
-if ($response === false) {
-    $error = curl_error($ch);
-    curl_close($ch);
-    die("Error cURL: $error");
-}
-
-$httpCode = curl_getinfo($ch, CURLINFO_HTTP_CODE);
-curl_close($ch);
-
-if ($httpCode !== 200) {
-    die("Error HTTP al obtener datos: $httpCode");
-}
-
-// 2️⃣ Decodificar JSON
-$data = json_decode($response, true);
-if (!isset($data['data']) || !is_array($data['data'])) {
-    die('Error: JSON inválido o vacío.');
-}
-
-// 3️⃣ Procesar Top 10
-$rows = [];
-$pos = 0;
-
-foreach ($data['data'] as $item) {
-    if ($pos >= 10) break;
-
-    $goles = (int) ($item['value'] ?? 0);
-    $pj    = (int) ($item['matchesPlayed'] ?? 0);
-    $media = $pj > 0 ? number_format($goles / $pj, 2) : '0.00';
-
-    $rows[] = [
-        'jugador' => $item['player']['name'] ?? '—',
-        'equipo'  => $item['team']['name'] ?? '—',
-        'goles'   => $goles,
-        'pj'      => $pj,
-        'media'   => $media,
-        'pos'     => $pos
-    ];
-
-    $pos++;
-}
-?>
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -82,9 +16,6 @@ h1 {
     text-align: center;
     color: #38bdf8;
     margin-bottom: 20px;
-}
-.table-wrapper {
-    overflow-x: auto;
 }
 table {
     width: 100%;
@@ -123,8 +54,7 @@ tr.top3 { background: #020617; }
 
 <h1>🥅 Goleadores – Liga BetPlay</h1>
 
-<div class="table-wrapper">
-<table>
+<table id="tabla">
 <thead>
 <tr>
     <th>Jugador</th>
@@ -134,28 +64,34 @@ tr.top3 { background: #020617; }
     <th>Media</th>
 </tr>
 </thead>
-<tbody>
-<?php foreach ($rows as $r): 
-    $class = '';
-    if ($r['pos'] === 0) $class = 'top1';
-    elseif ($r['pos'] === 1) $class = 'top2';
-    elseif ($r['pos'] === 2) $class = 'top3';
-?>
-<tr class="<?= $class ?>">
-    <td><strong><?= htmlspecialchars($r['jugador']) ?></strong></td>
-    <td><?= htmlspecialchars($r['equipo']) ?></td>
-    <td><?= $r['goles'] ?></td>
-    <td><?= $r['pj'] ?></td>
-    <td><?= $r['media'] ?></td>
-</tr>
-<?php endforeach; ?>
-</tbody>
+<tbody></tbody>
 </table>
-</div>
 
-<div class="footer">
-    Fuente: WinSports / Dimayor
-</div>
+<div class="footer">Fuente: WinSports / Dimayor</div>
+
+<script>
+fetch("https://www.winsports.co/api/rankings/player?tournamentId=5l22b8pqde1bdxk6377auk3ro&stat=Goles&competitionId=2ty8ihceabty8yddmu31iuuej")
+.then(r => r.json())
+.then(json => {
+    const tbody = document.querySelector("#tabla tbody");
+    json.data.slice(0,10).forEach((p, i) => {
+        const media = (p.value / p.matchesPlayed).toFixed(2);
+        const tr = document.createElement("tr");
+        if (i === 0) tr.className = "top1";
+        else if (i === 1) tr.className = "top2";
+        else if (i === 2) tr.className = "top3";
+
+        tr.innerHTML = `
+            <td><strong>${p.player.name}</strong></td>
+            <td>${p.team.name}</td>
+            <td>${p.value}</td>
+            <td>${p.matchesPlayed}</td>
+            <td>${media}</td>
+        `;
+        tbody.appendChild(tr);
+    });
+});
+</script>
 
 </body>
 </html>
