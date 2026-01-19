@@ -163,6 +163,47 @@ $LinksPorEquipo = [
     "Santiago Córdoba"    => "{{bandera|COL}} [[Santiago Córdoba]]",
     "José Bernal"         => "{{bandera|PAN}} [[José Eduardo Bernal|José Bernal]]",
 ],
+   // FORTALEZA
+"Fortaleza" => [
+
+    // PORTEROS
+    "Miguel Silva"        => "{{bandera|VEN}} [[Miguel Alejandro Silva|Miguel Silva]]",
+    "Michael Barragán"    => "{{bandera|COL}} [[Michael Barragán]]",
+    "Cristian Santander" => "{{bandera|COL}} [[Cristian Santander]]",
+
+    // DEFENSAS
+    "Victor Lasso"        => "{{bandera|COL}} [[Victor Lasso]]",
+    "David Ramírez"       => "{{bandera|COL}} [[David Ramírez Pisciotti|David Ramírez]]",
+    "Jonathan Marulanda"  => "{{bandera|COL}} [[Jonathan Marulanda]]",
+    "Edwin Cabezas"       => "{{bandera|COL}} [[Edwin Cabezas]]",
+    "Miguel Pernía"       => "{{bandera|VEN}} [[Miguel Pernía]]",
+    "Santiago Cuero"      => "{{bandera|COL}} [[Santiago Cuero]]",
+    "Joan Cajares"        => "{{bandera|COL}} [[Joan Cajares]]",
+    "Harold Balanta"      => "{{bandera|COL}} [[Harold Balanta]]",
+
+    // MEDIOCAMPISTAS
+    "Yesid Díaz"          => "{{bandera|COL}} [[Yesid Díaz]]",
+    "Sebastián Navarro"   => "{{bandera|COL}} [[Sebastián Navarro]]",
+    "Jhon Velásquez"      => "{{bandera|COL}} [[Jhon Velásquez]]",
+    "Andrés Amaya"        => "{{bandera|COL}} [[Andrés Amaya]]",
+    "Leonardo Pico"       => "{{bandera|COL}} [[Leonardo Pico]]",
+    "Kevin Balanta"       => "{{bandera|COL}} [[Kevin Adrián Balanta|Kevin Balanta]]",
+    "Sebastián Ramírez"   => "{{bandera|COL}} [[Sebastián Ramírez Maya|Sebastián Ramírez]]",
+    "Jerónimo Barrera"    => "{{bandera|COL}} [[Jerónimo Barrera]]",
+    "José Guzmán"         => "{{bandera|COL}} [[José Guzmán]]",
+    "Jhon Solís"          => "{{bandera|COL}} [[Jhon Jairo Solís|Jhon Solís]]",
+    "Jerónimo Velásquez"  => "{{bandera|COL}} [[Jerónimo Velásquez]]",
+    "Andrés Arroyo"       => "{{bandera|COL}} [[Andrés Juan Arroyo|Andrés Arroyo]]",
+
+    // DELANTEROS
+    "Jader Martínez"      => "{{bandera|COL}} [[Jhon Jader Martínez|Jader Martínez]]",
+    "Sebastián Herrera"   => "{{bandera|COL}} [[Juan Sebastián Herrera|Sebastián Herrera]]",
+    "Jhon Sebastián Palacios" => "{{bandera|COL}} [[Jhon Sebastián Palacios]]",
+    "Jhoiner Salas"       => "{{bandera|COL}} [[Jhoiner Salas]]",
+    "Richardson Rivas"    => "{{bandera|COL}} [[Richardson Rivas]]",
+    "Teun Wilke"          => "{{bandera|MEX}} [[Teun Wilke]]",
+    "Franco Pulicastro"   => "{{bandera|ARG}} [[Franco Pulicastro]]",
+],
        // JAGUARES FC
     "Jaguares de Córdoba" => [
 
