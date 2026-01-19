@@ -15,6 +15,7 @@ $LinksPorEquipo = [
         "Alexis Sinisterra"     => "{{bandera|COL}} [[Alexis Sinisterra]]",
 
         // DEFENSAS
+        "Jhon Palacios"         => "{{bandera|COL}} [[Jhon Alexander Palacios Santos|Jhon Palacios]]",
         "Marlon Torres"         => "{{bandera|COL}} [[Marlon Torres]]",
         "Dany Rosero"           => "{{bandera|COL}} [[Dany Rosero]]",
         "Andrés Mosquera"       => "{{bandera|COL}} [[Andrés Mosquera Guardia|Andrés Mosquera]]",
