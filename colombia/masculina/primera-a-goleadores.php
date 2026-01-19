@@ -124,7 +124,7 @@ $LinksPorEquipo = [
         "Jayder Asprilla"   => "{{bandera|COL}} [[Jayder Asprilla]]",
     ],
        // JAGUARES FC
-    "Jaguares FC" => [
+    "Jaguares de Córdoba" => [
 
         // PORTEROS
         "Diego Martínez"        => "{{bandera|COL}} [[Diego Alejandro Martínez|Diego Martínez]]",
@@ -167,7 +167,7 @@ $LinksPorEquipo = [
 
     ],
        // LLANEROS FÚTBOL CLUB
-    "Llaneros FC" => [
+    "Llaneros" => [
 
         // PORTEROS
         "Miguel Ortega"        => "{{bandera|MEX}} [[Miguel Ortega]]",
