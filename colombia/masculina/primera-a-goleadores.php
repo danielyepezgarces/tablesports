@@ -123,6 +123,49 @@ $LinksPorEquipo = [
         "Emilio Aristizábal"=> "{{bandera|COL}} [[Emilio Aristizábal]]",
         "Jayder Asprilla"   => "{{bandera|COL}} [[Jayder Asprilla]]",
     ],
+       // JAGUARES FC
+    "Jaguares FC" => [
+
+        // PORTEROS
+        "Diego Martínez"        => "{{bandera|COL}} [[Diego Alejandro Martínez|Diego Martínez]]",
+        "Franklin Mosquera"     => "{{bandera|COL}} [[Franklin Mosquera]]",
+
+        // DEFENSAS
+        "Kevin Saucedo"         => "{{bandera|COL}} [[Kevin Saucedo]]",
+        "Didier Bueno"          => "{{bandera|COL}} [[Didier Bueno]]",
+        "Yan Mosquera"          => "{{bandera|COL}} [[Yan Mosquera]]",
+        "Jonathan Lovera"       => "{{bandera|COL}} [[Jonathan Lovera]]",
+        "Mauricio Castaño"      => "{{bandera|COL}} [[Mauricio Castaño Grisales|Mauricio Castaño]]",
+        "Luis Jiménez"          => "{{bandera|COL}} [[Luis Enrique Jiménez|Luis Jiménez]]",
+        "Carlos Henao"          => "{{bandera|COL}} [[Carlos Henao]]",
+        "Jhon Altamiranda"      => "{{bandera|COL}} [[Jhon Altamiranda]]",
+        "Jhon Barrios"          => "{{bandera|COL}} [[Jhon Deivy Barrios|Jhon Barrios]]",
+        "Carlos Ordoñez"        => "{{bandera|COL}} [[Carlos Ordoñez]]",
+        "Alejandro Restrepo"    => "{{bandera|COL}} [[Alejandro Restrepo Restrepo|Alejandro Restrepo]]",
+
+        // CENTROCAMPISTAS
+        "Fabián Mosquera"       => "{{bandera|COL}} [[Fabián Mosquera]]",
+        "Duván Rodríguez"       => "{{bandera|COL}} [[Duvan Rodríguez]]",
+        "Cristian Álvarez"      => "{{bandera|ARG}} [[Cristián Marcelo Álvarez|Cristian Álvarez]]",
+        "Johan Hinestroza"      => "{{bandera|COL}} [[Johan Hinestroza]]",
+        "Bladimir Angulo"       => "{{bandera|COL}} [[Bladimir Angulo]]",
+        "Jader Maza"            => "{{bandera|COL}} [[Jader Maza]]",
+        "Jhonier Viveros"       => "{{bandera|COL}} [[Jhonier Viveros]]",
+        "Jafe Pérez"            => "{{bandera|COL}} [[Jafe Pérez]]",
+        "Royscer Colpa"         => "{{bandera|COL}} [[Royscer Colpa]]",
+        "Yairo Moreno"          => "{{bandera|COL}} [[Yairo Moreno]]",
+
+        // DELANTEROS
+        "Wilfrido de la Rosa"   => "{{bandera|COL}} [[Wilfrido de la Rosa]]",
+        "Samuel Perea"          => "{{bandera|COL}} [[Samuel Perea Mosquera|Samuel Perea]]",
+        "Andrés Rentería"       => "{{bandera|COL}} [[Andrés Rentería]]",
+        "Santiago Cubides"      => "{{bandera|COL}} [[Santiago Cubides]]",
+        "Darwin López"          => "{{bandera|COL}} [[Darwin López]]",
+        "Johar Mejía"           => "{{bandera|COL}} [[Johar Mejía]]",
+        "Kahiser Lenis"         => "{{bandera|PAN}} [[Kahiser Lenis]]",
+        "Kevin Mosquera"        => "{{bandera|COL}} [[Kevin Duván Mosquera|Kevin Mosquera]]",
+
+    ],
        // LLANEROS FÚTBOL CLUB
     "Llaneros FC" => [
 
