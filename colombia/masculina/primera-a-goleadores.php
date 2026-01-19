@@ -9,7 +9,7 @@ $ch = curl_init($url);
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_ENCODING       => "gzip, deflate",
+    CURLOPT_ENCODING       => "", // acepta gzip automáticamente
     CURLOPT_USERAGENT      => "Mozilla/5.0",
     CURLOPT_TIMEOUT        => 15,
 ]);
@@ -54,11 +54,23 @@ echo '<th>Media</th>';
 echo '</tr>';
 
 foreach ($top10 as $player) {
+
     $jugador = htmlspecialchars($player['name']);
     $equipo  = htmlspecialchars($player['contestantName']);
     $goles   = (int)$player['value'];
     $pj      = (int)$player['appearances'];
-    $media   = $pj > 0 ? round($goles / $pj, 2) : 0;
+
+    /* =============================
+       MEDIA: ENTERO O 2 DECIMALES
+       ============================= */
+    if ($pj > 0) {
+        $raw = $goles / $pj;
+        $media = ($raw == floor($raw))
+            ? (int)$raw
+            : number_format($raw, 2, '.', '');
+    } else {
+        $media = 0;
+    }
 
     echo '<tr style="background:#F5F5F5; text-align:center">';
     echo "<td>$jugador</td>";
