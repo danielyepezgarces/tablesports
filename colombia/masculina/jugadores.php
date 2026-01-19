@@ -1,3 +1,5 @@
+<?php
+
 $LinksPorEquipo = [
    
     // AMÉRICA DE CALI
