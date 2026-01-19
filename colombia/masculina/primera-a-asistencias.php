@@ -163,6 +163,46 @@ $LinksPorEquipo = [
     "Santiago Córdoba"    => "{{bandera|COL}} [[Santiago Córdoba]]",
     "José Bernal"         => "{{bandera|PAN}} [[José Eduardo Bernal|José Bernal]]",
 ],
+   // CLUB DEPORTES TOLIMA
+"Deportes Tolima" => [
+
+    // PORTEROS
+    "John Azcarate"       => "{{bandera|COL}} [[John Azcarate]]",
+    "Gali José Balanta"   => "{{bandera|COL}} [[Gali José Balanta]]",
+    "Neto Volpi"          => "{{bandera|BRA}} [[Neto Volpi]]",
+    "Luis Marquinez"      => "{{bandera|COL}} [[Luis Marquinez]]",
+
+    // DEFENSAS
+    "Anderson Angulo"     => "{{bandera|COL}} [[Anderson Angulo]]",
+    "Jan Carlos Angulo"   => "{{bandera|COL}} [[Juan Carlos Angulo]]",
+    "Juan José Mera"      => "{{bandera|COL}} [[Juan José Mera]]",
+    "Cristian Arrieta"    => "{{bandera|COL}} [[Cristian Arrieta]]",
+    "Junior Hernández"    => "{{bandera|COL}} [[Junior Hernández]]",
+    "Yhorman Hurtado"     => "{{bandera|COL}} [[Yhorman Hurtado]]",
+    "Michael Stiven Martinez" => "{{bandera|COL}} [[Michael Stiven Martinez]]",
+    "Shean Paul Barbosa"  => "{{bandera|COL}} [[Shean Paul Barbosa]]",
+
+    // CENTROCAMPISTAS
+    "Cristian Trujillo"   => "{{bandera|COL}} [[Cristian Trujillo]]",
+    "Juan Pablo Torres"   => "{{bandera|COL}} [[Juan Pablo Torres Patiño|Juan Pablo Torres]]",
+    "Elan Joseph Ricardo" => "{{bandera|BRA}} [[Elan Joseph Ricardo]]",
+    "Juan Pablo Nieto"    => "{{bandera|COL}} [[Juan Pablo Nieto]]",
+    "Víctor Manuel Reyes" => "{{bandera|COL}} [[Víctor Manuel Reyes]]",
+    "Sebastián Guzmán"    => "{{bandera|COL}} [[Sebastián Felipe Guzmán|Sebastián Guzmán]]",
+    "Bryan Rovira"        => "{{bandera|CHL}} [[Bryan Rovira]]",
+    "Luis Miguel Landázuri"=> "{{bandera|COL}} [[Luis Miguel Landázuri]]",
+
+    // DELANTEROS
+    "Jersson González"    => "{{bandera|COL}} [[Jersson González Niño|Jersson González]]",
+    "Ever Valencia"       => "{{bandera|COL}} [[Ever Valencia]]",
+    "Luis Sandoval"       => "{{bandera|COL}} [[Luis Fernando Sandoval|Luis Sandoval]]",
+    "Gonzalo Lencina"     => "{{bandera|ARG}} [[Gonzalo Lencina]]",
+    "Kelvin Flórez"       => "{{bandera|COL}} [[Kelvin Flórez]]",
+    "Adrián Parra"        => "{{bandera|COL}} [[Adrián Parra]]",
+    "Jeinner Fuentes"     => "{{bandera|COL}} [[Jeinner Fuentes]]",
+    "Edwar López"         => "{{bandera|COL}} [[Edwar López]]",
+    "Yoimar Moreno"       => "{{bandera|COL}} [[Yoimar Moreno]]",
+],
    // FORTALEZA
 "Fortaleza" => [
 
