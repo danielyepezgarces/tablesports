@@ -32,7 +32,6 @@ $LinksPorEquipo = [
         "Joel Romero"           => "{{bandera|COL}} [[Joel Romero]]",
         "José Cavadía"          => "{{bandera|COL}} [[José Cavadía]]",
         "Jhon Murillo"          => "{{bandera|VEN}} [[Jhon Murillo]]",
-        "Juan Torres"           => "{{bandera|COL}} [[Juan Pablo Torres Patiño|Juan Torres]]"
 
         // DELANTEROS
         "Yojan Garcés"          => "{{bandera|COL}} [[Yojan Garcés]]",
@@ -188,6 +187,7 @@ $LinksPorEquipo = [
     "Sebastián Guzmán"    => "{{bandera|COL}} [[Sebastián Felipe Guzmán|Sebastián Guzmán]]",
     "Bryan Rovira"        => "{{bandera|CHL}} [[Bryan Rovira]]",
     "Luis Miguel Landázuri"=> "{{bandera|COL}} [[Luis Miguel Landázuri]]",
+    "Juan Torres"           => "{{bandera|COL}} [[Juan Pablo Torres Patiño|Juan Torres]]",
 
     // DELANTEROS
     "Jersson González"    => "{{bandera|COL}} [[Jersson González Niño|Jersson González]]",
