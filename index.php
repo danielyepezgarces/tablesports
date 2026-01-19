@@ -5,6 +5,7 @@ $countries = [
         "flag" => "🇨🇴",
     ],
 ];
+
 // Tablas por país usando código ISO
 $tables = [
     "CO" => [
@@ -13,6 +14,12 @@ $tables = [
             "link" => "colombia/masculina/primera-a.php",
             "icon" => "⚽",
             "color" => "#3b82f6",
+        ],
+        [
+            "name"  => "Liga BetPlay – Goleadores",
+            "link"  => "colombia/masculina/primera-a-goleadores.php",
+            "icon"  => "🥅",
+            "color" => "#38bdf8",
         ],
         [
             "name" => "Liga BetPlay – Reclasificación",
@@ -47,6 +54,7 @@ $tables = [
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>TableSports</title>
+
 <style>
 body {
     font-family: system-ui, sans-serif;
@@ -121,15 +129,23 @@ h1 {
 .card-title {
     font-weight:bold;
 }
-a { text-decoration:none; color:inherit; }
+a {
+    text-decoration:none;
+    color:inherit;
+}
 .credits {
     margin-top:40px;
     text-align:center;
     font-size:0.85rem;
     color:#94a3b8;
 }
-.credits a { color:#38bdf8; text-decoration:none; }
-.credits a:hover { text-decoration:underline; }
+.credits a {
+    color:#38bdf8;
+    text-decoration:none;
+}
+.credits a:hover {
+    text-decoration:underline;
+}
 </style>
 </head>
 <body>
@@ -137,33 +153,42 @@ a { text-decoration:none; color:inherit; }
 <h1>TableSports 🏟️</h1>
 
 <div class="accordion">
-    <?php foreach ($tables as $iso => $list): ?>
-        <div class="accordion-item">
-            <div class="accordion-header">
-               <?php echo $countries[$iso]["flag"]; ?>
-               <?php echo $countries[$iso]["name"]; ?>
-            </div>
-            <div class="accordion-content">
-                <?php foreach ($list as $t): ?>
-                    <a href="<?php echo $t["link"]; ?>">
-                        <div class="card">
-                            <div class="icon" style="background: <?php echo $t[
-                                "color"
-                            ]; ?>;"><?php echo $t["icon"]; ?></div>
-                            <div class="card-title"><?php echo $t[
-                                "name"
-                            ]; ?></div>
-                        </div>
-                    </a>
-                <?php endforeach; ?>
-            </div>
+<?php foreach ($tables as $iso => $list): ?>
+    <div class="accordion-item">
+        <div class="accordion-header">
+            <span>
+                <?= $countries[$iso]['flag']; ?>
+                <?= $countries[$iso]['name']; ?>
+            </span>
         </div>
-    <?php endforeach; ?>
+        <div class="accordion-content">
+            <?php foreach ($list as $t): ?>
+                <a href="<?= htmlspecialchars($t['link']); ?>">
+                    <div class="card">
+                        <div class="icon" style="background: <?= $t['color']; ?>">
+                            <?= $t['icon']; ?>
+                        </div>
+                        <div class="card-title">
+                            <?= htmlspecialchars($t['name']); ?>
+                        </div>
+                    </div>
+                </a>
+            <?php endforeach; ?>
+        </div>
+    </div>
+<?php endforeach; ?>
 </div>
 
 <div class="credits">
-    Hecho por <a href="https://es.wikipedia.org/wiki/Usuario:Danielyepezgarces" target="_blank">Daniel Yepez Garces</a>.<br>
-    <strong>Licencia:</strong> Código bajo <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank">GPL v3</a>, contenido libre para usar.
+    Hecho por
+    <a href="https://es.wikipedia.org/wiki/Usuario:Danielyepezgarces" target="_blank">
+        Daniel Yepez Garces
+    </a>.<br>
+    <strong>Licencia:</strong>
+    Código bajo
+    <a href="https://www.gnu.org/licenses/gpl-3.0.html" target="_blank">
+        GPL v3
+    </a>, contenido libre para usar.
 </div>
 
 <script>
@@ -171,13 +196,15 @@ a { text-decoration:none; color:inherit; }
 document.querySelectorAll('.accordion-header').forEach(header => {
     header.addEventListener('click', () => {
         const active = header.classList.contains('active');
-        // Cerrar todos
-        document.querySelectorAll('.accordion-header').forEach(h => h.classList.remove('active'));
-        document.querySelectorAll('.accordion-content').forEach(c => c.style.display='none');
-        // Abrir el seleccionado si no estaba activo
+
+        document.querySelectorAll('.accordion-header')
+            .forEach(h => h.classList.remove('active'));
+        document.querySelectorAll('.accordion-content')
+            .forEach(c => c.style.display = 'none');
+
         if (!active) {
             header.classList.add('active');
-            header.nextElementSibling.style.display='block';
+            header.nextElementSibling.style.display = 'block';
         }
     });
 });
