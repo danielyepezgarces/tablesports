@@ -57,7 +57,7 @@ $top10 = array_slice($data, 0, 10);
    ============================= */
 echo '<table style="width:50%; margin:auto; border-collapse:collapse; font-size:90%">';
 echo '<tr style="background:#98A1B2; text-align:center">';
-echo '<th>Jugador</th><th>Equipo</th><th>Goles</th><th>PJ</th><th>Media</th>';
+echo '<th>Jugador</th><th>Equipo</th><th>Goles</th><th>PJ</th>';
 echo '</tr>';
 
 foreach ($top10 as $player) {
