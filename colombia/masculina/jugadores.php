@@ -32,6 +32,7 @@ $LinksPorEquipo = [
         "Joel Romero"           => "{{bandera|COL}} [[Joel Romero]]",
         "José Cavadía"          => "{{bandera|COL}} [[José Cavadía]]",
         "Jhon Murillo"          => "{{bandera|VEN}} [[Jhon Murillo]]",
+        "Juan Torres"           => "{{bandera|COL}} [[Juan Pablo Torres Patiño|Juan Torres]]"
 
         // DELANTEROS
         "Yojan Garcés"          => "{{bandera|COL}} [[Yojan Garcés]]",
