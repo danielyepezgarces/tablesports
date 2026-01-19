@@ -123,6 +123,45 @@ $LinksPorEquipo = [
         "Emilio Aristizábal"=> "{{bandera|COL}} [[Emilio Aristizábal]]",
         "Jayder Asprilla"   => "{{bandera|COL}} [[Jayder Asprilla]]",
     ],
+   // DEPORTIVO PASTO
+"Deportivo Pasto" => [
+
+    // PORTEROS
+    "Geovanni Banguera"   => "{{bandera|COL}} [[Geovanni Banguera]]",
+    "Juan Felipe Marquinez"=> "{{bandera|COL}} [[Juan Felipe Marquinez]]",
+    "Iago Herrerín"       => "{{bandera|ESP}} [[Iago Herrerín]]",
+
+    // DEFENSAS
+    "Fainer Torijano"     => "{{bandera|COL}} [[Fainer Torijano]]",
+    "Nicolás Gil"         => "{{bandera|COL}} [[Nicolás Gil]]",
+    "Edwin Velasco"       => "{{bandera|COL}} [[Edwin Velasco]]",
+    "Hervin Goyes"        => "{{bandera|COL}} [[Hervin Goyes]]",
+    "Mateo Garavito"      => "{{bandera|COL}} [[Mateo Garavito]]",
+    "Ramiro Morales"      => "{{bandera|COL}} [[Ramiro Morales]]",
+    "Santiago Jiménez"    => "{{bandera|COL}} [[Santiago Jiménez]]",
+
+    // MEDIOCAMPISTAS
+    "Johan Caicedo"       => "{{bandera|COL}} [[Johan Caicedo]]",
+    "Enrique Serje"       => "{{bandera|COL}} [[Enrique Serje]]",
+    "Diego Chávez"        => "{{bandera|ARG}} [[Diego Gabriel Chávez|Diego Chávez]]",
+    "Andrey Estupiñán"    => "{{bandera|COL}} [[Andrey Estupiñán]]",
+    "Harrinson Mancilla"  => "{{bandera|COL}} [[Harrinson Mancilla]]",
+    "Yéiler Góez"         => "{{bandera|COL}} [[Yéiler Góez]]",
+    "Matías Pisano"       => "{{bandera|ARG}} [[Matías Pisano]]",
+    "Gian Carlos Cabezas" => "{{bandera|COL}} [[Gian Carlos Cabezas]]",
+    "Willian Ordóñez"     => "{{bandera|COL}} [[Willian Felipe Ordóñez|Willian Ordóñez]]",
+
+    // DELANTEROS
+    "Jonathan Perlaza"    => "{{bandera|COL}} [[Jonathan Perlaza]]",
+    "Jeirye Caicedo"      => "{{bandera|COL}} [[Jeirye Stevens Caicedo|Jeirye Caicedo]]",
+    "Mayer Gil"           => "{{bandera|SLV}} [[Mayer Gil]]",
+    "Joider Micolta"      => "{{bandera|COL}} [[Joider Micolta]]",
+    "Wilson Morelo"       => "{{bandera|COL}} [[Wilson Morelo]]",
+    "Jaider Moreno"       => "{{bandera|COL}} [[Jaider Victoria Moreno|Jaider Moreno]]",
+    "Patrick Preciado"    => "{{bandera|COL}} [[Patrick Preciado]]",
+    "Santiago Córdoba"    => "{{bandera|COL}} [[Santiago Córdoba]]",
+    "José Bernal"         => "{{bandera|PAN}} [[José Eduardo Bernal|José Bernal]]",
+],
        // JAGUARES FC
     "Jaguares de Córdoba" => [
 
