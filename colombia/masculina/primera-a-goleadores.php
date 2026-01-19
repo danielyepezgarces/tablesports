@@ -2,14 +2,72 @@
 $url = "https://www.winsports.co/api/rankings/player?tournamentId=5l22b8pqde1bdxk6377auk3ro&stat=Goles&competitionId=2ty8ihceabty8yddmu31iuuej";
 
 /* =============================
-   1. PETICIÓN CON cURL (GZIP)
+   0. MAPA DE JUGADORES POR EQUIPO
+   ============================= */
+$LinksPorEquipo = [
+
+    // ATLÉTICO NACIONAL
+    "Atlético Nacional" => [
+
+        // PORTEROS
+        "David Ospina"      => "{{bandera|COL}} [[David Ospina]]",
+        "Harlen Castillo"   => "{{bandera|COL}} [[Harlen Castillo]]",
+        "Luis Marquinez"    => "{{bandera|COL}} [[Luis Marquinez]]",
+        "Mateo Valencia"    => "{{bandera|COL}} [[Mateo Valencia]]",
+        "Kevin Cataño"      => "{{bandera|COL}} [[Kevin Cataño Jiménez|Kevin Cataño]]",
+
+        // DEFENSAS
+        "César Haydar"      => "{{bandera|COL}} [[César Haydar]]",
+        "Andrés Román"      => "{{bandera|COL}} [[Andrés Román]]",
+        "William Tesillo"   => "{{bandera|COL}} [[William Tesillo]]",
+        "Andrés Salazar"    => "{{bandera|COL}} [[Andrés Salazar Osorio|Andrés Salazar]]",
+        "Juan José Arias"   => "{{bandera|COL}} [[Juan José Arias]]",
+        "Simón García"      => "{{bandera|COL}} [[Simón García Valero|Simón García]]",
+        "Royer Caicedo"     => "{{bandera|COL}} [[Royer Caicedo]]",
+        "Cristian Uribe"    => "{{bandera|COL}} [[Cristian Uribe Uribe|Cristian Uribe]]",
+        "Samuel Velásquez"  => "{{bandera|COL}} [[Samuel Velásquez]]",
+        "Milton Casco"      => "{{bandera|ARG}} [[Milton Casco]]",
+
+        // CENTROCAMPISTAS
+        "Mateus Uribe"      => "{{bandera|COL}} [[Mateus Uribe]]",
+        "Edwin Cardona"     => "{{bandera|COL}} [[Edwin Cardona]]",
+        "Jorman Campuzano"  => "{{bandera|COL}} [[Jorman Campuzano]]",
+        "Elkin Rivero"      => "{{bandera|COL}} [[Elkin Rivero]]",
+        "Juan Bauza"        => "{{bandera|ARG}} [[Juan Bauza]]",
+        "Luis Landázuri"    => "{{bandera|COL}} [[Luis Miguel Landázuri|Luis Landázuri]]",
+        "Juan Rengifo"      => "{{bandera|COL}} [[Juan Manuel Rengifo|Juan Rengifo]]",
+        "Juan Zapata"       => "{{bandera|COL}} [[Juan Zapata Zumaque|Juan Zapata]]",
+
+        // DELANTEROS
+        "Marlos Moreno"     => "{{bandera|COL}} [[Marlos Moreno]]",
+        "Alfredo Morelos"   => "{{bandera|COL}} [[Alfredo Morelos]]",
+        "Marino Hinestroza" => "{{bandera|COL}} [[Marino Hinestroza]]",
+        "Dairon Asprilla"   => "{{bandera|COL}} [[Dairon Asprilla]]",
+        "Andrés Sarmiento"  => "{{bandera|COL}} [[Andrés de Jesús Sarmiento|Andrés Sarmiento]]",
+        "Juan Rosa"         => "{{bandera|COL}} [[Juan José Rosa|Juan Rosa]]",
+        "Nico Rodríguez"    => "{{bandera|COL}} [[Nico Rodríguez]]",
+        "Eduard Bello"      => "{{bandera|VEN}} [[Eduard Bello]]",
+        "Emilio Aristizábal"=> "{{bandera|COL}} [[Emilio Aristizábal]]",
+        "Jayder Asprilla"   => "{{bandera|COL}} [[Jayder Asprilla]]",
+    ],
+];
+
+/* =============================
+   FUNCIÓN DE REPLACE
+   ============================= */
+function wikiJugador(string $equipo, string $jugador, array $mapa): string {
+    return $mapa[$equipo][$jugador] ?? htmlspecialchars($jugador, ENT_QUOTES, 'UTF-8');
+}
+
+/* =============================
+   1. PETICIÓN cURL
    ============================= */
 $ch = curl_init($url);
 
 curl_setopt_array($ch, [
     CURLOPT_RETURNTRANSFER => true,
     CURLOPT_FOLLOWLOCATION => true,
-    CURLOPT_ENCODING       => "", // acepta gzip automáticamente
+    CURLOPT_ENCODING       => "",
     CURLOPT_USERAGENT      => "Mozilla/5.0",
     CURLOPT_TIMEOUT        => 15,
 ]);
@@ -31,43 +89,37 @@ if ($httpCode !== 200) {
    2. DECODIFICAR JSON
    ============================= */
 $data = json_decode($response, true);
-
 if (!is_array($data)) {
-    die("Error: JSON inválido o vacío");
+    die("JSON inválido");
 }
 
 /* =============================
-   3. TOMAR SOLO TOP 10
+   3. TOP 10
    ============================= */
 $top10 = array_slice($data, 0, 10);
 
 /* =============================
-   4. GENERAR TABLA HTML
+   4. TABLA HTML
    ============================= */
 echo '<table style="width:50%; margin:auto; border-collapse:collapse; font-size:90%">';
 echo '<tr style="background:#98A1B2; text-align:center">';
-echo '<th>Jugador</th>';
-echo '<th>Equipo</th>';
-echo '<th>Goles</th>';
-echo '<th>PJ</th>';
-echo '<th>Media</th>';
+echo '<th>Jugador</th><th>Equipo</th><th>Goles</th><th>PJ</th><th>Media</th>';
 echo '</tr>';
 
 foreach ($top10 as $player) {
 
-    $jugador = htmlspecialchars($player['name']);
-    $equipo  = htmlspecialchars($player['contestantName']);
-    $goles   = (int)$player['value'];
-    $pj      = (int)$player['appearances'];
+    $nombreJugador = $player['name'];
+    $nombreEquipo  = $player['contestantName'];
 
-    /* =============================
-       MEDIA: ENTERO O 2 DECIMALES
-       ============================= */
+    $jugador = wikiJugador($nombreEquipo, $nombreJugador, $LinksPorEquipo);
+    $equipo  = htmlspecialchars($nombreEquipo, ENT_QUOTES, 'UTF-8');
+
+    $goles = (int)$player['value'];
+    $pj    = (int)$player['appearances'];
+
     if ($pj > 0) {
         $raw = $goles / $pj;
-        $media = ($raw == floor($raw))
-            ? (int)$raw
-            : number_format($raw, 2, '.', '');
+        $media = ($raw == floor($raw)) ? (int)$raw : number_format($raw, 2, '.', '');
     } else {
         $media = 0;
     }
