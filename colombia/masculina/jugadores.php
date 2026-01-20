@@ -67,7 +67,7 @@ $LinksPorEquipo = [
         "Félix Charrupí"     => "{{bandera|COL}} [[Félix Charrupí]]",
         "Fabry Castro"       => "{{bandera|COL}} [[Fabry Castro]]",
         "Leonardo Flores"    => "{{bandera|VEN}} [[Leonardo Flores (futbolista venezolano)|Leonardo Flores]]",
-        "Félix Charrupí"          => "{{bandera|COL}} [[Félix Charrupí]]",
+        "Felix Charrupí"    => "{{bandera|COL}} [[Félix Charrupí]]",
 
 
         // DELANTEROS
