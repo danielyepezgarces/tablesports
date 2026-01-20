@@ -284,6 +284,54 @@ $LinksPorEquipo = [
         "Kevin Mosquera"        => "{{bandera|COL}} [[Kevin Duván Mosquera|Kevin Mosquera]]",
 
     ],
+   // MILLONARIOS FC
+"Millonarios" => [
+
+    // PORTEROS
+    "Guillermo de Amores" => "{{bandera|URU}} [[Guillermo de Amores]]",
+    "Diego Novoa"        => "{{bandera|COL}} [[Diego Novoa]]",
+    "Iván Díaz"          => "{{bandera|COL}} [[Iván Díaz Amaris|Iván Díaz]]",
+    "David Rodríguez"    => "{{bandera|COL}} [[David Eduardo Rodríguez Burbano|David Rodríguez]]",
+
+    // DEFENSAS
+    "Carlos Sarabia"     => "{{bandera|COL}} [[Carlos Sarabia]]",
+    "Samuel Martín"      => "{{bandera|COL}} [[Samuel Martín]]",
+    "Sergio Mosquera"    => "{{bandera|COL}} [[Sergio Mosquera]]",
+    "Jorge Arias"        => "{{bandera|COL}} [[Jorge Arias]]",
+    "Danovis Banguero"   => "{{bandera|COL}} [[Danovis Banguero]]",
+    "Sebastián Valencia" => "{{bandera|COL}} [[Sebastián Valencia Isaza|Sebastián Valencia]]",
+    "Andrés Llinás"      => "{{bandera|COL}} [[Andrés Llinás]]",
+    "Álex Moreno"        => "{{bandera|COL}} [[Álex Moreno]]",
+    "Édgar Elizalde"     => "{{bandera|URU}} [[Édgar Elizalde]]",
+    "Nicolás Giraldo"    => "{{bandera|COL}} [[Nicolás Giraldo]]",
+    "Cristian Uparela"   => "{{bandera|COL}} [[Cristian Uparela]]",
+
+    // MEDIOCAMPISTAS
+    "Darwin Quintero"    => "{{bandera|COL}} [[Darwin Quintero]]",
+    "Dewar Victoria"     => "{{bandera|COL}} [[Dewar Victoria]]",
+    "David Mackalister Silva" => "{{bandera|COL}} [[David Mackalister Silva]]",
+    "Rodrigo Ureña"      => "{{bandera|CHI}} [[Rodrigo Ureña]]",
+    "Mateo García"       => "{{bandera|COL}} [[Mateo García Rojas|Mateo García]]",
+    "Stiven Vega"        => "{{bandera|COL}} [[Stiven Vega]]",
+    "Sebastián del Castillo" => "{{bandera|COL}} [[Sebastián del Castillo]]",
+    "Juan Carlos Pereira" => "{{bandera|COL}} [[Juan Carlos Pereira]]",
+    "Johan Rodallega"    => "{{bandera|COL}} [[Johan Rodallega]]",
+    "Bayron García"      => "{{bandera|COL}} [[Bayron García]]",
+    "Santiago Castrillón" => "{{bandera|COL}} [[Santiago Castrillón]]",
+
+    // DELANTEROS
+    "Radamel Falcao"     => "{{bandera|COL}} [[Radamel Falcao]]",
+    "Beckham Castro"     => "{{bandera|COL}} [[Beckham Castro]]",
+    "Leonardo Castro"    => "{{bandera|COL}} [[Leo Castro|Leonardo Castro]]",
+    "Julián Angulo"      => "{{bandera|COL}} [[Julián Angulo Sevillano|Julián Angulo]]",
+    "Rodrigo Contreras"  => "{{bandera|ARG}} [[Rodrigo Nicolás Contreras|Rodrigo Contreras]]",
+    "Álex Castro"        => "{{bandera|COL}} [[Álex Castro]]",
+    "Jorge Hurtado"      => "{{bandera|COL}} [[Jorge Hurtado]]",
+    "Brayan Campaz"      => "{{bandera|COL}} [[Brayan Campaz]]",
+    "Brayan Cuero"       => "{{bandera|COL}} [[Brayan Cuero]]",
+    "Santiago Giordana"  => "{{bandera|ARG}} [[Santiago Giordana]]",
+
+],
        // LLANEROS FÚTBOL CLUB
     "Llaneros" => [
 
