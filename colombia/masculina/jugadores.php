@@ -67,6 +67,8 @@ $LinksPorEquipo = [
         "Félix Charrupí"     => "{{bandera|COL}} [[Félix Charrupí]]",
         "Fabry Castro"       => "{{bandera|COL}} [[Fabry Castro]]",
         "Leonardo Flores"    => "{{bandera|VEN}} [[Leonardo Flores (futbolista venezolano)|Leonardo Flores]]",
+        "Félix Charrupí"          => "{{bandera|COL}} [[Félix Charrupí]]",
+
 
         // DELANTEROS
         "Faber Gil"          => "{{bandera|COL}} [[Faber Gil]]",
@@ -309,7 +311,7 @@ $LinksPorEquipo = [
     // MEDIOCAMPISTAS
     "Darwin Quintero"    => "{{bandera|COL}} [[Darwin Quintero]]",
     "Dewar Victoria"     => "{{bandera|COL}} [[Dewar Victoria]]",
-    "David Mackalister Silva" => "{{bandera|COL}} [[David Mackalister Silva]]",
+    "David Silva" => "{{bandera|COL}} [[David Mackalister Silva]]",
     "Rodrigo Ureña"      => "{{bandera|CHI}} [[Rodrigo Ureña]]",
     "Mateo García"       => "{{bandera|COL}} [[Mateo García Rojas|Mateo García]]",
     "Stiven Vega"        => "{{bandera|COL}} [[Stiven Vega]]",
