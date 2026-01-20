@@ -1,5 +1,5 @@
 <?php
-$url = "https://www.winsports.co/api/rankings/player?tournamentId=5l22b8pqde1bdxk6377auk3ro&stat=Tarjetas+Amarillas&competitionId=2ty8ihceabty8yddmu31iuuej";
+$url = "https://www.winsports.co/api/rankings/player?tournamentId=5l22b8pqde1bdxk6377auk3ro&stat=Tarjetas+Rojas&competitionId=2ty8ihceabty8yddmu31iuuej";
 
 /* =============================
    0. MAPA DE JUGADORES POR EQUIPO
