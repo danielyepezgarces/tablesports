@@ -199,6 +199,46 @@ $LinksPorEquipo = [
     "Santiago Córdoba"    => "{{bandera|COL}} [[Santiago Córdoba]]",
     "José Bernal"         => "{{bandera|PAN}} [[José Eduardo Bernal|José Bernal]]",
 ],
+// DEPORTIVO PEREIRA
+"Deportivo Pereira" => [
+
+    // PORTEROS
+    "Jorge Martínez"        => "{{bandera|COL}} [[Jorge Eliécer Martínez|Jorge Martínez]]",
+    "Juan Betancourth"      => "{{bandera|COL}} [[Juan Miguel Betancourth|Juan Betancourth]]",
+    "Alejandro Rodríguez"   => "{{bandera|COL}} [[Alejandro Rodríguez Baena|Alejandro Rodríguez]]",
+
+    // DEFENSAS
+    "Sebastián Urrea"       => "{{bandera|COL}} [[Sebastián Urrea]]",
+    "Julián Bazán"          => "{{bandera|COL}} [[Julián Bazán]]",
+    "Santiago Aguilar"      => "{{bandera|COL}} [[Santiago Andrés Aguilar|Santiago Aguilar]]",
+    "Eber Moreno"           => "{{bandera|COL}} [[Eber Moreno]]",
+    "Jordy Monroy"          => "{{bandera|ARM}} [[Jordy Monroy]]",
+    "Walmer Pacheco"        => "{{bandera|COL}} [[Walmer Pacheco]]",
+    "Danilo Ortiz"          => "{{bandera|PAR}} [[Danilo Ortiz]]",
+    "Fabio Delgado"         => "{{bandera|COL}} [[Fabio Delgado]]",
+
+    // CENTROCAMPISTAS
+    "Jorge Bermúdez"        => "{{bandera|COL}} [[Jorge Andrés Bermúdez Correa|Jorge Bermúdez]]",
+    "Sebastián Acosta"      => "{{bandera|COL}} [[Sebastián Acosta]]",
+    "Ederson Moreno"        => "{{bandera|COL}} [[Ederson Moreno]]",
+    "Nicolás Rengifo"       => "{{bandera|COL}} [[Nicolás Rengifo]]",
+    "Felipe Mosquera"       => "{{bandera|COL}} [[Luis Felipe Mosquera Paredes|Felipe Mosquera]]",
+    "Diego Mendoza"         => "{{bandera|COL}} [[Diego Andrés Mendoza|Diego Mendoza]]",
+    "Miguel Aguirre"        => "{{bandera|COL}} [[Miguel Angel Aguirre Quintana|Miguel Aguirre]]",
+    "John Montoya"          => "{{bandera|COL}} [[John Alexander Montoya|John Montoya]]",
+    "Jhon Largacha"         => "{{bandera|COL}} [[Jhon Edinson Largacha|Jhon Largacha]]",
+    "Yúber Quiñones"        => "{{bandera|COL}} [[Yúber Quiñones]]",
+
+    // DELANTEROS
+    "Gustavo Torres"        => "{{bandera|COL}} [[Gustavo Torres]]",
+    "Marco Pérez"           => "{{bandera|COL}} [[Marco Pérez Murillo|Marco Pérez]]",
+    "Alejandro Álvarez"     => "{{bandera|COL}} [[Alejandro Álvarez Vallejo|Alejandro Álvarez]]",
+    "Andrés Calderón"       => "{{bandera|COL}} [[Andrés Calderón]]",
+    "Luis Palacios"         => "{{bandera|COL}} [[Luis Miguel Palacios Fory|Luis Palacios]]",
+    "Anderson Plata"        => "{{bandera|COL}} [[Anderson Plata]]",
+
+],
+
    // CLUB DEPORTES TOLIMA
 "Deportes Tolima" => [
 
