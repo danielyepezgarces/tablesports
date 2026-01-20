@@ -122,6 +122,44 @@ $LinksPorEquipo = [
         "Emilio Aristizábal"=> "{{bandera|COL}} [[Emilio Aristizábal]]",
         "Jayder Asprilla"   => "{{bandera|COL}} [[Jayder Asprilla]]",
     ],
+// CÚCUTA DEPORTIVO
+"Cúcuta Deportivo" => [
+
+    // PORTEROS
+    "Juan David Ramírez" => "{{bandera|COL}} [[Juan David Ramirez]]",
+    "Federico Abadía"    => "{{bandera|ARG}} [[Federico Abadía]]",
+
+    // DEFENSAS
+    "Armando Ballesteros" => "{{bandera|COL}} [[Armando Ballesteros]]",
+    "Diego Calcaterra"    => "{{bandera|ARG}} [[Diego Calcaterra]]",
+    "Jhon Alexander Quiñones" => "{{bandera|COL}} [[Jhon Alexander Quiñones]]",
+    "Sebastián Rodríguez" => "{{bandera|COL}} [[Sebastián Rodríguez Córdoba|Sebastián Rodríguez]]",
+    "Alexander Borja"     => "{{bandera|COL}} [[Alexander Borja Cordoba|Alexander Borja]]",
+    "Mauricio Duarte"     => "{{bandera|COL}} [[Mauricio Duarte]]",
+    "Brayan Montaño"      => "{{bandera|COL}} [[Brayan Montaño]]",
+    "Manuel Carmona"      => "{{bandera|USA}} [[Manuel Carmona]]",
+
+    // CENTROCAMPISTAS
+    "Víctor Mejía"        => "{{bandera|COL}} [[Víctor Mejía]]",
+    "Santiago Orozco"     => "{{bandera|COL}} [[Santiago Orozco]]",
+    "Léider Berdugo"      => "{{bandera|COL}} [[Léider Berdugo]]",
+    "Diego Ceballos"      => "{{bandera|COL}} [[Juan Diego Ceballos|Diego Ceballos]]",
+    "Jhonatan González"   => "{{bandera|COL}} [[Jhonatan González]]",
+    "Lucas Ríos"          => "{{bandera|ARG}} [[Lucas Ríos]]",
+    "Sebastián Támara"    => "{{bandera|COL}} [[Sebastián Támara]]",
+    "Agustín Cano"        => "{{bandera|COL}} [[Agustín Cano]]",
+    "Felipe Gómez"        => "{{bandera|COL}} [[Felipe Gómez Londoño|Felipe Gómez]]",
+
+    // DELANTEROS
+    "Jaime Peralta"       => "{{bandera|COL}} [[Jaime Andres Peralta|Jaime Peralta]]",
+    "Luifer Hernández"    => "{{bandera|VEN}} [[Luifer Hernández]]",
+    "Eduar Arizalas"      => "{{bandera|COL}} [[Eduar Arizalas]]",
+    "Jhon Valencia"       => "{{bandera|COL}} [[Jhon Alexander Valencia|Jhon Valencia]]",
+    "Jonathan Agudelo"    => "{{bandera|COL}} [[Jonathan Agudelo]]",
+    "Cristian Córdoba"    => "{{bandera|COL}} [[Cristian Córdoba]]",
+
+],
+   
    // DEPORTIVO PASTO
 "Deportivo Pasto" => [
 
