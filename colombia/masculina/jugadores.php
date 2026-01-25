@@ -1,6 +1,44 @@
 <?php
 
 $LinksPorEquipo = [
+
+   "Águilas Doradas 2026-I" => [
+
+    // PORTEROS
+    "Iván Arboleda"      => "{{bandera|COL}} [[Iván Arboleda]]",
+    "Andrés Salazar"     => "{{bandera|HON}} [[Andrés Felipe Salazar|Andrés Salazar]]",
+
+    // DEFENSAS
+    "John García"        => "{{bandera|COL}} [[John Edison García|John García]]",
+    "Mateo Puerta"       => "{{bandera|COL}} [[Mateo Puerta]]",
+    "Diego Hernández"    => "{{bandera|COL}} [[Diego Armando Hernández|Diego Hernández]]",
+    "Andrés Álvarez"     => "{{bandera|COL}} [[Andrés Felipe Álvarez|Andrés Álvarez]]",
+    "Dylan Lozano"       => "{{bandera|COL}} [[Dylan Lozano]]",
+    "Hernán Lopes"       => "{{bandera|ARG}} [[Hernán Lopes]]",
+    "Nicolás Lara"       => "{{bandera|COL}} [[Nicolás Lara]]",
+    "Javier Mena"        => "{{bandera|COL}} [[Javier Alexander Mena|Javier Mena]] {{canterano}}",
+    "Juan José Aguilar"  => "{{bandera|?}} [[Juan José Aguilar]]",
+    "Joaquín Varela"     => "{{bandera|COL}} [[Joaquín Varela]]",
+    "Alberto Higgins"    => "{{bandera|COL}} [[Alberto Higgins]]",
+
+    // CENTROCAMPISTAS
+    "Andrés Ricaurte"    => "{{bandera|COL}} [[Andrés Ricaurte]]",
+    "Bryan Urueña"       => "{{bandera|COL}} [[Bryan Urueña]]",
+    "Fabián Charales"    => "{{bandera|?}} [[Fabián Charales]]",
+    "Jean Pineda"        => "{{bandera|COL}} [[Jean Pineda]]",
+    "Carlos Londoño"     => "{{bandera|COL}} [[Carlos Felipe Londoño Giraldo|Carlos Londoño]] {{canterano}}",
+    "Frank Lozano"       => "{{bandera|COL}} [[Frank Lozano]]",
+    "Juan Esteban Ávalo" => "{{bandera|COL}} [[Juan Esteban Ávalo]] {{canterano}}",
+    "Juan Camilo Roa"    => "{{bandera|COL}} [[Juan Camilo Roa]]",
+    "Cristian Caicedo"   => "{{bandera|COL}} [[Cristian David Caicedo Castillo|Cristian Caicedo]]",
+
+    // DELANTEROS
+    "Jorge Rivaldo"      => "{{bandera|COL}} [[Jorge Rivaldo]]",
+    "Cristian Cañozales" => "{{bandera|COL}} [[Cristian Cañozales]]",
+    "Royner Benítez"    => "{{bandera|COL}} [[Royner Benítez]] {{canterano}}",
+    "Jorge Obregón"      => "{{bandera|COL}} [[Jorge Obregón]]",
+];
+
    
     // AMÉRICA DE CALI
     "América de Cali" => [
@@ -321,6 +359,45 @@ $LinksPorEquipo = [
     "Teun Wilke"          => "{{bandera|MEX}} [[Teun Wilke]]",
     "Franco Pulicastro"   => "{{bandera|ARG}} [[Franco Pulicastro]]",
 ],
+   // EQUIPO DESCONOCIDO
+"Inter Bogotá" => [
+
+    // PORTEROS
+    "Wuilker Fariñez"      => "{{bandera|VEN}} [[Wuilker Fariñez]]",
+    "Juan Carrasco"        => "{{bandera|COL}} [[Juan Carrasco (futbolista colombiano)|Juan Carrasco]]",
+    "Eduar Esteban"        => "{{bandera|COL}} [[Eduar Esteban]]",
+
+    // DEFENSAS
+    "Carlos Vivas"         => "{{bandera|VEN}} [[Carlos Vivas]]",
+    "Mateo Rodas"          => "{{bandera|COL}} [[Mateo Rodas]]",
+    "Joao Abonía"          => "{{bandera|COL}} [[Joao Abonía (futbolísta)|Joao Abonía]]",
+    "Yulián Gómez"         => "{{bandera|COL}} [[Yulián Gómez]]",
+    "Joan Castro"          => "{{bandera|COL}} [[Joan Castro]]",
+    "Kalazán Suárez"       => "{{bandera|COL}} [[Kalazán Suárez]]",
+    "Agustín Irazoque"     => "{{bandera|ARG}} [[Agustín Irazoque]]",
+    "Luis Mosquera"        => "{{bandera|MEX}} [[Luis Fernando Mosquera Gómez|Luis Mosquera]]",
+    "Miguel Amaya"         => "{{bandera|COL}} [[Miguel Amaya]]",
+
+    // CENTROCAMPISTAS
+    "Larry Vásquez"        => "{{bandera|COL}} [[Larry Vásquez]]",
+    "Fabricio Sanguinetti" => "{{bandera|URU}} [[Fabricio Sanguinetti]]",
+    "Samir Mayo"           => "{{bandera|COL}} [[Samir Mayo Herrera|Samir Mayo]]",
+    "Kevin Parra"          => "{{bandera|COL}} [[Kevin Parra]]",
+    "Facundo Boné"         => "{{bandera|URU}} [[Facundo Boné]]",
+    "Jean Colorado"        => "{{bandera|COL}} [[Jean Colorado]]",
+    "Dannovi Quiñones"     => "{{bandera|COL}} [[Dannovi Quiñones]]",
+    "Fabián Chaverra"      => "{{bandera|COL}} [[Fabián Chaverra]]",
+    "Dereck Moncada"       => "{{bandera|HON}} [[Dereck Moncada]]",
+    "Johan Caballero"      => "{{bandera|COL}} [[Johan Caballero]]",
+    "Rubén Manjarrés"      => "{{bandera|COL}} [[Rubén Manjarrés]]",
+
+    // DELANTEROS
+    "Juan Valencia"        => "{{bandera|COL}} [[Juan David Valencia Longa|Juan Valencia]]",
+    "Bayron Caicedo"       => "{{bandera|COL}} [[Bayron Caicedo]]",
+    "Emilio Gutiérrez"     => "{{bandera|COL}} [[Emilio Gutiérrez Bejarano|Emilio Gutiérrez]]",
+    "Hather Cuesta"        => "{{bandera|MEX}} [[Hather Emir Cuesta Murillo|Hather Cuesta]]",
+];
+
        // JAGUARES FC
     "Jaguares de Córdoba" => [
 
