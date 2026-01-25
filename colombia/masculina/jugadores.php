@@ -449,8 +449,49 @@ $LinksPorEquipo = [
         "Jhonier Blanco"       => "{{bandera|COL}} [[Jhonier Blanco]]",
         "Érik Bodencer"        => "{{bandera|ARG}} [[Érik Bodencer]]",
     ],
-   
+
+   // ONCE CALDAS
+"Once Caldas" => [
+
+    // PORTEROS
+    "James Aguirre"        => "{{bandera|COL}} [[James Aguirre]]",
+    "Juan Gallego"         => "{{bandera|COL}} [[Juan Esteban Muñoz Gallego|Juan Gallego]]",
+    "Joan Parra"           => "{{bandera|COL}} [[Joan Felipe Parra Marin|Joan Parra]]",
+
+    // DEFENSAS
+    "Jorge Cardona"        => "{{bandera|COL}} [[Jorge Luis Cardona|Jorge Cardona]]",
+    "Efraín Navarro"       => "{{bandera|COL}} [[Efraín Navarro]]",
+    "Stalin Valencia"      => "{{bandera|ECU}} [[Stalin Valencia]]",
+    "Juan Castaño"         => "{{bandera|COL}} [[Juan Felipe Castaño]]",
+    "Jáider Riquett"       => "{{bandera|COL}} [[Jáider Riquett]]",
+    "Juan David Cuesta"    => "{{bandera|COL}} [[Juan David Cuesta]]",
+    "Kevin Cuesta"         => "{{bandera|COL}} [[Kevin Cuesta]]",
+    "Kevin Tamayo"         => "{{bandera|COL}} [[Kevin Tamayo]]",
+    "Yeferson Rodallega"   => "{{bandera|COL}} [[Yeferson Rodallega]]",
+
+    // CENTROCAMPISTAS
+    "Iván Rojas"           => "{{bandera|COL}} [[Iván Rojas]]",
+    "Jaime Alvarado"       => "{{bandera|COL}} [[Jaime Alvarado]]",
+    "Michael Barrios"      => "{{bandera|COL}} [[Michael Barrios]]",
+    "Andrés Roa"           => "{{bandera|COL}} [[Andrés Felipe Roa|Andrés Roa]]",
+    "Esteban Beltrán"      => "{{bandera|COL}} [[Esteban Beltrán]]",
+    "Luis Sánchez"         => "{{bandera|COL}} [[Luis Francisco Sánchez|Luis Sánchez]]",
+    "Tomás García"         => "{{bandera|COL}} [[Tomás García Rojas|Tomás García]]",
+    "Kevin Villada"        => "{{bandera|COL}} [[Kevin Villada]]",
+    "Mateo Zuleta"         => "{{bandera|COL}} [[Mateo Zuleta]]",
+    "Yeiler Valencia"      => "{{bandera|COL}} [[Yeiler Valencia]]",
+    "Déinner Quiñones"     => "{{bandera|COL}} [[Déinner Quiñones]]",
+    "Robert Mejía"         => "{{bandera|COL}} [[Robert Mejía]]",
+    "Rafael Acuña"         => "{{bandera|COL}} [[Rafael Acuña]]",
+    "Jáder Quiñones"       => "{{bandera|COL}} [[Jáder Quiñones]]",
+
+    // DELANTEROS
+    "Pipe Gómez"           => "{{bandera|COL}} [[Pipe Gómez]]",
+    "Jefry Zapata"         => "{{bandera|COL}} [[Jefry Zapata]]",
+    "Dayro Moreno"         => "{{bandera|COL}} [[Dayro Moreno]]",
+
 ];
+
 
 return $LinksPorEquipo;
 
