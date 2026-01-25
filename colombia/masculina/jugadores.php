@@ -490,6 +490,8 @@ $LinksPorEquipo = [
     "Jefry Zapata"         => "{{bandera|COL}} [[Jefry Zapata]]",
     "Dayro Moreno"         => "{{bandera|COL}} [[Dayro Moreno]]",
 
+   ],
+
 ];
 
 
