@@ -2,7 +2,7 @@
 
 $LinksPorEquipo = [
 
-   "Águilas Doradas 2026-I" => [
+   "Águilas Doradas" => [
 
     // PORTEROS
     "Iván Arboleda"      => "{{bandera|COL}} [[Iván Arboleda]]",
@@ -37,7 +37,7 @@ $LinksPorEquipo = [
     "Cristian Cañozales" => "{{bandera|COL}} [[Cristian Cañozales]]",
     "Royner Benítez"    => "{{bandera|COL}} [[Royner Benítez]] {{canterano}}",
     "Jorge Obregón"      => "{{bandera|COL}} [[Jorge Obregón]]",
-];
+],
 
    
     // AMÉRICA DE CALI
