@@ -396,7 +396,7 @@ $LinksPorEquipo = [
     "Bayron Caicedo"       => "{{bandera|COL}} [[Bayron Caicedo]]",
     "Emilio Gutiérrez"     => "{{bandera|COL}} [[Emilio Gutiérrez Bejarano|Emilio Gutiérrez]]",
     "Hather Cuesta"        => "{{bandera|MEX}} [[Hather Emir Cuesta Murillo|Hather Cuesta]]",
-];
+],
 
        // JAGUARES FC
     "Jaguares de Córdoba" => [
