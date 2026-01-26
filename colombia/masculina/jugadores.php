@@ -484,6 +484,53 @@ $LinksPorEquipo = [
         "Kevin Mosquera"        => "{{bandera|COL}} [[Kevin Duván Mosquera|Kevin Mosquera]]",
 
     ],
+
+   "Junior" => [
+
+    // PORTEROS
+    "Mauro Silveira"     => "{{bandera|URU}} [[Mauro Silveira]]",
+    "Jefersson Martínez" => "{{bandera|COL}} [[Jefersson Martínez]]",
+
+    // DEFENSAS
+    "Edwin Herrera"      => "{{bandera|COL}} [[Edwin Herrera]]",
+    "Daniel Rivera"      => "{{bandera|COL}} [[Daniel Rivera]]",
+    "Carlos Pérez"       => "{{bandera|COL}} [[Carlos Mario Pérez|Carlos Pérez]]",
+    "Jean Pestaña"       => "{{bandera|COL}} [[Jean Carlos Pestaña]]",
+    "Yeison Suárez"      => "{{bandera|COL}} [[Yeison Suárez]]",
+    "Jhon Navia"         => "{{bandera|COL}} [[Jhon Navia]]",
+    "Lucas Monzón"       => "{{bandera|URU}} [[Lucas Monzón]]",
+    "Jhomier Guerrero"   => "{{bandera|COL}} [[Jhomier Guerrero]]",
+    "Jermein Peña"       => "{{bandera|COL}} [[Jermein Peña]]",
+
+    // MEDIOCAMPISTAS
+    "Dilan Villarreal"   => "{{bandera|COL}} [[Dilan Villarreal]]",
+    "Yimmi Chará"        => "{{bandera|COL}} [[Yimmi Chará]] {{cap}}",
+    "Juan David Ríos"    => "{{bandera|COL}} [[Juan David Ríos]]",
+    "Kevin Pérez"        => "{{bandera|COL}} [[Kevin Pérez]]",
+    "Jannenson Sarmiento"=> "{{bandera|COL}} [[Jannenson Sarmiento]]",
+    "Jesús Rivas"        => "{{bandera|COL}} [[Jesús Rivas]]",
+    "Guillermo Celis"    => "{{bandera|COL}} [[Guillermo Celis]]",
+    "Fabián Ángel"       => "{{bandera|COL}} [[Fabián Ángel]]",
+
+    // DELANTEROS
+    "Guillermo Paiva"    => "{{bandera|PAR}} [[Guillermo Paiva]]",
+    "Luis Fernando Muriel"=> "{{bandera|COL}} [[Luis Fernando Muriel]]",
+    "Joel Canchimbo"     => "{{bandera|COL}} [[Joel Canchimbo]]",
+    "Teófilo Gutiérrez" => "{{bandera|COL}} [[Teófilo Gutiérrez]]",
+    "Cristian Barrios"   => "{{bandera|COL}} [[Cristian Darío Barrios|Cristian Barrios]]",
+    "Bryan Castrillón"   => "{{bandera|COL}} [[Bryan Castrillón]]",
+
+    // JUGADORES SIN REGISTRAR
+    "Jaime Acosta"       => "{{bandera|COL}} [[Jaime Acosta]]",
+    "Sebastián Araújo"   => "{{bandera|COL}} [[Sebastián Araújo]] {{lesionado}}",
+    "Yeferson Moreno"    => "{{bandera|COL}} [[Yeferson Moreno]]",
+    "Harold Rivera"      => "{{bandera|COL}} [[Harold Rivera]]",
+    "Stiwart Acuña"      => "{{bandera|COL}} [[Stiwart Acuña]]",
+    "Carlos Bacca"       => "{{bandera|COL}} [[Carlos Bacca]] {{lesionado}}",
+    "Jesús Díaz"         => "{{bandera|COL}} [[Jesús Manuel Díaz|Jesús Díaz]]",
+    "Déiber Caicedo"     => "{{bandera|COL}} [[Déiber Caicedo]] {{lesionado}}",
+],
+   
    // MILLONARIOS FC
 "Millonarios" => [
 
