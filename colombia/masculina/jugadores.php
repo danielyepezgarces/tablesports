@@ -160,6 +160,45 @@ $LinksPorEquipo = [
         "Emilio Aristizábal"=> "{{bandera|COL}} [[Emilio Aristizábal]]",
         "Jayder Asprilla"   => "{{bandera|COL}} [[Jayder Asprilla]]",
     ],
+   "Boyacá Chicó" => [
+
+    // PORTEROS
+    "Rogerio Caicedo"   => "{{bandera|COL}} [[Rogerio Caicedo]]",
+    "Brandonn Zapata"   => "{{bandera|COL}} [[Brandonn Stict Zapata Aponzá|Brandonn Zapata]]",
+    "Emiliano Denis"    => "{{bandera|URU}} [[Emiliano Denis|Darío Denis]]",
+
+    // DEFENSAS
+    "Anyelo Saldaña"    => "{{bandera|COL}} [[Anyelo Saldaña]]",
+    "Yaliston Martínez" => "{{bandera|COL}} [[Yaliston Martínez]]",
+    "Jaime Díaz"        => "{{bandera|COL}} [[Jaime Díaz Montes|Jaime Díaz]]",
+    "Arlen Banguero"    => "{{bandera|VEN}} [[Arlen Banguero]]",
+    "Juan Palma"        => "{{bandera|USA}} [[Juan Sebastian Palma|Juan Palma]]",
+    "Kevin Angulo"      => "{{bandera|PAR}} [[Kevin Angulo]]",
+    "Abdid Muñoz"       => "{{bandera|VEN}} [[Abdid Muñoz]]",
+    "Yael López"        => "{{bandera|CRC}} [[Yael López]]",
+
+    // MEDIOCAMPISTAS
+    "Camilo Quiceno"    => "{{bandera|COL}} [[Juan Camilo Quiceno|Camilo Quiceno]]",
+    "Jhonny Jordán"     => "{{bandera|COL}} [[Jhonny Jordán]]",
+    "Andrés Aedo"       => "{{bandera|?}} [[Andrés Aedo]]",
+    "Sebastián Salazar" => "{{bandera|COL}} [[Sebastián Salazar (futbolista)|Sebastián Salazar]]",
+    "Delio Ramírez"     => "{{bandera|?}} [[Delio Angel Ramírez|Delio Ramírez]]",
+    "Jeison Mena"       => "{{bandera|COL}} [[Jeison Mena Victoria|Jeison Mena]]",
+    "Nicolás Valencia"  => "{{bandera|?}} [[Nicolás Anelka Valencia|Nicolás Valencia]]",
+    "Kevin Londoño"     => "{{bandera|COL}} [[Kevin Andrey Londoño|Kevin Londoño]]",
+    "Juan Díaz"         => "{{bandera|COL}} [[Juan Carlos Díaz|Juan Díaz]]",
+    "Juan Marcelin"     => "{{bandera|?}} [[Juan Marcelin]]",
+    "Kevin Salazar"     => "{{bandera|?}} [[Kevin Salazar Ruiz|Kevin Salazar]]",
+    "Sebastián Ostos"   => "{{bandera|Boyacá}} [[Juan Sebastian Ostos|Sebastián Ostos]]",
+    "Eric Krame"        => "{{bandera|URU}} [[Eric Krame]]",
+
+    // DELANTEROS
+    "Ítalo Montaño"     => "{{bandera|?}} [[Ítalo Montaño]]",
+    "Jairo Molina"      => "{{bandera|COL}} [[Jairo Molina]]",
+    "Jacobo Pimentel"   => "{{bandera|Boyacá}} [[Jacobo Pimentel]]",
+    "Luis Segura"       => "{{bandera|COL}} [[Luis Carlos Segura|Luis Segura]]",
+],
+
 // CÚCUTA DEPORTIVO
 "Cúcuta Deportivo" => [
 
