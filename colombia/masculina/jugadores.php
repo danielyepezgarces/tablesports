@@ -360,7 +360,7 @@ $LinksPorEquipo = [
     "Franco Pulicastro"   => "{{bandera|ARG}} [[Franco Pulicastro]]",
 ],
 
-   "Independiente Santa Fe 2026-I" => [
+   "Independiente Santa Fe" => [
 
     // PORTEROS
     "Andrés Mosquera"    => "{{bandera|COL}} [[Andrés Mosquera Marmolejo|Andrés Mosquera]]",
