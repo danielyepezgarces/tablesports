@@ -359,6 +359,49 @@ $LinksPorEquipo = [
     "Teun Wilke"          => "{{bandera|MEX}} [[Teun Wilke]]",
     "Franco Pulicastro"   => "{{bandera|ARG}} [[Franco Pulicastro]]",
 ],
+
+   "Independiente Santa Fe 2026-I" => [
+
+    // PORTEROS
+    "Andrés Mosquera"    => "{{bandera|COL}} [[Andrés Mosquera Marmolejo|Andrés Mosquera]]",
+    "Weimar Asprilla"    => "{{bandera|COL}} [[Weimar Asprilla Mena|Weimar Asprilla]]",
+    "Ángel Álvarez"      => "{{bandera|COL}} [[Ángel David Álvarez|Ángel Álvarez]]",
+    "Jhoyler Andrades"   => "{{bandera|COL}} [[Jhoyler Andrades]]",
+    "Carlos Nemocón"     => "{{bandera|COL}} [[Carlos Nemocón]]",
+
+    // DEFENSAS
+    "Víctor Moreno"      => "{{bandera|COL}} [[Víctor Andrés Moreno Córdoba|Víctor Moreno]]",
+    "Helibelton Palacios"=> "{{bandera|COL}} [[Helibelton Palacios]]",
+    "Iván Scarpeta"      => "{{bandera|COL}} [[Iván Scarpeta]]",
+    "Emanuel Olivera"    => "{{bandera|ARG}} [[Emanuel Olivera]]",
+    "Jeison Angulo"      => "{{bandera|COL}} [[Jeison Angulo]]",
+    "Santiago Tamayo"    => "{{bandera|COL}} [[Santiago Tamayo Gómez|Santiago Tamayo]]",
+    "Yeicar Perlaza"     => "{{bandera|COL}} [[Yeicar Perlaza]]",
+    "Christian Mafla"    => "{{bandera|COL}} [[Christian Mafla]]",
+    "Jhon Rentería"      => "{{bandera|COL}} [[Jhon Rentería]]",
+    "Juan Quintero"      => "{{bandera|COL}} [[Juan Quintero Fletcher|Juan Quintero]]",
+
+    // CENTROCAMPISTAS
+    "Kilian Toscano"     => "{{bandera|COL}} [[Kilian Toscano]]",
+    "Jhojan Torres"      => "{{bandera|COL}} [[Jhojan Torres]]",
+    "Alexis Zapata"      => "{{bandera|COL}} [[Alexis Zapata]]",
+    "Luis Palacios"      => "{{bandera|COL}} [[Luis Ángel Palacios|Luis Palacios]]",
+    "Daniel Torres"      => "{{bandera|COL}} [[Daniel Alejandro Torres|Daniel Torres]] {{cap}}",
+    "Yílmar Velásquez"   => "{{bandera|COL}} [[Yílmar Velásquez]]",
+    "Ewil Murillo"       => "{{bandera|COL}} [[Ewil Murillo]]",
+
+    // DELANTEROS
+    "Omar Fernández"     => "{{bandera|Chile}} [[Omar Fernández Frasica|Omar Fernández]]",
+    "Franco Fagúndez"    => "{{bandera|URU}} [[Franco Fagúndez]]",
+    "Hugo Rodallega"     => "{{bandera|COL}} [[Hugo Rodallega]] {{cap}}",
+    "Nahuel Bustos"      => "{{bandera|ARG}} [[Nahuel Bustos]]",
+    "Edwin Mosquera"     => "{{bandera|COL}} [[Edwin Stiven Mosquera|Edwin Mosquera]]",
+    "Jorge Ramos"        => "{{bandera|COL}} [[Jorge Luis Ramos|Jorge Ramos]]",
+    "Marlon Balanta"     => "{{bandera|COL}} [[Marlon Balanta]]",
+    "Joshef Zea"         => "{{bandera|COL}} [[Joshef Zea]]",
+    "Martín Palacios"    => "{{bandera|COL}} [[Martín Palacios]]",
+],
+   
    // EQUIPO DESCONOCIDO
 "Inter Bogotá" => [
 
