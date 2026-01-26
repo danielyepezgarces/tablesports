@@ -1,6 +1,7 @@
 <?php
 
 $LinksPorEquipo = [
+   
    "Alianza" => [
     // PORTEROS
     "Johan Wallens" => "{{bandera|COL}} [[Johan Wallens]]",
@@ -475,6 +476,46 @@ $LinksPorEquipo = [
     "Richardson Rivas"    => "{{bandera|COL}} [[Richardson Rivas]]",
     "Teun Wilke"          => "{{bandera|MEX}} [[Teun Wilke]]",
     "Franco Pulicastro"   => "{{bandera|ARG}} [[Franco Pulicastro]]",
+],
+
+   "Independiente Medellín" => [
+    // ARQUEROS
+    "Salvador Ichazo" => "{{bandera|URU}} [[Salvador Ichazo]]",
+    "José Luis Chunga" => "{{bandera|COL}} [[José Luis Chunga]]",
+    "Eder Chaux" => "{{bandera|COL}} [[Eder Chaux]]",
+    "Iker Blanco" => "{{bandera|COL}} [[Iker Blanco]]",
+    "Yimmy Gómez" => "{{bandera|COL}} [[Yimmy Gómez]]",
+    
+    // DEFENSAS
+    "Leyser Chaverra" => "{{bandera|COL}} [[Leyser Chaverra]]",
+    "Kevin Mantilla" => "{{bandera|COL}} [[Kevin Mantilla]]",
+    "Juan Viveros" => "{{bandera|COL}} [[Juan Manuel Viveros|Juan Viveros]]",
+    "John Montaño" => "{{bandera|COL}} [[John Edwin Montaño|John Montaño]]",
+    "Daniel Londoño" => "{{bandera|COL}} [[Daniel Londoño]]",
+    "José Ortiz" => "{{bandera|COL}} [[José Ortiz Cortés|José Ortiz]]",
+    "Malcom Palacios" => "{{bandera|COL}} [[Malcom Palacios]]",
+    "Marlon Balanta" => "{{bandera|COL}} [[Marlon Andres Balanta|Marlon Balanta]]",
+    "Luis Escorcia" => "{{bandera|COL}} [[Luis Fernando Escorcia|Luis Escorcia]]",
+    
+    // MEDIOCAMPISTAS
+    "Didier Moreno" => "{{bandera|COL}} [[Didier Moreno]]",
+    "Léider Berrío" => "{{bandera|COL}} [[Léider Berrío]]",
+    "Alexis Serna" => "{{bandera|COL}} [[Alexis Serna]]",
+    "Daniel Cataño" => "{{bandera|COL}} [[Daniel Cataño]]",
+    "Francisco Chaverra" => "{{bandera|COL}} [[Francisco Chaverra]]",
+    "Baldomero Perlaza" => "{{bandera|COL}} [[Baldomero Perlaza]]",
+    "Luis Maturana" => "{{bandera|COL}} [[Luis Maturana]]",
+    "Halam Loboa" => "{{bandera|COL}} [[Halam Loboa]]",
+    "Gerónimo Mancilla" => "{{bandera|COL}} [[Gerónimo Mancilla]]",
+    "Esneyder Mena" => "{{bandera|COL}} [[Esneyder Mena]]",
+    "Diego Moreno" => "{{bandera|COL}} [[Diego Moreno Quintero|Diego Moreno]]",
+    
+    // DELANTEROS
+    "Enzo Larrosa" => "{{bandera|URU}} [[Enzo Larrosa]]",
+    "Yony González" => "{{bandera|COL}} [[Yony González]]",
+    "Francisco Fydriszewski" => "{{bandera|ARG}} [[Francisco Fydriszewski]]",
+    "Nezareth Segura" => "{{bandera|COL}} [[Nezareth Segura]]",
+    "Jáder Valencia" => "{{bandera|COL}} [[Jáder Valencia]]",
 ],
 
    "Independiente Santa Fe" => [
