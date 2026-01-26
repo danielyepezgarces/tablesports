@@ -544,7 +544,7 @@ $LinksPorEquipo = [
     // MEDIOCAMPISTAS
     "Dilan Villarreal"   => "{{bandera|COL}} [[Dilan Villarreal]]",
     "Yimmi Chará"        => "{{bandera|COL}} [[Yimmi Chará]] {{cap}}",
-    "Juan David Ríos"    => "{{bandera|COL}} [[Juan David Ríos]]",
+    "Juan Ríos"    => "{{bandera|COL}} [[Juan David Ríos]]",
     "Kevin Pérez"        => "{{bandera|COL}} [[Kevin Pérez]]",
     "Jannenson Sarmiento"=> "{{bandera|COL}} [[Jannenson Sarmiento]]",
     "Jesús Rivas"        => "{{bandera|COL}} [[Jesús Rivas]]",
