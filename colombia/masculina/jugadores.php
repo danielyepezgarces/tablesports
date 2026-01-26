@@ -773,6 +773,7 @@ $LinksPorEquipo = [
         "Manuel Barreiro"      => "{{bandera|COL}} [[Carlos Manuel Cortés Barreiro|Manuel Barreiro]]",
         "Jhonier Blanco"       => "{{bandera|COL}} [[Jhonier Blanco]]",
         "Érik Bodencer"        => "{{bandera|ARG}} [[Érik Bodencer]]",
+        "Carlos Cortés"        => "{{bandera|COL}} [[Carlos Cortés Barreiro|Carlos Cortés]]",
     ],
 
    // ONCE CALDAS
