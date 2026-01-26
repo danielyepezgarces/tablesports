@@ -28,6 +28,7 @@ $LinksPorEquipo = [
     "Luis Pérez" => "{{bandera|COL}} [[Luis Felipe Pérez|Luis Pérez]]",
     "Josy Pérez" => "{{bandera|COL}} [[Josy Pérez]]",
     "Yeiner Londoño" => "{{bandera|COL}} [[Yeiner Londoño]]",
+    "Jair Castillo" => "{{bandera|COL}} [[Jair Castillo]]",
     
     // DELANTEROS
     "Jesús Muñoz" => "{{bandera|COL}} [[Jesús Muñoz]]",
