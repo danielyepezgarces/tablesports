@@ -14,7 +14,7 @@ return [
     "Envigado" => "[[Envigado Fútbol Club|Envigado F. C.]]",
     "Fortaleza" => "[[Fortaleza Fútbol Club|Fortaleza]]",
     "Independiente Medellín" => "[[Deportivo Independiente Medellín|Independiente Medellín]]",
-    "Internacional de Bogota" => "[[Internacional de Bogotá]]",
+    "Inter Bogotá" => "[[Internacional de Bogotá]]",
     "Llaneros" => "[[Club Llaneros|Llaneros]]",
     "Millonarios" => "[[Millonarios Fútbol Club|Millonarios]]",
     "Once Caldas" => "[[Once Caldas]]",
