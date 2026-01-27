@@ -2,16 +2,20 @@
 $url = "https://www.winsports.co/api/rankings/player?tournamentId=5l22b8pqde1bdxk6377auk3ro&stat=Goles&competitionId=2ty8ihceabty8yddmu31iuuej";
 
 /* =============================
-   0. MAPA DE JUGADORES POR EQUIPO
+   0. MAPAS
    ============================= */
-$LinksPorEquipo = include 'jugadores.php';
-
+$LinksPorJugador = include 'jugadores.php';
+$LinksPorEquipo  = include 'equipos.php';
 
 /* =============================
-   FUNCIÓN DE REPLACE
+   FUNCIONES WIKI
    ============================= */
 function wikiJugador(string $equipo, string $jugador, array $mapa): string {
     return $mapa[$equipo][$jugador] ?? htmlspecialchars($jugador, ENT_QUOTES, 'UTF-8');
+}
+
+function wikiEquipo(string $equipo, array $mapa): string {
+    return $mapa[$equipo] ?? htmlspecialchars($equipo, ENT_QUOTES, 'UTF-8');
 }
 
 /* =============================
@@ -66,14 +70,14 @@ foreach ($top10 as $player) {
     $nombreJugador = $player['name'];
     $nombreEquipo  = $player['contestantName'];
 
-    $jugador = wikiJugador($nombreEquipo, $nombreJugador, $LinksPorEquipo);
-    $equipo  = htmlspecialchars($nombreEquipo, ENT_QUOTES, 'UTF-8');
+    $jugador = wikiJugador($nombreEquipo, $nombreJugador, $LinksPorJugador);
+    $equipo  = wikiEquipo($nombreEquipo, $LinksPorEquipo);
 
     $goles = (int)$player['value'];
     $pj    = (int)$player['appearances'];
 
     if ($pj > 0) {
-        $raw = $goles / $pj;
+        $raw   = $goles / $pj;
         $media = ($raw == floor($raw)) ? (int)$raw : number_format($raw, 2, '.', '');
     } else {
         $media = 0;
@@ -90,4 +94,3 @@ foreach ($top10 as $player) {
 
 echo '</table>';
 echo '<p style="text-align:center; font-size:80%">Fuente: Win Sports / Dimayor</p>';
-?>
