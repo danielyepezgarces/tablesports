@@ -2,15 +2,20 @@
 $url = "https://www.winsports.co/api/rankings/player?tournamentId=5l22b8pqde1bdxk6377auk3ro&stat=Tarjetas+Amarillas&competitionId=2ty8ihceabty8yddmu31iuuej";
 
 /* =============================
-   0. MAPA DE JUGADORES POR EQUIPO
+   0. MAPAS
    ============================= */
-$LinksPorEquipo = include 'jugadores.php';
+$LinksPorJugador = include 'jugadores.php';
+$LinksPorEquipo  = include 'equipos.php';
 
 /* =============================
-   FUNCIÓN DE REPLACE
+   FUNCIONES WIKI
    ============================= */
 function wikiJugador(string $equipo, string $jugador, array $mapa): string {
     return $mapa[$equipo][$jugador] ?? htmlspecialchars($jugador, ENT_QUOTES, 'UTF-8');
+}
+
+function wikiEquipo(string $equipo, array $mapa): string {
+    return $mapa[$equipo] ?? htmlspecialchars($equipo, ENT_QUOTES, 'UTF-8');
 }
 
 /* =============================
@@ -57,7 +62,7 @@ $top10 = array_slice($data, 0, 10);
    ============================= */
 echo '<table style="width:50%; margin:auto; border-collapse:collapse; font-size:90%">';
 echo '<tr style="background:#98A1B2; text-align:center">';
-echo '<th>Jugador</th><th>Equipo</th><th>Tarjetas recibidas</th><th>PJ</th>';
+echo '<th>Jugador</th><th>Equipo</th><th>Tarjetas amarillas</th><th>PJ</th>';
 echo '</tr>';
 
 foreach ($top10 as $player) {
@@ -65,27 +70,19 @@ foreach ($top10 as $player) {
     $nombreJugador = $player['name'];
     $nombreEquipo  = $player['contestantName'];
 
-    $jugador = wikiJugador($nombreEquipo, $nombreJugador, $LinksPorEquipo);
-    $equipo  = htmlspecialchars($nombreEquipo, ENT_QUOTES, 'UTF-8');
+    $jugador = wikiJugador($nombreEquipo, $nombreJugador, $LinksPorJugador);
+    $equipo  = wikiEquipo($nombreEquipo, $LinksPorEquipo);
 
-    $goles = (int)$player['value'];
-    $pj    = (int)$player['appearances'];
-
-    if ($pj > 0) {
-        $raw = $goles / $pj;
-        $media = ($raw == floor($raw)) ? (int)$raw : number_format($raw, 2, '.', '');
-    } else {
-        $media = 0;
-    }
+    $amarillas = (int)$player['value'];
+    $pj        = (int)$player['appearances'];
 
     echo '<tr style="background:#F5F5F5; text-align:center">';
     echo "<td>$jugador</td>";
     echo "<td>$equipo</td>";
-    echo "<td><strong>$goles</strong></td>";
+    echo "<td><strong>$amarillas</strong></td>";
     echo "<td>$pj</td>";
     echo '</tr>';
 }
 
 echo '</table>';
 echo '<p style="text-align:center; font-size:80%">Fuente: Win Sports / Dimayor</p>';
-?>
