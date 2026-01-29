@@ -153,6 +153,7 @@ $LinksPorEquipo = [
         "Luciano Pons"       => "{{bandera|ARG}} [[Luciano Pons]]",
         "Brandon Caicedo"    => "{{bandera|COL}} [[Brandon Caicedo]]",
         "Gleyfer Medina"     => "{{bandera|COL}} [[Gleyfer Medina]]",
+        "Emerson Batalla"    => "{{bandera|COL}} [[Emerson Batalla]]",
 
     ],
     // ATLÉTICO NACIONAL
