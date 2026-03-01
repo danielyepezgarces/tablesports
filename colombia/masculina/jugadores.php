@@ -674,7 +674,7 @@ $LinksPorEquipo = [
 
     // DELANTEROS
     "Guillermo Paiva"    => "{{bandera|PAR}} [[Guillermo Paiva]]",
-    "Luis Fernando Muriel"=> "{{bandera|COL}} [[Luis Fernando Muriel]]",
+    "Luis Muriel"=> "{{bandera|COL}} [[Luis Muriel]]",
     "Joel Canchimbo"     => "{{bandera|COL}} [[Joel Canchimbo]]",
     "Teófilo Gutiérrez" => "{{bandera|COL}} [[Teófilo Gutiérrez]]",
     "Cristian Barrios"   => "{{bandera|COL}} [[Cristian Darío Barrios|Cristian Barrios]]",
