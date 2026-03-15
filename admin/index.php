@@ -410,7 +410,7 @@ document.getElementById('stats').textContent =
                         <a href="index.php?action=edit&id=<?= (int)$row['id'] ?>"
                            class="btn btn-primary btn-sm">Editar</a>
                         <form method="post" action="index.php" style="display:inline"
-                              onsubmit="return confirm('¿Eliminar a <?= h(addslashes($row['nombre'])) ?>?')">
+                              onsubmit="return confirm(<?= json_encode('¿Eliminar a ' . $row['nombre'] . '?') ?>)">
                             <input type="hidden" name="action" value="delete">
                             <input type="hidden" name="id" value="<?= (int)$row['id'] ?>">
                             <input type="hidden" name="csrf_token" value="<?= h($token) ?>">
