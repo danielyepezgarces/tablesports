@@ -211,11 +211,12 @@ $LinksPorEquipo = [
     "Anyelo Saldaña"    => "{{bandera|COL}} [[Anyelo Saldaña]]",
     "Yaliston Martínez" => "{{bandera|COL}} [[Yaliston Martínez]]",
     "Jaime Díaz"        => "{{bandera|COL}} [[Jaime Díaz Montes|Jaime Díaz]]",
-    "Arlen Banguero"    => "{{bandera|VEN}} [[Arlen Banguero]]",
-    "Juan Palma"        => "{{bandera|USA}} [[Juan Sebastian Palma|Juan Palma]]",
-    "Kevin Angulo"      => "{{bandera|PAR}} [[Kevin Angulo]]",
-    "Abdid Muñoz"       => "{{bandera|VEN}} [[Abdid Muñoz]]",
-    "Yael López"        => "{{bandera|CRC}} [[Yael López]]",
+    "Arlen Banguero"    => "{{bandera|COL}} [[Arlen Banguero]]",
+    "Juan Palma"        => "{{bandera|COL}} [[Juan Sebastian Palma|Juan Palma]]",
+    "Kevin Angulo"      => "{{bandera|COL}} [[Kevin Angulo]]",
+    "Abdid Muñoz"       => "{{bandera|COL}} [[Abdid Muñoz]]",
+    "Yael López"        => "{{bandera|COL}} [[Yael López]]",
+    "Jesús Campo"       => "{{bandera|COL}} [[Jesús Campo]]",
 
     // MEDIOCAMPISTAS
     "Camilo Quiceno"    => "{{bandera|COL}} [[Juan Camilo Quiceno|Camilo Quiceno]]",
@@ -426,6 +427,7 @@ $LinksPorEquipo = [
     "Bryan Rovira"        => "{{bandera|CHL}} [[Bryan Rovira]]",
     "Luis Miguel Landázuri"=> "{{bandera|COL}} [[Luis Miguel Landázuri]]",
     "Juan Torres"           => "{{bandera|COL}} [[Juan Pablo Torres Patiño|Juan Torres]]",
+    "Elan Ricardo"          => "{{bandera|COL}} [[Elan Ricardo]]"    
 
     // DELANTEROS
     "Jersson González"    => "{{bandera|COL}} [[Jersson González Niño|Jersson González]]",
