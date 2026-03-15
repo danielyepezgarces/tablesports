@@ -1,755 +1,647 @@
 <?php
+/**
+ * jugadores.php
+ *
+ * Returns the player-to-wiki-link map as a nested PHP array:
+ *   [ "Equipo" => [ "Jugador" => "{{bandera|XX}} [[Link]]", ... ], ... ]
+ *
+ * Data is persisted in a SQLite3 database (data/jugadores.db).
+ * On the very first request the database is created and seeded
+ * from the embedded seed array below.
+ *
+ * The admin panel at /admin/ can be used to add, edit, or remove players
+ * without touching this file.
+ */
 
-$LinksPorEquipo = [
-   
-   "Alianza" => [
-    // PORTEROS
-    "Johan Wallens" => "{{bandera|COL}} [[Johan Wallens]]",
-    "Juan Chaverra" => "{{bandera|COL}} [[Juan Camilo Chaverra|Juan Chaverra]]",
-    "Antonio Simancas" => "{{bandera|COL}} [[Antonio Simancas]]",
-    
-    // DEFENSAS
-    "Kevin Moreno" => "{{bandera|COL}} [[Kevin Moreno]]",
-    "Kevin Aponzá" => "{{bandera|COL}} [[Kevin Aponzá]]",
-    "Pedro Franco" => "{{bandera|COL}} [[Pedro Camilo Franco|Pedro Franco]]",
-    "Yilson Rosales" => "{{bandera|COL}} [[Yilson Rosales]]",
-    "Juan Viveros" => "{{bandera|COL}} [[Juan José Viveros|Juan Viveros]]",
-    "Eduard Banguero" => "{{bandera|COL}} [[Eduard Banguero]]",
-    "Jesús Figueroa" => "{{bandera|COL}} [[Jesús Figueroa (futbolista)|Jesús Figueroa]]",
-    "Juan Arcila" => "{{bandera|COL}} [[Juan Pablo Arcila|Juan Arcila]]",
-    
-    // MEDIOCAMPISTAS
-    "Ever Meza" => "{{bandera|COL}} [[Ever Meza]]",
-    "Jair Castillo" => "{{bandera|COL}} [[Jair Castillo]]",
-    "Wiston Fernández" => "{{bandera|URU}} [[Wiston Fernández]]",
-    "Sergio Aponzá" => "{{bandera|COL}} [[Sergio Aponzá]]",
-    "Charly Villegas" => "{{bandera|COL}} [[Charly Villegas]]",
-    "Carlos Esparragoza" => "{{bandera|COL}} [[Carlos Esparragoza]]",
-    "Luis Pérez" => "{{bandera|COL}} [[Luis Felipe Pérez|Luis Pérez]]",
-    "Josy Pérez" => "{{bandera|COL}} [[Josy Pérez]]",
-    "Yeiner Londoño" => "{{bandera|COL}} [[Yeiner Londoño]]",
-    "Jhair Castillo" => "{{bandera|COL}} [[Jair Castillo]]",
-    
-    // DELANTEROS
-    "Jesús Muñoz" => "{{bandera|COL}} [[Jesús Muñoz]]",
-    "Cristian Vergara" => "{{bandera|COL}} [[Cristian Andrés Vergara|Cristian Vergara]]",
-    "Felipe Pardo" => "{{bandera|COL}} [[Felipe Pardo]]",
-    "Jeison Osorio" => "{{bandera|COL}} [[Jeison Osorio Cabrales|Jeison Osorio]]",
-    "Carlos Lucumí" => "{{bandera|COL}} [[Carlos Lucumí]]",
-    "Jhon Valoyes" => "{{bandera|COL}} [[Jhon Valoyes]]",
-    "Sebastián Ramírez" => "{{bandera|COL}} [[Juan Sebastian Ramírez|Sebastián Ramírez]]",
-    "Francesco Fiorelli" => "{{bandera|URU}} [[Francesco Fiorelli]]",
-],
+define('JUGADORES_DB_PATH', __DIR__ . '/../../data/jugadores.db');
 
-   "Águilas Doradas" => [
+/* ─────────────────────────────────────────────
+   Database bootstrap
+   ───────────────────────────────────────────── */
 
-    // PORTEROS
-    "Iván Arboleda"      => "{{bandera|COL}} [[Iván Arboleda]]",
-    "Andrés Salazar"     => "{{bandera|HON}} [[Andrés Felipe Salazar|Andrés Salazar]]",
+function jugadores_open_db(): SQLite3 {
+    $dir = dirname(JUGADORES_DB_PATH);
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
+    $db = new SQLite3(JUGADORES_DB_PATH);
+    $db->enableExceptions(true);
+    $db->exec("CREATE TABLE IF NOT EXISTS jugadores (
+        id        INTEGER PRIMARY KEY AUTOINCREMENT,
+        equipo    TEXT NOT NULL,
+        nombre    TEXT NOT NULL,
+        wiki_link TEXT NOT NULL,
+        UNIQUE(equipo, nombre)
+    )");
+    return $db;
+}
 
-    // DEFENSAS
-    "John García"        => "{{bandera|COL}} [[John Edison García|John García]]",
-    "Mateo Puerta"       => "{{bandera|COL}} [[Mateo Puerta]]",
-    "Diego Hernández"    => "{{bandera|COL}} [[Diego Armando Hernández|Diego Hernández]]",
-    "Andrés Álvarez"     => "{{bandera|COL}} [[Andrés Felipe Álvarez|Andrés Álvarez]]",
-    "Dylan Lozano"       => "{{bandera|COL}} [[Dylan Lozano]]",
-    "Hernán Lopes"       => "{{bandera|ARG}} [[Hernán Lopes]]",
-    "Nicolás Lara"       => "{{bandera|COL}} [[Nicolás Lara]]",
-    "Javier Mena"        => "{{bandera|COL}} [[Javier Alexander Mena|Javier Mena]] {{canterano}}",
-    "Juan José Aguilar"  => "{{bandera|COL}} [[Juan José Aguilar]]",
-    "Joaquín Varela"     => "{{bandera|COL}} [[Joaquín Varela]]",
-    "Alberto Higgins"    => "{{bandera|COL}} [[Alberto Higgins]]",
+function jugadores_seed(SQLite3 $db): void {
+    $count = (int)$db->querySingle("SELECT COUNT(*) FROM jugadores");
+    if ($count > 0) {
+        return;
+    }
 
-    // CENTROCAMPISTAS
-    "Andrés Ricaurte"    => "{{bandera|COL}} [[Andrés Ricaurte]]",
-    "Bryan Urueña"       => "{{bandera|COL}} [[Bryan Urueña]]",
-    "Fabián Charales"    => "{{bandera|COL}} [[Fabián Charales]]",
-    "Jean Pineda"        => "{{bandera|COL}} [[Jean Pineda]]",
-    "Carlos Londoño"     => "{{bandera|COL}} [[Carlos Felipe Londoño Giraldo|Carlos Londoño]] {{canterano}}",
-    "Frank Lozano"       => "{{bandera|COL}} [[Frank Lozano]]",
-    "Juan Esteban Ávalo" => "{{bandera|COL}} [[Juan Esteban Ávalo]] {{canterano}}",
-    "Juan Camilo Roa"    => "{{bandera|COL}} [[Juan Camilo Roa]]",
-    "Cristian Caicedo"   => "{{bandera|COL}} [[Cristian David Caicedo Castillo|Cristian Caicedo]]",
+    $seed = jugadores_seed_data();
+    $stmt = $db->prepare(
+        "INSERT OR IGNORE INTO jugadores (equipo, nombre, wiki_link) VALUES (?, ?, ?)"
+    );
+    $db->exec('BEGIN');
+    foreach ($seed as $equipo => $players) {
+        foreach ($players as $nombre => $wiki) {
+            $stmt->bindValue(1, $equipo, SQLITE3_TEXT);
+            $stmt->bindValue(2, $nombre, SQLITE3_TEXT);
+            $stmt->bindValue(3, $wiki,   SQLITE3_TEXT);
+            $stmt->execute();
+        }
+    }
+    $db->exec('COMMIT');
+}
 
-    // DELANTEROS
-    "Jorge Rivaldo"      => "{{bandera|COL}} [[Jorge Rivaldo]]",
-    "Cristian Cañozales" => "{{bandera|COL}} [[Cristian Cañozales]]",
-    "Royner Benítez"    => "{{bandera|COL}} [[Royner Benítez]] {{canterano}}",
-    "Jorge Obregón"      => "{{bandera|COL}} [[Jorge Obregón]]",
-],
+function jugadores_load(SQLite3 $db): array {
+    $res = $db->query(
+        "SELECT equipo, nombre, wiki_link FROM jugadores ORDER BY equipo, id"
+    );
+    $map = [];
+    while ($row = $res->fetchArray(SQLITE3_ASSOC)) {
+        $map[$row['equipo']][$row['nombre']] = $row['wiki_link'];
+    }
+    return $map;
+}
 
-   
-    // AMÉRICA DE CALI
+/* ─────────────────────────────────────────────
+   Seed data (original player list)
+   ───────────────────────────────────────────── */
+
+function jugadores_seed_data(): array {
+    return [
+
+    // ── ALIANZA ──────────────────────────────────────────────
+    "Alianza" => [
+        "Johan Wallens"      => "{{bandera|COL}} [[Johan Wallens]]",
+        "Juan Chaverra"      => "{{bandera|COL}} [[Juan Camilo Chaverra|Juan Chaverra]]",
+        "Antonio Simancas"   => "{{bandera|COL}} [[Antonio Simancas]]",
+        "Kevin Moreno"       => "{{bandera|COL}} [[Kevin Moreno]]",
+        "Kevin Aponzá"       => "{{bandera|COL}} [[Kevin Aponzá]]",
+        "Pedro Franco"       => "{{bandera|COL}} [[Pedro Camilo Franco|Pedro Franco]]",
+        "Yilson Rosales"     => "{{bandera|COL}} [[Yilson Rosales]]",
+        "Juan Viveros"       => "{{bandera|COL}} [[Juan José Viveros|Juan Viveros]]",
+        "Eduard Banguero"    => "{{bandera|COL}} [[Eduard Banguero]]",
+        "Jesús Figueroa"     => "{{bandera|COL}} [[Jesús Figueroa (futbolista)|Jesús Figueroa]]",
+        "Juan Arcila"        => "{{bandera|COL}} [[Juan Pablo Arcila|Juan Arcila]]",
+        "Ever Meza"          => "{{bandera|COL}} [[Ever Meza]]",
+        "Jair Castillo"      => "{{bandera|COL}} [[Jair Castillo]]",
+        "Wiston Fernández"   => "{{bandera|URU}} [[Wiston Fernández]]",
+        "Sergio Aponzá"      => "{{bandera|COL}} [[Sergio Aponzá]]",
+        "Charly Villegas"    => "{{bandera|COL}} [[Charly Villegas]]",
+        "Carlos Esparragoza" => "{{bandera|COL}} [[Carlos Esparragoza]]",
+        "Luis Pérez"         => "{{bandera|COL}} [[Luis Felipe Pérez|Luis Pérez]]",
+        "Josy Pérez"         => "{{bandera|COL}} [[Josy Pérez]]",
+        "Yeiner Londoño"     => "{{bandera|COL}} [[Yeiner Londoño]]",
+        "Jhair Castillo"     => "{{bandera|COL}} [[Jair Castillo]]",
+        "Jesús Muñoz"        => "{{bandera|COL}} [[Jesús Muñoz]]",
+        "Cristian Vergara"   => "{{bandera|COL}} [[Cristian Andrés Vergara|Cristian Vergara]]",
+        "Felipe Pardo"       => "{{bandera|COL}} [[Felipe Pardo]]",
+        "Jeison Osorio"      => "{{bandera|COL}} [[Jeison Osorio Cabrales|Jeison Osorio]]",
+        "Carlos Lucumí"      => "{{bandera|COL}} [[Carlos Lucumí]]",
+        "Jhon Valoyes"       => "{{bandera|COL}} [[Jhon Valoyes]]",
+        "Sebastián Ramírez"  => "{{bandera|COL}} [[Juan Sebastian Ramírez|Sebastián Ramírez]]",
+        "Francesco Fiorelli" => "{{bandera|URU}} [[Francesco Fiorelli]]",
+    ],
+
+    // ── ÁGUILAS DORADAS ──────────────────────────────────────
+    "Águilas Doradas" => [
+        "Iván Arboleda"       => "{{bandera|COL}} [[Iván Arboleda]]",
+        "Andrés Salazar"      => "{{bandera|HON}} [[Andrés Felipe Salazar|Andrés Salazar]]",
+        "John García"         => "{{bandera|COL}} [[John Edison García|John García]]",
+        "Mateo Puerta"        => "{{bandera|COL}} [[Mateo Puerta]]",
+        "Diego Hernández"     => "{{bandera|COL}} [[Diego Armando Hernández|Diego Hernández]]",
+        "Andrés Álvarez"      => "{{bandera|COL}} [[Andrés Felipe Álvarez|Andrés Álvarez]]",
+        "Dylan Lozano"        => "{{bandera|COL}} [[Dylan Lozano]]",
+        "Hernán Lopes"        => "{{bandera|ARG}} [[Hernán Lopes]]",
+        "Nicolás Lara"        => "{{bandera|COL}} [[Nicolás Lara]]",
+        "Javier Mena"         => "{{bandera|COL}} [[Javier Alexander Mena|Javier Mena]] {{canterano}}",
+        "Juan José Aguilar"   => "{{bandera|COL}} [[Juan José Aguilar]]",
+        "Joaquín Varela"      => "{{bandera|COL}} [[Joaquín Varela]]",
+        "Alberto Higgins"     => "{{bandera|COL}} [[Alberto Higgins]]",
+        "Andrés Ricaurte"     => "{{bandera|COL}} [[Andrés Ricaurte]]",
+        "Bryan Urueña"        => "{{bandera|COL}} [[Bryan Urueña]]",
+        "Fabián Charales"     => "{{bandera|COL}} [[Fabián Charales]]",
+        "Jean Pineda"         => "{{bandera|COL}} [[Jean Pineda]]",
+        "Carlos Londoño"      => "{{bandera|COL}} [[Carlos Felipe Londoño Giraldo|Carlos Londoño]] {{canterano}}",
+        "Frank Lozano"        => "{{bandera|COL}} [[Frank Lozano]]",
+        "Juan Esteban Ávalo"  => "{{bandera|COL}} [[Juan Esteban Ávalo]] {{canterano}}",
+        "Juan Camilo Roa"     => "{{bandera|COL}} [[Juan Camilo Roa]]",
+        "Cristian Caicedo"    => "{{bandera|COL}} [[Cristian David Caicedo Castillo|Cristian Caicedo]]",
+        "Jorge Rivaldo"       => "{{bandera|COL}} [[Jorge Rivaldo]]",
+        "Cristian Cañozales"  => "{{bandera|COL}} [[Cristian Cañozales]]",
+        "Royner Benítez"      => "{{bandera|COL}} [[Royner Benítez]] {{canterano}}",
+        "Jorge Obregón"       => "{{bandera|COL}} [[Jorge Obregón]]",
+    ],
+
+    // ── AMÉRICA DE CALI ──────────────────────────────────────
     "América de Cali" => [
-
-        // PORTEROS
-        "Jean Fernandes"        => "{{bandera|BRA}} [[Jean Paulo Fernandes Filho|Jean Fernandes]]",
-        "Jorge Soto"            => "{{bandera|COL}} [[Jorge Iván Soto|Jorge Soto]]",
-        "Alexis Sinisterra"     => "{{bandera|COL}} [[Alexis Sinisterra]]",
-
-        // DEFENSAS
-        "Jhon Palacios"         => "{{bandera|COL}} [[Jhon Alexander Palacios Santos|Jhon Palacios]]",
-        "Marlon Torres"         => "{{bandera|COL}} [[Marlon Torres]]",
-        "Dany Rosero"           => "{{bandera|COL}} [[Dany Rosero]]",
-        "Andrés Mosquera"       => "{{bandera|COL}} [[Andrés Mosquera Guardia|Andrés Mosquera]]",
-        "Mateo Castillo"        => "{{bandera|COL}} [[Mateo Castillo]]",
-        "Marcos Mina"           => "{{bandera|COL}} [[Marcos Mina]]",
-        "Brayan Correa"         => "{{bandera|COL}} [[Brayan Correa (futbolista)|Brayan Correa]]",
-        "Nicolás Hernández"     => "{{bandera|COL}} [[Nicolás Hernández Rodríguez|Nicolás Hernández]]",
-        "Ómar Bertel"           => "{{bandera|COL}} [[Ómar Bertel]]",
-
-        // CENTROCAMPISTAS
-        "Josen Escobar"         => "{{bandera|COL}} [[Josen Escobar]]",
-        "Dylan Borrero"         => "{{bandera|COL}} [[Dylan Borrero]]",
-        "Yeison Guzmán"         => "{{bandera|COL}} [[Yeison Guzmán]]",
-        "Darwin Machís"         => "{{bandera|VEN}} [[Darwin Machís]]",
-        "Rafael Carrascal"      => "{{bandera|COL}} [[Rafael Carrascal]]",
-        "Jan Lucumí"            => "{{bandera|COL}} [[Jan Lucumí]]",
-        "Carlos Sierra"         => "{{bandera|COL}} [[Carlos José Sierra|Carlos Sierra]]",
-        "Joel Romero"           => "{{bandera|COL}} [[Joel Romero]]",
-        "José Cavadía"          => "{{bandera|COL}} [[José Cavadía]]",
-        "Jhon Murillo"          => "{{bandera|VEN}} [[Jhon Murillo]]",
-
-        // DELANTEROS
-        "Yojan Garcés"          => "{{bandera|COL}} [[Yojan Garcés]]",
-        "Jhon Tilman Palacios"  => "{{bandera|COL}} [[Jhon Tilman Palacios]]",
-        "Adrián Ramos"          => "{{bandera|COL}} [[Adrián Ramos]]",
-        "Kevin Angulo"          => "{{bandera|COL}} [[Kevin Angulo]]",
-        "Rodrigo Holgado"       => "{{bandera|MYS}} [[Rodrigo Holgado]]",
-
+        "Jean Fernandes"       => "{{bandera|BRA}} [[Jean Paulo Fernandes Filho|Jean Fernandes]]",
+        "Jorge Soto"           => "{{bandera|COL}} [[Jorge Iván Soto|Jorge Soto]]",
+        "Alexis Sinisterra"    => "{{bandera|COL}} [[Alexis Sinisterra]]",
+        "Jhon Palacios"        => "{{bandera|COL}} [[Jhon Alexander Palacios Santos|Jhon Palacios]]",
+        "Marlon Torres"        => "{{bandera|COL}} [[Marlon Torres]]",
+        "Dany Rosero"          => "{{bandera|COL}} [[Dany Rosero]]",
+        "Andrés Mosquera"      => "{{bandera|COL}} [[Andrés Mosquera Guardia|Andrés Mosquera]]",
+        "Mateo Castillo"       => "{{bandera|COL}} [[Mateo Castillo]]",
+        "Marcos Mina"          => "{{bandera|COL}} [[Marcos Mina]]",
+        "Brayan Correa"        => "{{bandera|COL}} [[Brayan Correa (futbolista)|Brayan Correa]]",
+        "Nicolás Hernández"    => "{{bandera|COL}} [[Nicolás Hernández Rodríguez|Nicolás Hernández]]",
+        "Ómar Bertel"          => "{{bandera|COL}} [[Ómar Bertel]]",
+        "Josen Escobar"        => "{{bandera|COL}} [[Josen Escobar]]",
+        "Dylan Borrero"        => "{{bandera|COL}} [[Dylan Borrero]]",
+        "Yeison Guzmán"        => "{{bandera|COL}} [[Yeison Guzmán]]",
+        "Darwin Machís"        => "{{bandera|VEN}} [[Darwin Machís]]",
+        "Rafael Carrascal"     => "{{bandera|COL}} [[Rafael Carrascal]]",
+        "Jan Lucumí"           => "{{bandera|COL}} [[Jan Lucumí]]",
+        "Carlos Sierra"        => "{{bandera|COL}} [[Carlos José Sierra|Carlos Sierra]]",
+        "Joel Romero"          => "{{bandera|COL}} [[Joel Romero]]",
+        "José Cavadía"         => "{{bandera|COL}} [[José Cavadía]]",
+        "Jhon Murillo"         => "{{bandera|VEN}} [[Jhon Murillo]]",
+        "Yojan Garcés"         => "{{bandera|COL}} [[Yojan Garcés]]",
+        "Jhon Tilman Palacios" => "{{bandera|COL}} [[Jhon Tilman Palacios]]",
+        "Adrián Ramos"         => "{{bandera|COL}} [[Adrián Ramos]]",
+        "Kevin Angulo"         => "{{bandera|COL}} [[Kevin Angulo]]",
+        "Rodrigo Holgado"      => "{{bandera|MYS}} [[Rodrigo Holgado]]",
     ],
-    // ATLÉTICO BUCARAMANGA
+
+    // ── ATLÉTICO BUCARAMANGA ─────────────────────────────────
     "Atlético Bucaramanga" => [
-
-        // PORTEROS
-        "Aldair Quintana"     => "{{bandera|COL}} [[Aldair Quintana]]",
-        "Luis Vásquez"       => "{{bandera|COL}} [[Luis Erney Vásquez|Luis Vásquez]]",
-
-        // DEFENSAS
-        "Jefferson Mena"     => "{{bandera|COL}} [[Jefferson Mena]]",
-        "Martín Rea"         => "{{bandera|URU}} [[Martín Rea]]",
-        "José García"        => "{{bandera|COL}} [[José García Aragón|José García]]",
-        "Fredy Hinestroza"   => "{{bandera|COL}} [[Fredy Hinestroza]]",
-        "Israel Alba"        => "{{bandera|COL}} [[Israel Alba]]",
-        "Aldair Gutiérrez"   => "{{bandera|COL}} [[Aldair Gutiérrez]]",
-        "Carlos Romaña"      => "{{bandera|COL}} [[Carlos Romaña]]",
-        "Carlos de las Salas"=> "{{bandera|COL}} [[Carlos de las Salas]]",
-
-        // MEDIOCAMPISTAS
-        "Gustavo Charrupí"   => "{{bandera|COL}} [[Gustavo Charrupí]]",
-        "Kevin Londoño"      => "{{bandera|COL}} [[Kevin Londoño]]",
-        "Fabián Sambueza"    => "{{bandera|ARG}} [[Fabián Sambueza]]",
-        "Juan Camilo Mosquera"=> "{{bandera|COL}} [[Juan Camilo Mosquera]]",
-        "Aldair Zárate"      => "{{bandera|COL}} [[Aldair Zárate]]",
-        "Félix Charrupí"     => "{{bandera|COL}} [[Félix Charrupí]]",
-        "Fabry Castro"       => "{{bandera|COL}} [[Fabry Castro]]",
-        "Leonardo Flores"    => "{{bandera|VEN}} [[Leonardo Flores (futbolista venezolano)|Leonardo Flores]]",
-        "Felix Charrupí"    => "{{bandera|COL}} [[Félix Charrupí]]",
-
-
-        // DELANTEROS
-        "Faber Gil"          => "{{bandera|COL}} [[Faber Gil]]",
-        "Jhon Fredy Salazar" => "{{bandera|COL}} [[Jhon Fredy Salazar]]",
-        "Luciano Pons"       => "{{bandera|ARG}} [[Luciano Pons]]",
-        "Brandon Caicedo"    => "{{bandera|COL}} [[Brandon Caicedo]]",
-        "Gleyfer Medina"     => "{{bandera|COL}} [[Gleyfer Medina]]",
-        "Emerson Batalla"    => "{{bandera|COL}} [[Emerson Batalla]]",
-
+        "Aldair Quintana"      => "{{bandera|COL}} [[Aldair Quintana]]",
+        "Luis Vásquez"         => "{{bandera|COL}} [[Luis Erney Vásquez|Luis Vásquez]]",
+        "Jefferson Mena"       => "{{bandera|COL}} [[Jefferson Mena]]",
+        "Martín Rea"           => "{{bandera|URU}} [[Martín Rea]]",
+        "José García"          => "{{bandera|COL}} [[José García Aragón|José García]]",
+        "Fredy Hinestroza"     => "{{bandera|COL}} [[Fredy Hinestroza]]",
+        "Israel Alba"          => "{{bandera|COL}} [[Israel Alba]]",
+        "Aldair Gutiérrez"     => "{{bandera|COL}} [[Aldair Gutiérrez]]",
+        "Carlos Romaña"        => "{{bandera|COL}} [[Carlos Romaña]]",
+        "Carlos de las Salas"  => "{{bandera|COL}} [[Carlos de las Salas]]",
+        "Gustavo Charrupí"     => "{{bandera|COL}} [[Gustavo Charrupí]]",
+        "Kevin Londoño"        => "{{bandera|COL}} [[Kevin Londoño]]",
+        "Fabián Sambueza"      => "{{bandera|ARG}} [[Fabián Sambueza]]",
+        "Juan Camilo Mosquera" => "{{bandera|COL}} [[Juan Camilo Mosquera]]",
+        "Aldair Zárate"        => "{{bandera|COL}} [[Aldair Zárate]]",
+        "Félix Charrupí"       => "{{bandera|COL}} [[Félix Charrupí]]",
+        "Fabry Castro"         => "{{bandera|COL}} [[Fabry Castro]]",
+        "Leonardo Flores"      => "{{bandera|VEN}} [[Leonardo Flores (futbolista venezolano)|Leonardo Flores]]",
+        "Faber Gil"            => "{{bandera|COL}} [[Faber Gil]]",
+        "Jhon Fredy Salazar"   => "{{bandera|COL}} [[Jhon Fredy Salazar]]",
+        "Luciano Pons"         => "{{bandera|ARG}} [[Luciano Pons]]",
+        "Brandon Caicedo"      => "{{bandera|COL}} [[Brandon Caicedo]]",
+        "Gleyfer Medina"       => "{{bandera|COL}} [[Gleyfer Medina]]",
+        "Emerson Batalla"      => "{{bandera|COL}} [[Emerson Batalla]]",
     ],
-    // ATLÉTICO NACIONAL
+
+    // ── ATLÉTICO NACIONAL ────────────────────────────────────
     "Atlético Nacional" => [
-
-        // PORTEROS
-        "David Ospina"      => "{{bandera|COL}} [[David Ospina]]",
-        "Harlen Castillo"   => "{{bandera|COL}} [[Harlen Castillo]]",
-        "Luis Marquinez"    => "{{bandera|COL}} [[Luis Marquinez]]",
-        "Mateo Valencia"    => "{{bandera|COL}} [[Mateo Valencia]]",
-        "Kevin Cataño"      => "{{bandera|COL}} [[Kevin Cataño Jiménez|Kevin Cataño]]",
-
-        // DEFENSAS
-        "César Haydar"      => "{{bandera|COL}} [[César Haydar]]",
-        "Andrés Román"      => "{{bandera|COL}} [[Andrés Román]]",
-        "William Tesillo"   => "{{bandera|COL}} [[William Tesillo]]",
-        "Andrés Salazar"    => "{{bandera|COL}} [[Andrés Salazar Osorio|Andrés Salazar]]",
-        "Juan José Arias"   => "{{bandera|COL}} [[Juan José Arias]]",
-        "Simón García"      => "{{bandera|COL}} [[Simón García Valero|Simón García]]",
-        "Royer Caicedo"     => "{{bandera|COL}} [[Royer Caicedo]]",
-        "Cristian Uribe"    => "{{bandera|COL}} [[Cristian Uribe Uribe|Cristian Uribe]]",
-        "Samuel Velásquez"  => "{{bandera|COL}} [[Samuel Velásquez]]",
-        "Milton Casco"      => "{{bandera|ARG}} [[Milton Casco]]",
-
-        // CENTROCAMPISTAS
-        "Mateus Uribe"      => "{{bandera|COL}} [[Mateus Uribe]]",
-        "Edwin Cardona"     => "{{bandera|COL}} [[Edwin Cardona]]",
-        "Jorman Campuzano"  => "{{bandera|COL}} [[Jorman Campuzano]]",
-        "Elkin Rivero"      => "{{bandera|COL}} [[Elkin Rivero]]",
-        "Juan Bauza"        => "{{bandera|ARG}} [[Juan Bauza]]",
-        "Luis Landázuri"    => "{{bandera|COL}} [[Luis Miguel Landázuri|Luis Landázuri]]",
-        "Juan Rengifo"      => "{{bandera|COL}} [[Juan Manuel Rengifo|Juan Rengifo]]",
-        "Juan Zapata"       => "{{bandera|COL}} [[Juan Zapata Zumaque|Juan Zapata]]",
-
-        // DELANTEROS
-        "Marlos Moreno"     => "{{bandera|COL}} [[Marlos Moreno]]",
-        "Alfredo Morelos"   => "{{bandera|COL}} [[Alfredo Morelos]]",
-        "Marino Hinestroza" => "{{bandera|COL}} [[Marino Hinestroza]]",
-        "Dairon Asprilla"   => "{{bandera|COL}} [[Dairon Asprilla]]",
-        "Andrés Sarmiento"  => "{{bandera|COL}} [[Andrés de Jesús Sarmiento|Andrés Sarmiento]]",
-        "Juan Rosa"         => "{{bandera|COL}} [[Juan José Rosa|Juan Rosa]]",
-        "Nico Rodríguez"    => "{{bandera|COL}} [[Nico Rodríguez]]",
-        "Eduard Bello"      => "{{bandera|VEN}} [[Eduard Bello]]",
-        "Emilio Aristizábal"=> "{{bandera|COL}} [[Emilio Aristizábal]]",
-        "Jayder Asprilla"   => "{{bandera|COL}} [[Jayder Asprilla]]",
+        "David Ospina"         => "{{bandera|COL}} [[David Ospina]]",
+        "Harlen Castillo"      => "{{bandera|COL}} [[Harlen Castillo]]",
+        "Luis Marquinez"       => "{{bandera|COL}} [[Luis Marquinez]]",
+        "Mateo Valencia"       => "{{bandera|COL}} [[Mateo Valencia]]",
+        "Kevin Cataño"         => "{{bandera|COL}} [[Kevin Cataño Jiménez|Kevin Cataño]]",
+        "César Haydar"         => "{{bandera|COL}} [[César Haydar]]",
+        "Andrés Román"         => "{{bandera|COL}} [[Andrés Román]]",
+        "William Tesillo"      => "{{bandera|COL}} [[William Tesillo]]",
+        "Andrés Salazar"       => "{{bandera|COL}} [[Andrés Salazar Osorio|Andrés Salazar]]",
+        "Juan José Arias"      => "{{bandera|COL}} [[Juan José Arias]]",
+        "Simón García"         => "{{bandera|COL}} [[Simón García Valero|Simón García]]",
+        "Royer Caicedo"        => "{{bandera|COL}} [[Royer Caicedo]]",
+        "Cristian Uribe"       => "{{bandera|COL}} [[Cristian Uribe Uribe|Cristian Uribe]]",
+        "Samuel Velásquez"     => "{{bandera|COL}} [[Samuel Velásquez]]",
+        "Milton Casco"         => "{{bandera|ARG}} [[Milton Casco]]",
+        "Mateus Uribe"         => "{{bandera|COL}} [[Mateus Uribe]]",
+        "Edwin Cardona"        => "{{bandera|COL}} [[Edwin Cardona]]",
+        "Jorman Campuzano"     => "{{bandera|COL}} [[Jorman Campuzano]]",
+        "Elkin Rivero"         => "{{bandera|COL}} [[Elkin Rivero]]",
+        "Juan Bauza"           => "{{bandera|ARG}} [[Juan Bauza]]",
+        "Luis Landázuri"       => "{{bandera|COL}} [[Luis Miguel Landázuri|Luis Landázuri]]",
+        "Juan Rengifo"         => "{{bandera|COL}} [[Juan Manuel Rengifo|Juan Rengifo]]",
+        "Juan Zapata"          => "{{bandera|COL}} [[Juan Zapata Zumaque|Juan Zapata]]",
+        "Marlos Moreno"        => "{{bandera|COL}} [[Marlos Moreno]]",
+        "Alfredo Morelos"      => "{{bandera|COL}} [[Alfredo Morelos]]",
+        "Marino Hinestroza"    => "{{bandera|COL}} [[Marino Hinestroza]]",
+        "Dairon Asprilla"      => "{{bandera|COL}} [[Dairon Asprilla]]",
+        "Andrés Sarmiento"     => "{{bandera|COL}} [[Andrés de Jesús Sarmiento|Andrés Sarmiento]]",
+        "Juan Rosa"            => "{{bandera|COL}} [[Juan José Rosa|Juan Rosa]]",
+        "Nico Rodríguez"       => "{{bandera|COL}} [[Nico Rodríguez]]",
+        "Eduard Bello"         => "{{bandera|VEN}} [[Eduard Bello]]",
+        "Emilio Aristizábal"   => "{{bandera|COL}} [[Emilio Aristizábal]]",
+        "Jayder Asprilla"      => "{{bandera|COL}} [[Jayder Asprilla]]",
     ],
-   "Boyacá Chicó" => [
 
-    // PORTEROS
-    "Rogerio Caicedo"   => "{{bandera|COL}} [[Rogerio Caicedo]]",
-    "Brandonn Zapata"   => "{{bandera|COL}} [[Brandonn Stict Zapata Aponzá|Brandonn Zapata]]",
-    "Emiliano Denis"    => "{{bandera|URU}} [[Emiliano Denis|Darío Denis]]",
+    // ── BOYACÁ CHICÓ ─────────────────────────────────────────
+    "Boyacá Chicó" => [
+        "Rogerio Caicedo"    => "{{bandera|COL}} [[Rogerio Caicedo]]",
+        "Brandonn Zapata"    => "{{bandera|COL}} [[Brandonn Stict Zapata Aponzá|Brandonn Zapata]]",
+        "Emiliano Denis"     => "{{bandera|URU}} [[Emiliano Denis|Darío Denis]]",
+        "Anyelo Saldaña"     => "{{bandera|COL}} [[Anyelo Saldaña]]",
+        "Yaliston Martínez"  => "{{bandera|COL}} [[Yaliston Martínez]]",
+        "Jaime Díaz"         => "{{bandera|COL}} [[Jaime Díaz Montes|Jaime Díaz]]",
+        "Arlen Banguero"     => "{{bandera|COL}} [[Arlen Banguero]]",
+        "Juan Palma"         => "{{bandera|COL}} [[Juan Sebastian Palma|Juan Palma]]",
+        "Kevin Angulo"       => "{{bandera|COL}} [[Kevin Angulo]]",
+        "Abdid Muñoz"        => "{{bandera|COL}} [[Abdid Muñoz]]",
+        "Yael López"         => "{{bandera|COL}} [[Yael López]]",
+        "Jesús Campo"        => "{{bandera|COL}} [[Jesús Campo]]",
+        "Camilo Quiceno"     => "{{bandera|COL}} [[Juan Camilo Quiceno|Camilo Quiceno]]",
+        "Jhonny Jordán"      => "{{bandera|COL}} [[Jhonny Jordán]]",
+        "Andrés Aedo"        => "{{bandera|COL}} [[Andrés Aedo]]",
+        "Sebastián Salazar"  => "{{bandera|COL}} [[Sebastián Salazar (futbolista)|Sebastián Salazar]]",
+        "Delio Ramírez"      => "{{bandera|COL}} [[Delio Angel Ramírez|Delio Ramírez]]",
+        "Jeison Mena"        => "{{bandera|COL}} [[Jeison Mena Victoria|Jeison Mena]]",
+        "Nicolás Valencia"   => "{{bandera|CHL}} [[Nicolás Anelka Valencia|Nicolás Valencia]]",
+        "Kevin Londoño"      => "{{bandera|COL}} [[Kevin Andrey Londoño|Kevin Londoño]]",
+        "Juan Díaz"          => "{{bandera|COL}} [[Juan Carlos Díaz|Juan Díaz]]",
+        "Juan Marcelin"      => "{{bandera|COL}} [[Juan Marcelin]]",
+        "Kevin Salazar"      => "{{bandera|COL}} [[Kevin Salazar Ruiz|Kevin Salazar]]",
+        "Sebastián Ostos"    => "{{bandera|COL}} [[Juan Sebastian Ostos|Sebastián Ostos]]",
+        "Eric Krame"         => "{{bandera|URU}} [[Eric Krame]]",
+        "Ítalo Montaño"      => "{{bandera|COL}} [[Ítalo Montaño]]",
+        "Jairo Molina"       => "{{bandera|COL}} [[Jairo Molina]]",
+        "Jacobo Pimentel"    => "{{bandera|COL}} [[Jacobo Pimentel]]",
+        "Luis Segura"        => "{{bandera|COL}} [[Luis Carlos Segura|Luis Segura]]",
+    ],
 
-    // DEFENSAS
-    "Anyelo Saldaña"    => "{{bandera|COL}} [[Anyelo Saldaña]]",
-    "Yaliston Martínez" => "{{bandera|COL}} [[Yaliston Martínez]]",
-    "Jaime Díaz"        => "{{bandera|COL}} [[Jaime Díaz Montes|Jaime Díaz]]",
-    "Arlen Banguero"    => "{{bandera|COL}} [[Arlen Banguero]]",
-    "Juan Palma"        => "{{bandera|COL}} [[Juan Sebastian Palma|Juan Palma]]",
-    "Kevin Angulo"      => "{{bandera|COL}} [[Kevin Angulo]]",
-    "Abdid Muñoz"       => "{{bandera|COL}} [[Abdid Muñoz]]",
-    "Yael López"        => "{{bandera|COL}} [[Yael López]]",
-    "Jesús Campo"       => "{{bandera|COL}} [[Jesús Campo]]",
+    // ── CÚCUTA DEPORTIVO ─────────────────────────────────────
+    "Cúcuta Deportivo" => [
+        "Juan David Ramírez"  => "{{bandera|COL}} [[Juan David Ramirez]]",
+        "Federico Abadía"     => "{{bandera|ARG}} [[Federico Abadía]]",
+        "Armando Ballesteros" => "{{bandera|COL}} [[Armando Ballesteros]]",
+        "Diego Calcaterra"    => "{{bandera|ARG}} [[Diego Calcaterra]]",
+        "Jhon Quiñones"       => "{{bandera|COL}} [[Jhon Alexander Quiñones]]",
+        "Sebastián Rodríguez" => "{{bandera|COL}} [[Sebastián Rodríguez Córdoba|Sebastián Rodríguez]]",
+        "Alexander Borja"     => "{{bandera|COL}} [[Alexander Borja Cordoba|Alexander Borja]]",
+        "Mauricio Duarte"     => "{{bandera|COL}} [[Mauricio Duarte]]",
+        "Brayan Montaño"      => "{{bandera|COL}} [[Brayan Montaño]]",
+        "Manuel Carmona"      => "{{bandera|USA}} [[Manuel Carmona]]",
+        "Víctor Mejía"        => "{{bandera|COL}} [[Víctor Mejía]]",
+        "Santiago Orozco"     => "{{bandera|COL}} [[Santiago Orozco]]",
+        "Léider Berdugo"      => "{{bandera|COL}} [[Léider Berdugo]]",
+        "Diego Ceballos"      => "{{bandera|COL}} [[Juan Diego Ceballos|Diego Ceballos]]",
+        "Jhonatan González"   => "{{bandera|COL}} [[Jhonatan González]]",
+        "Lucas Ríos"          => "{{bandera|ARG}} [[Lucas Ríos]]",
+        "Sebastián Támara"    => "{{bandera|COL}} [[Sebastián Támara]]",
+        "Agustín Cano"        => "{{bandera|COL}} [[Agustín Cano]]",
+        "Felipe Gómez"        => "{{bandera|COL}} [[Felipe Gómez Londoño|Felipe Gómez]]",
+        "Jaime Peralta"       => "{{bandera|COL}} [[Jaime Andres Peralta|Jaime Peralta]]",
+        "Luifer Hernández"    => "{{bandera|VEN}} [[Luifer Hernández]]",
+        "Eduar Arizalas"      => "{{bandera|COL}} [[Eduar Arizalas]]",
+        "Jhon Valencia"       => "{{bandera|COL}} [[Jhon Alexander Valencia|Jhon Valencia]]",
+        "Jonathan Agudelo"    => "{{bandera|COL}} [[Jonathan Agudelo]]",
+        "Cristian Córdoba"    => "{{bandera|COL}} [[Cristian Córdoba]]",
+    ],
 
-    // MEDIOCAMPISTAS
-    "Camilo Quiceno"    => "{{bandera|COL}} [[Juan Camilo Quiceno|Camilo Quiceno]]",
-    "Jhonny Jordán"     => "{{bandera|COL}} [[Jhonny Jordán]]",
-    "Andrés Aedo"       => "{{bandera|COL}} [[Andrés Aedo]]",
-    "Sebastián Salazar" => "{{bandera|COL}} [[Sebastián Salazar (futbolista)|Sebastián Salazar]]",
-    "Delio Ramírez"     => "{{bandera|COL}} [[Delio Angel Ramírez|Delio Ramírez]]",
-    "Jeison Mena"       => "{{bandera|COL}} [[Jeison Mena Victoria|Jeison Mena]]",
-    "Nicolás Valencia"  => "{{bandera|CHL}} [[Nicolás Anelka Valencia|Nicolás Valencia]]",
-    "Kevin Londoño"     => "{{bandera|COL}} [[Kevin Andrey Londoño|Kevin Londoño]]",
-    "Juan Díaz"         => "{{bandera|COL}} [[Juan Carlos Díaz|Juan Díaz]]",
-    "Juan Marcelin"     => "{{bandera|COL}} [[Juan Marcelin]]",
-    "Kevin Salazar"     => "{{bandera|COL}} [[Kevin Salazar Ruiz|Kevin Salazar]]",
-    "Sebastián Ostos"   => "{{bandera|COL}} [[Juan Sebastian Ostos|Sebastián Ostos]]",
-    "Eric Krame"        => "{{bandera|URU}} [[Eric Krame]]",
+    // ── DEPORTIVO CALI ───────────────────────────────────────
+    "Deportivo Cali" => [
+        "Pedro Gallese"        => "{{bandera|PER}} [[Pedro Gallese]]",
+        "Miguel Sánchez"       => "{{bandera|COL}} [[Miguel Angel Sánchez|Miguel Sánchez]]",
+        "Alejandro Rojo"       => "{{bandera|ESP}} [[Alejandro Rojo]]",
+        "Marco Espíndola"      => "{{bandera|COL}} [[Marco Espíndola]]",
+        "Felipe Aguilar"       => "{{bandera|COL}} [[Felipe Aguilar Mendoza|Felipe Aguilar]]",
+        "Andrés Correa"        => "{{bandera|COL}} [[Andrés Correa]]",
+        "Fernando Álvarez"     => "{{bandera|USA}} [[Fernando Álvarez (futbolista colombiano)|Fernando Álvarez]]",
+        "José Caldera"         => "{{bandera|COL}} [[José Caldera]]",
+        "Julián Quiñones"      => "{{bandera|COL}} [[Julián Alveiro Quiñones|Julián Quiñones]]",
+        "Juan Jose Tello"      => "{{bandera|COL}} [[Juan Jose Tello]]",
+        "Fabián Viáfara"       => "{{bandera|COL}} [[Fabián Viáfara]]",
+        "Luis Manuel Orejuela" => "{{bandera|COL}} [[Luis Manuel Orejuela]]",
+        "Mateo Benitez"        => "{{bandera|COL}} [[Mateo Benitez]]",
+        "Brait Garcia"         => "{{bandera|COL}} [[Brait Garcia]]",
+        "Ronaldo Pajaro"       => "{{bandera|COL}} [[Ronaldo Pajaro]]",
+        "Daniel Giraldo"       => "{{bandera|COL}} [[Daniel Giraldo]]",
+        "Emanuel Reynoso"      => "{{bandera|ARG}} [[Emanuel Reynoso]]",
+        "Yani Quintero"        => "{{bandera|COL}} [[Yani Quintero]]",
+        "Javier Mena"          => "{{bandera|COL}} [[Javier Mena]]",
+        "Johan Martínez"       => "{{bandera|COL}} [[Johan Martínez]]",
+        "Santiago Colonia"     => "{{bandera|USA}} [[Santiago Colonia]]",
+        "Andrés Colorado"      => "{{bandera|COL}} [[Andrés Colorado]]",
+        "Matias Orozco"        => "{{bandera|COL}} [[Matias Orozco]]",
+        "Juan Jose Montoya"    => "{{bandera|COL}} [[Juan Jose Montoya]]",
+        "Santiago Martinez"    => "{{bandera|COL}} [[Santiago Martinez]]",
+        "Juan Ignacio Dinenno" => "{{bandera|ARG}} [[Juan Ignacio Dinenno]]",
+        "Michael Aponzá"       => "{{bandera|COL}} [[Jhon Michael Aponzá|Michael Aponzá]]",
+        "Juan Manuel Arango"   => "{{bandera|COL}} [[Juan Manuel Arango]]",
+        "Avilés Hurtado"       => "{{bandera|COL}} [[Avilés Hurtado]]",
+        "Steven Rodríguez"     => "{{bandera|COL}} [[Andrés Steven Rodríguez|Steven Rodríguez]]",
+        "Jean Galindo"         => "{{bandera|COL}} [[Jean Galindo]]",
+        "Jhon Cabal"           => "{{bandera|COL}} [[Jhon Cabal]]",
+    ],
 
-    // DELANTEROS
-    "Ítalo Montaño"     => "{{bandera|COL}} [[Ítalo Montaño]]",
-    "Jairo Molina"      => "{{bandera|COL}} [[Jairo Molina]]",
-    "Jacobo Pimentel"   => "{{bandera|COL}} [[Jacobo Pimentel]]",
-    "Luis Segura"       => "{{bandera|COL}} [[Luis Carlos Segura|Luis Segura]]",
-],
+    // ── DEPORTIVO PASTO ──────────────────────────────────────
+    "Deportivo Pasto" => [
+        "Geovanni Banguera"    => "{{bandera|COL}} [[Geovanni Banguera]]",
+        "Juan Marquinez"       => "{{bandera|COL}} [[Juan Felipe Marquinez]]",
+        "Iago Herrerín"        => "{{bandera|ESP}} [[Iago Herrerín]]",
+        "Fainer Torijano"      => "{{bandera|COL}} [[Fainer Torijano]]",
+        "Nicolás Gil"          => "{{bandera|COL}} [[Nicolás Gil]]",
+        "Edwin Velasco"        => "{{bandera|COL}} [[Edwin Velasco]]",
+        "Hervin Goyes"         => "{{bandera|COL}} [[Hervin Goyes]]",
+        "Mateo Garavito"       => "{{bandera|COL}} [[Mateo Garavito]]",
+        "Ramiro Morales"       => "{{bandera|COL}} [[Ramiro Morales]]",
+        "Santiago Jiménez"     => "{{bandera|COL}} [[Santiago Jiménez]]",
+        "Johan Caicedo"        => "{{bandera|COL}} [[Johan Caicedo]]",
+        "Enrique Serje"        => "{{bandera|COL}} [[Enrique Serje]]",
+        "Diego Chávez"         => "{{bandera|ARG}} [[Diego Gabriel Chávez|Diego Chávez]]",
+        "Andrey Estupiñán"     => "{{bandera|COL}} [[Andrey Estupiñán]]",
+        "Harrinson Mancilla"   => "{{bandera|COL}} [[Harrinson Mancilla]]",
+        "Yéiler Góez"          => "{{bandera|COL}} [[Yéiler Góez]]",
+        "Matías Pisano"        => "{{bandera|ARG}} [[Matías Pisano]]",
+        "Gian Carlos Cabezas"  => "{{bandera|COL}} [[Gian Carlos Cabezas]]",
+        "Willian Ordóñez"      => "{{bandera|COL}} [[Willian Felipe Ordóñez|Willian Ordóñez]]",
+        "Jonathan Perlaza"     => "{{bandera|COL}} [[Jonathan Perlaza]]",
+        "Jeirye Caicedo"       => "{{bandera|COL}} [[Jeirye Stevens Caicedo|Jeirye Caicedo]]",
+        "Mayer Gil"            => "{{bandera|SLV}} [[Mayer Gil]]",
+        "Joider Micolta"       => "{{bandera|COL}} [[Joider Micolta]]",
+        "Wilson Morelo"        => "{{bandera|COL}} [[Wilson Morelo]]",
+        "Jaider Moreno"        => "{{bandera|COL}} [[Jaider Victoria Moreno|Jaider Moreno]]",
+        "Patrick Preciado"     => "{{bandera|COL}} [[Patrick Preciado]]",
+        "Santiago Córdoba"     => "{{bandera|COL}} [[Santiago Córdoba]]",
+        "José Bernal"          => "{{bandera|PAN}} [[José Eduardo Bernal|José Bernal]]",
+    ],
 
-// CÚCUTA DEPORTIVO
-"Cúcuta Deportivo" => [
+    // ── DEPORTIVO PEREIRA ────────────────────────────────────
+    "Deportivo Pereira" => [
+        "Jorge Martínez"       => "{{bandera|COL}} [[Jorge Eliécer Martínez|Jorge Martínez]]",
+        "Juan Betancourth"     => "{{bandera|COL}} [[Juan Miguel Betancourth|Juan Betancourth]]",
+        "Alejandro Rodríguez"  => "{{bandera|COL}} [[Alejandro Rodríguez Baena|Alejandro Rodríguez]]",
+        "Sebastián Urrea"      => "{{bandera|COL}} [[Sebastián Urrea]]",
+        "Julián Bazán"         => "{{bandera|COL}} [[Julián Bazán]]",
+        "Santiago Aguilar"     => "{{bandera|COL}} [[Santiago Andrés Aguilar|Santiago Aguilar]]",
+        "Eber Moreno"          => "{{bandera|COL}} [[Eber Moreno]]",
+        "Jordy Monroy"         => "{{bandera|ARM}} [[Jordy Monroy]]",
+        "Walmer Pacheco"       => "{{bandera|COL}} [[Walmer Pacheco]]",
+        "Danilo Ortiz"         => "{{bandera|PAR}} [[Danilo Ortiz]]",
+        "Fabio Delgado"        => "{{bandera|COL}} [[Fabio Delgado]]",
+        "Jorge Bermúdez"       => "{{bandera|COL}} [[Jorge Andrés Bermúdez Correa|Jorge Bermúdez]]",
+        "Sebastián Acosta"     => "{{bandera|COL}} [[Sebastián Acosta]]",
+        "Ederson Moreno"       => "{{bandera|COL}} [[Ederson Moreno]]",
+        "Nicolás Rengifo"      => "{{bandera|COL}} [[Nicolás Rengifo]]",
+        "Felipe Mosquera"      => "{{bandera|COL}} [[Luis Felipe Mosquera Paredes|Felipe Mosquera]]",
+        "Diego Mendoza"        => "{{bandera|COL}} [[Diego Andrés Mendoza|Diego Mendoza]]",
+        "Miguel Aguirre"       => "{{bandera|COL}} [[Miguel Angel Aguirre Quintana|Miguel Aguirre]]",
+        "John Montoya"         => "{{bandera|COL}} [[John Alexander Montoya|John Montoya]]",
+        "Jhon Largacha"        => "{{bandera|COL}} [[Jhon Edinson Largacha|Jhon Largacha]]",
+        "Yúber Quiñones"       => "{{bandera|COL}} [[Yúber Quiñones]]",
+        "Gustavo Torres"       => "{{bandera|COL}} [[Gustavo Torres]]",
+        "Marco Pérez"          => "{{bandera|COL}} [[Marco Pérez Murillo|Marco Pérez]]",
+        "Alejandro Álvarez"    => "{{bandera|COL}} [[Alejandro Álvarez Vallejo|Alejandro Álvarez]]",
+        "Andrés Calderón"      => "{{bandera|COL}} [[Andrés Calderón]]",
+        "Luis Palacios"        => "{{bandera|COL}} [[Luis Miguel Palacios Fory|Luis Palacios]]",
+        "Anderson Plata"       => "{{bandera|COL}} [[Anderson Plata]]",
+    ],
 
-    // PORTEROS
-    "Juan David Ramírez" => "{{bandera|COL}} [[Juan David Ramirez]]",
-    "Federico Abadía"    => "{{bandera|ARG}} [[Federico Abadía]]",
+    // ── DEPORTES TOLIMA ──────────────────────────────────────
+    "Deportes Tolima" => [
+        "John Azcarate"            => "{{bandera|COL}} [[John Azcarate]]",
+        "Gali José Balanta"        => "{{bandera|COL}} [[Gali José Balanta]]",
+        "Neto Volpi"               => "{{bandera|BRA}} [[Neto Volpi]]",
+        "Luis Marquinez"           => "{{bandera|COL}} [[Luis Marquinez]]",
+        "Anderson Angulo"          => "{{bandera|COL}} [[Anderson Angulo]]",
+        "Jan Carlos Angulo"        => "{{bandera|COL}} [[Juan Carlos Angulo]]",
+        "Juan José Mera"           => "{{bandera|COL}} [[Juan José Mera]]",
+        "Cristian Arrieta"         => "{{bandera|COL}} [[Cristian Arrieta]]",
+        "Junior Hernández"         => "{{bandera|COL}} [[Junior Hernández]]",
+        "Yhorman Hurtado"          => "{{bandera|COL}} [[Yhorman Hurtado]]",
+        "Michael Stiven Martinez"  => "{{bandera|COL}} [[Michael Stiven Martinez]]",
+        "Shean Paul Barbosa"       => "{{bandera|COL}} [[Shean Paul Barbosa]]",
+        "Cristian Trujillo"        => "{{bandera|COL}} [[Cristian Trujillo]]",
+        "Juan Pablo Torres"        => "{{bandera|COL}} [[Juan Pablo Torres Patiño|Juan Pablo Torres]]",
+        "Elan Joseph Ricardo"      => "{{bandera|BRA}} [[Elan Joseph Ricardo]]",
+        "Juan Nieto"               => "{{bandera|COL}} [[Juan Pablo Nieto]]",
+        "Víctor Manuel Reyes"      => "{{bandera|COL}} [[Víctor Manuel Reyes]]",
+        "Sebastián Guzmán"         => "{{bandera|COL}} [[Sebastián Felipe Guzmán|Sebastián Guzmán]]",
+        "Bryan Rovira"             => "{{bandera|CHL}} [[Bryan Rovira]]",
+        "Luis Miguel Landázuri"    => "{{bandera|COL}} [[Luis Miguel Landázuri]]",
+        "Juan Torres"              => "{{bandera|COL}} [[Juan Pablo Torres Patiño|Juan Torres]]",
+        "Elan Ricardo"             => "{{bandera|COL}} [[Elan Ricardo]]",
+        "Jersson González"         => "{{bandera|COL}} [[Jersson González Niño|Jersson González]]",
+        "Ever Valencia"            => "{{bandera|COL}} [[Ever Valencia]]",
+        "Luis Sandoval"            => "{{bandera|COL}} [[Luis Fernando Sandoval|Luis Sandoval]]",
+        "Gonzalo Lencina"          => "{{bandera|ARG}} [[Gonzalo Lencina]]",
+        "Kelvin Flórez"            => "{{bandera|COL}} [[Kelvin Flórez]]",
+        "Adrián Parra"             => "{{bandera|COL}} [[Adrián Parra]]",
+        "Jeinner Fuentes"          => "{{bandera|COL}} [[Jeinner Fuentes]]",
+        "Edwar López"              => "{{bandera|COL}} [[Edwar López]]",
+        "Yoimar Moreno"            => "{{bandera|COL}} [[Yoimar Moreno]]",
+    ],
 
-    // DEFENSAS
-    "Armando Ballesteros" => "{{bandera|COL}} [[Armando Ballesteros]]",
-    "Diego Calcaterra"    => "{{bandera|ARG}} [[Diego Calcaterra]]",
-    "Jhon Quiñones" => "{{bandera|COL}} [[Jhon Alexander Quiñones]]",
-    "Sebastián Rodríguez" => "{{bandera|COL}} [[Sebastián Rodríguez Córdoba|Sebastián Rodríguez]]",
-    "Alexander Borja"     => "{{bandera|COL}} [[Alexander Borja Cordoba|Alexander Borja]]",
-    "Mauricio Duarte"     => "{{bandera|COL}} [[Mauricio Duarte]]",
-    "Brayan Montaño"      => "{{bandera|COL}} [[Brayan Montaño]]",
-    "Manuel Carmona"      => "{{bandera|USA}} [[Manuel Carmona]]",
+    // ── FORTALEZA ────────────────────────────────────────────
+    "Fortaleza" => [
+        "Miguel Silva"             => "{{bandera|VEN}} [[Miguel Alejandro Silva|Miguel Silva]]",
+        "Michael Barragán"         => "{{bandera|COL}} [[Michael Barragán]]",
+        "Cristian Santander"       => "{{bandera|COL}} [[Cristian Santander]]",
+        "Victor Lasso"             => "{{bandera|COL}} [[Victor Lasso]]",
+        "David Ramírez"            => "{{bandera|COL}} [[David Ramírez Pisciotti|David Ramírez]]",
+        "Jonathan Marulanda"       => "{{bandera|COL}} [[Jonathan Marulanda]]",
+        "Edwin Cabezas"            => "{{bandera|COL}} [[Edwin Cabezas]]",
+        "Miguel Pernía"            => "{{bandera|VEN}} [[Miguel Pernía]]",
+        "Santiago Cuero"           => "{{bandera|COL}} [[Santiago Cuero]]",
+        "Joan Cajares"             => "{{bandera|COL}} [[Joan Cajares]]",
+        "Harold Balanta"           => "{{bandera|COL}} [[Harold Balanta]]",
+        "Yesid Díaz"               => "{{bandera|COL}} [[Yesid Díaz]]",
+        "Sebastián Navarro"        => "{{bandera|COL}} [[Sebastián Navarro]]",
+        "Jhon Velásquez"           => "{{bandera|COL}} [[Jhon Velásquez]]",
+        "Andrés Amaya"             => "{{bandera|COL}} [[Andrés Amaya]]",
+        "Leonardo Pico"            => "{{bandera|COL}} [[Leonardo Pico]]",
+        "Kevin Balanta"            => "{{bandera|COL}} [[Kevin Adrián Balanta|Kevin Balanta]]",
+        "Sebastián Ramírez"        => "{{bandera|COL}} [[Sebastián Ramírez Maya|Sebastián Ramírez]]",
+        "Jerónimo Barrera"         => "{{bandera|COL}} [[Jerónimo Barrera]]",
+        "José Guzmán"              => "{{bandera|COL}} [[José Guzmán]]",
+        "Jhon Solís"               => "{{bandera|COL}} [[Jhon Jairo Solís|Jhon Solís]]",
+        "Jerónimo Velásquez"       => "{{bandera|COL}} [[Jerónimo Velásquez]]",
+        "Andrés Arroyo"            => "{{bandera|COL}} [[Andrés Juan Arroyo|Andrés Arroyo]]",
+        "Jader Martínez"           => "{{bandera|COL}} [[Jhon Jader Martínez|Jader Martínez]]",
+        "Sebastián Herrera"        => "{{bandera|COL}} [[Juan Sebastián Herrera|Sebastián Herrera]]",
+        "Jhon Sebastián Palacios"  => "{{bandera|COL}} [[Jhon Sebastián Palacios]]",
+        "Jhoiner Salas"            => "{{bandera|COL}} [[Jhoiner Salas]]",
+        "Richardson Rivas"         => "{{bandera|COL}} [[Richardson Rivas]]",
+        "Teun Wilke"               => "{{bandera|MEX}} [[Teun Wilke]]",
+        "Franco Pulicastro"        => "{{bandera|ARG}} [[Franco Pulicastro]]",
+    ],
 
-    // CENTROCAMPISTAS
-    "Víctor Mejía"        => "{{bandera|COL}} [[Víctor Mejía]]",
-    "Santiago Orozco"     => "{{bandera|COL}} [[Santiago Orozco]]",
-    "Léider Berdugo"      => "{{bandera|COL}} [[Léider Berdugo]]",
-    "Diego Ceballos"      => "{{bandera|COL}} [[Juan Diego Ceballos|Diego Ceballos]]",
-    "Jhonatan González"   => "{{bandera|COL}} [[Jhonatan González]]",
-    "Lucas Ríos"          => "{{bandera|ARG}} [[Lucas Ríos]]",
-    "Sebastián Támara"    => "{{bandera|COL}} [[Sebastián Támara]]",
-    "Agustín Cano"        => "{{bandera|COL}} [[Agustín Cano]]",
-    "Felipe Gómez"        => "{{bandera|COL}} [[Felipe Gómez Londoño|Felipe Gómez]]",
+    // ── INDEPENDIENTE MEDELLÍN ───────────────────────────────
+    "Independiente Medellín" => [
+        "Salvador Ichazo"          => "{{bandera|URU}} [[Salvador Ichazo]]",
+        "José Luis Chunga"         => "{{bandera|COL}} [[José Luis Chunga]]",
+        "Eder Chaux"               => "{{bandera|COL}} [[Eder Chaux]]",
+        "Iker Blanco"              => "{{bandera|COL}} [[Iker Blanco]]",
+        "Yimmy Gómez"              => "{{bandera|COL}} [[Yimmy Gómez]]",
+        "Leyser Chaverra"          => "{{bandera|COL}} [[Leyser Chaverra]]",
+        "Kevin Mantilla"           => "{{bandera|COL}} [[Kevin Mantilla]]",
+        "Juan Viveros"             => "{{bandera|COL}} [[Juan Manuel Viveros|Juan Viveros]]",
+        "John Montaño"             => "{{bandera|COL}} [[John Edwin Montaño|John Montaño]]",
+        "Daniel Londoño"           => "{{bandera|COL}} [[Daniel Londoño]]",
+        "José Ortiz"               => "{{bandera|COL}} [[José Ortiz Cortés|José Ortiz]]",
+        "Malcom Palacios"          => "{{bandera|COL}} [[Malcom Palacios]]",
+        "Marlon Balanta"           => "{{bandera|COL}} [[Marlon Andres Balanta|Marlon Balanta]]",
+        "Luis Escorcia"            => "{{bandera|COL}} [[Luis Fernando Escorcia|Luis Escorcia]]",
+        "Didier Moreno"            => "{{bandera|COL}} [[Didier Moreno]]",
+        "Léider Berrío"            => "{{bandera|COL}} [[Léider Berrío]]",
+        "Alexis Serna"             => "{{bandera|COL}} [[Alexis Serna]]",
+        "Daniel Cataño"            => "{{bandera|COL}} [[Daniel Cataño]]",
+        "Francisco Chaverra"       => "{{bandera|COL}} [[Francisco Chaverra]]",
+        "Baldomero Perlaza"        => "{{bandera|COL}} [[Baldomero Perlaza]]",
+        "Luis Maturana"            => "{{bandera|COL}} [[Luis Maturana]]",
+        "Halam Loboa"              => "{{bandera|COL}} [[Halam Loboa]]",
+        "Gerónimo Mancilla"        => "{{bandera|COL}} [[Gerónimo Mancilla]]",
+        "Esneyder Mena"            => "{{bandera|COL}} [[Esneyder Mena]]",
+        "Diego Moreno"             => "{{bandera|COL}} [[Diego Moreno Quintero|Diego Moreno]]",
+        "Enzo Larrosa"             => "{{bandera|URU}} [[Enzo Larrosa]]",
+        "Yony González"            => "{{bandera|COL}} [[Yony González]]",
+        "Francisco Fydriszewski"   => "{{bandera|ARG}} [[Francisco Fydriszewski]]",
+        "Nezareth Segura"          => "{{bandera|COL}} [[Nezareth Segura]]",
+        "Jáder Valencia"           => "{{bandera|COL}} [[Jáder Valencia]]",
+    ],
 
-    // DELANTEROS
-    "Jaime Peralta"       => "{{bandera|COL}} [[Jaime Andres Peralta|Jaime Peralta]]",
-    "Luifer Hernández"    => "{{bandera|VEN}} [[Luifer Hernández]]",
-    "Eduar Arizalas"      => "{{bandera|COL}} [[Eduar Arizalas]]",
-    "Jhon Valencia"       => "{{bandera|COL}} [[Jhon Alexander Valencia|Jhon Valencia]]",
-    "Jonathan Agudelo"    => "{{bandera|COL}} [[Jonathan Agudelo]]",
-    "Cristian Córdoba"    => "{{bandera|COL}} [[Cristian Córdoba]]",
+    // ── INDEPENDIENTE SANTA FE ───────────────────────────────
+    "Independiente Santa Fe" => [
+        "Andrés Mosquera"     => "{{bandera|COL}} [[Andrés Mosquera Marmolejo|Andrés Mosquera]]",
+        "Weimar Asprilla"     => "{{bandera|COL}} [[Weimar Asprilla Mena|Weimar Asprilla]]",
+        "Ángel Álvarez"       => "{{bandera|COL}} [[Ángel David Álvarez|Ángel Álvarez]]",
+        "Jhoyler Andrades"    => "{{bandera|COL}} [[Jhoyler Andrades]]",
+        "Carlos Nemocón"      => "{{bandera|COL}} [[Carlos Nemocón]]",
+        "Víctor Moreno"       => "{{bandera|COL}} [[Víctor Andrés Moreno Córdoba|Víctor Moreno]]",
+        "Helibelton Palacios" => "{{bandera|COL}} [[Helibelton Palacios]]",
+        "Iván Scarpeta"       => "{{bandera|COL}} [[Iván Scarpeta]]",
+        "Emanuel Olivera"     => "{{bandera|ARG}} [[Emanuel Olivera]]",
+        "Jeison Angulo"       => "{{bandera|COL}} [[Jeison Angulo]]",
+        "Santiago Tamayo"     => "{{bandera|COL}} [[Santiago Tamayo Gómez|Santiago Tamayo]]",
+        "Yeicar Perlaza"      => "{{bandera|COL}} [[Yeicar Perlaza]]",
+        "Christian Mafla"     => "{{bandera|COL}} [[Christian Mafla]]",
+        "Jhon Rentería"       => "{{bandera|COL}} [[Jhon Rentería]]",
+        "Juan Quintero"       => "{{bandera|COL}} [[Juan Quintero Fletcher|Juan Quintero]]",
+        "Kilian Toscano"      => "{{bandera|COL}} [[Kilian Toscano]]",
+        "Jhojan Torres"       => "{{bandera|COL}} [[Jhojan Torres]]",
+        "Alexis Zapata"       => "{{bandera|COL}} [[Alexis Zapata]]",
+        "Luis Palacios"       => "{{bandera|COL}} [[Luis Ángel Palacios|Luis Palacios]]",
+        "Daniel Torres"       => "{{bandera|COL}} [[Daniel Alejandro Torres|Daniel Torres]]",
+        "Yílmar Velásquez"    => "{{bandera|COL}} [[Yílmar Velásquez]]",
+        "Ewil Murillo"        => "{{bandera|COL}} [[Ewil Murillo]]",
+        "Omar Fernández"      => "{{bandera|Chile}} [[Omar Fernández Frasica|Omar Fernández]]",
+        "Franco Fagúndez"     => "{{bandera|URU}} [[Franco Fagúndez]]",
+        "Hugo Rodallega"      => "{{bandera|COL}} [[Hugo Rodallega]]",
+        "Nahuel Bustos"       => "{{bandera|ARG}} [[Nahuel Bustos]]",
+        "Edwin Mosquera"      => "{{bandera|COL}} [[Edwin Stiven Mosquera|Edwin Mosquera]]",
+        "Jorge Ramos"         => "{{bandera|COL}} [[Jorge Luis Ramos|Jorge Ramos]]",
+        "Marlon Balanta"      => "{{bandera|COL}} [[Marlon Balanta]]",
+        "Joshef Zea"          => "{{bandera|COL}} [[Joshef Zea]]",
+        "Martín Palacios"     => "{{bandera|COL}} [[Martín Palacios]]",
+    ],
 
-],
-"Deportivo Cali" => [
-    // PORTEROS
-    "Pedro Gallese" => "{{bandera|PER}} [[Pedro Gallese]]",
-    "Miguel Sánchez" => "{{bandera|COL}} [[Miguel Angel Sánchez|Miguel Sánchez]]",
-    "Alejandro Rojo" => "{{bandera|ESP}} [[Alejandro Rojo]]",
-    "Marco Espíndola" => "{{bandera|COL}} [[Marco Espíndola]]",
-    
-    // DEFENSAS
-    "Felipe Aguilar" => "{{bandera|COL}} [[Felipe Aguilar Mendoza|Felipe Aguilar]]",
-    "Andrés Correa" => "{{bandera|COL}} [[Andrés Correa]]",
-    "Fernando Álvarez" => "{{bandera|USA}} [[Fernando Álvarez (futbolista colombiano)|Fernando Álvarez]]",
-    "José Caldera" => "{{bandera|COL}} [[José Caldera]]",
-    "Julián Quiñones" => "{{bandera|COL}} [[Julián Alveiro Quiñones|Julián Quiñones]]",
-    "Juan Jose Tello" => "{{bandera|COL}} [[Juan Jose Tello]]",
-    "Fabián Viáfara" => "{{bandera|COL}} [[Fabián Viáfara]]",
-    "Luis Manuel Orejuela" => "{{bandera|COL}} [[Luis Manuel Orejuela]]",
-    "Mateo Benitez" => "{{bandera|COL}} [[Mateo Benitez]]",
-    "Brait Garcia" => "{{bandera|COL}} [[Brait Garcia]]",
-    
-    // MEDIOCAMPISTAS
-    "Ronaldo Pajaro" => "{{bandera|COL}} [[Ronaldo Pajaro]]",
-    "Daniel Giraldo" => "{{bandera|COL}} [[Daniel Giraldo]]",
-    "Emanuel Reynoso" => "{{bandera|ARG}} [[Emanuel Reynoso]]",
-    "Yani Quintero" => "{{bandera|COL}} [[Yani Quintero]]",
-    "Javier Mena" => "{{bandera|COL}} [[Javier Mena]]",
-    "Johan Martínez" => "{{bandera|COL}} [[Johan Martínez]]",
-    "Santiago Colonia" => "{{bandera|USA}} [[Santiago Colonia]]",
-    "Andrés Colorado" => "{{bandera|COL}} [[Andrés Colorado]]",
-    "Matias Orozco" => "{{bandera|COL}} [[Matias Orozco]]",
-    "Juan Jose Montoya" => "{{bandera|COL}} [[Juan Jose Montoya]]",
-    "Santiago Martinez" => "{{bandera|COL}} [[Santiago Martinez]]",
-    
-    // DELANTEROS
-    "Juan Ignacio Dinenno" => "{{bandera|ARG}} [[Juan Ignacio Dinenno]]",
-    "Michael Aponzá" => "{{bandera|COL}} [[Jhon Michael Aponzá|Michael Aponzá]]",
-    "Juan Manuel Arango" => "{{bandera|COL}} [[Juan Manuel Arango]]",
-    "Avilés Hurtado" => "{{bandera|COL}} [[Avilés Hurtado]]",
-    "Steven Rodríguez" => "{{bandera|COL}} [[Andrés Steven Rodríguez|Steven Rodríguez]]",
-    "Jean Galindo" => "{{bandera|COL}} [[Jean Galindo]]",
-    "Jhon Cabal" => "{{bandera|COL}} [[Jhon Cabal]]",
-],
-   
-   // DEPORTIVO PASTO
-"Deportivo Pasto" => [
+    // ── INTER BOGOTÁ ─────────────────────────────────────────
+    "Inter Bogotá" => [
+        "Wuilker Fariñez"      => "{{bandera|VEN}} [[Wuilker Fariñez]]",
+        "Juan Carrasco"        => "{{bandera|COL}} [[Juan Carrasco (futbolista colombiano)|Juan Carrasco]]",
+        "Eduar Esteban"        => "{{bandera|COL}} [[Eduar Esteban]]",
+        "Carlos Vivas"         => "{{bandera|VEN}} [[Carlos Vivas]]",
+        "Mateo Rodas"          => "{{bandera|COL}} [[Mateo Rodas]]",
+        "Joao Abonía"          => "{{bandera|COL}} [[Joao Abonía (futbolísta)|Joao Abonía]]",
+        "Yulián Gómez"         => "{{bandera|COL}} [[Yulián Gómez]]",
+        "Joan Castro"          => "{{bandera|COL}} [[Joan Castro]]",
+        "Kalazán Suárez"       => "{{bandera|COL}} [[Kalazán Suárez]]",
+        "Agustín Irazoque"     => "{{bandera|ARG}} [[Agustín Irazoque]]",
+        "Luis Mosquera"        => "{{bandera|MEX}} [[Luis Fernando Mosquera Gómez|Luis Mosquera]]",
+        "Miguel Amaya"         => "{{bandera|COL}} [[Miguel Amaya]]",
+        "Larry Vásquez"        => "{{bandera|COL}} [[Larry Vásquez]]",
+        "Fabricio Sanguinetti" => "{{bandera|URU}} [[Fabricio Sanguinetti]]",
+        "Samir Mayo"           => "{{bandera|COL}} [[Samir Mayo Herrera|Samir Mayo]]",
+        "Kevin Parra"          => "{{bandera|COL}} [[Kevin Parra]]",
+        "Facundo Boné"         => "{{bandera|URU}} [[Facundo Boné]]",
+        "Jean Colorado"        => "{{bandera|COL}} [[Jean Colorado]]",
+        "Dannovi Quiñones"     => "{{bandera|COL}} [[Dannovi Quiñones]]",
+        "Fabián Chaverra"      => "{{bandera|COL}} [[Fabián Chaverra]]",
+        "Dereck Moncada"       => "{{bandera|HON}} [[Dereck Moncada]]",
+        "Johan Caballero"      => "{{bandera|COL}} [[Johan Caballero]]",
+        "Rubén Manjarrés"      => "{{bandera|COL}} [[Rubén Manjarrés]]",
+        "Juan Valencia"        => "{{bandera|COL}} [[Juan David Valencia Longa|Juan Valencia]]",
+        "Bayron Caicedo"       => "{{bandera|COL}} [[Bayron Caicedo]]",
+        "Emilio Gutiérrez"     => "{{bandera|COL}} [[Emilio Gutiérrez Bejarano|Emilio Gutiérrez]]",
+        "Hather Cuesta"        => "{{bandera|MEX}} [[Hather Emir Cuesta Murillo|Hather Cuesta]]",
+    ],
 
-    // PORTEROS
-    "Geovanni Banguera"   => "{{bandera|COL}} [[Geovanni Banguera]]",
-    "Juan Marquinez"=> "{{bandera|COL}} [[Juan Felipe Marquinez]]",
-    "Iago Herrerín"       => "{{bandera|ESP}} [[Iago Herrerín]]",
-
-    // DEFENSAS
-    "Fainer Torijano"     => "{{bandera|COL}} [[Fainer Torijano]]",
-    "Nicolás Gil"         => "{{bandera|COL}} [[Nicolás Gil]]",
-    "Edwin Velasco"       => "{{bandera|COL}} [[Edwin Velasco]]",
-    "Hervin Goyes"        => "{{bandera|COL}} [[Hervin Goyes]]",
-    "Mateo Garavito"      => "{{bandera|COL}} [[Mateo Garavito]]",
-    "Ramiro Morales"      => "{{bandera|COL}} [[Ramiro Morales]]",
-    "Santiago Jiménez"    => "{{bandera|COL}} [[Santiago Jiménez]]",
-
-    // MEDIOCAMPISTAS
-    "Johan Caicedo"       => "{{bandera|COL}} [[Johan Caicedo]]",
-    "Enrique Serje"       => "{{bandera|COL}} [[Enrique Serje]]",
-    "Diego Chávez"        => "{{bandera|ARG}} [[Diego Gabriel Chávez|Diego Chávez]]",
-    "Andrey Estupiñán"    => "{{bandera|COL}} [[Andrey Estupiñán]]",
-    "Harrinson Mancilla"  => "{{bandera|COL}} [[Harrinson Mancilla]]",
-    "Yéiler Góez"         => "{{bandera|COL}} [[Yéiler Góez]]",
-    "Matías Pisano"       => "{{bandera|ARG}} [[Matías Pisano]]",
-    "Gian Carlos Cabezas" => "{{bandera|COL}} [[Gian Carlos Cabezas]]",
-    "Willian Ordóñez"     => "{{bandera|COL}} [[Willian Felipe Ordóñez|Willian Ordóñez]]",
-
-    // DELANTEROS
-    "Jonathan Perlaza"    => "{{bandera|COL}} [[Jonathan Perlaza]]",
-    "Jeirye Caicedo"      => "{{bandera|COL}} [[Jeirye Stevens Caicedo|Jeirye Caicedo]]",
-    "Mayer Gil"           => "{{bandera|SLV}} [[Mayer Gil]]",
-    "Joider Micolta"      => "{{bandera|COL}} [[Joider Micolta]]",
-    "Wilson Morelo"       => "{{bandera|COL}} [[Wilson Morelo]]",
-    "Jaider Moreno"       => "{{bandera|COL}} [[Jaider Victoria Moreno|Jaider Moreno]]",
-    "Patrick Preciado"    => "{{bandera|COL}} [[Patrick Preciado]]",
-    "Santiago Córdoba"    => "{{bandera|COL}} [[Santiago Córdoba]]",
-    "José Bernal"         => "{{bandera|PAN}} [[José Eduardo Bernal|José Bernal]]",
-],
-// DEPORTIVO PEREIRA
-"Deportivo Pereira" => [
-
-    // PORTEROS
-    "Jorge Martínez"        => "{{bandera|COL}} [[Jorge Eliécer Martínez|Jorge Martínez]]",
-    "Juan Betancourth"      => "{{bandera|COL}} [[Juan Miguel Betancourth|Juan Betancourth]]",
-    "Alejandro Rodríguez"   => "{{bandera|COL}} [[Alejandro Rodríguez Baena|Alejandro Rodríguez]]",
-
-    // DEFENSAS
-    "Sebastián Urrea"       => "{{bandera|COL}} [[Sebastián Urrea]]",
-    "Julián Bazán"          => "{{bandera|COL}} [[Julián Bazán]]",
-    "Santiago Aguilar"      => "{{bandera|COL}} [[Santiago Andrés Aguilar|Santiago Aguilar]]",
-    "Eber Moreno"           => "{{bandera|COL}} [[Eber Moreno]]",
-    "Jordy Monroy"          => "{{bandera|ARM}} [[Jordy Monroy]]",
-    "Walmer Pacheco"        => "{{bandera|COL}} [[Walmer Pacheco]]",
-    "Danilo Ortiz"          => "{{bandera|PAR}} [[Danilo Ortiz]]",
-    "Fabio Delgado"         => "{{bandera|COL}} [[Fabio Delgado]]",
-
-    // CENTROCAMPISTAS
-    "Jorge Bermúdez"        => "{{bandera|COL}} [[Jorge Andrés Bermúdez Correa|Jorge Bermúdez]]",
-    "Sebastián Acosta"      => "{{bandera|COL}} [[Sebastián Acosta]]",
-    "Ederson Moreno"        => "{{bandera|COL}} [[Ederson Moreno]]",
-    "Nicolás Rengifo"       => "{{bandera|COL}} [[Nicolás Rengifo]]",
-    "Felipe Mosquera"       => "{{bandera|COL}} [[Luis Felipe Mosquera Paredes|Felipe Mosquera]]",
-    "Diego Mendoza"         => "{{bandera|COL}} [[Diego Andrés Mendoza|Diego Mendoza]]",
-    "Miguel Aguirre"        => "{{bandera|COL}} [[Miguel Angel Aguirre Quintana|Miguel Aguirre]]",
-    "John Montoya"          => "{{bandera|COL}} [[John Alexander Montoya|John Montoya]]",
-    "Jhon Largacha"         => "{{bandera|COL}} [[Jhon Edinson Largacha|Jhon Largacha]]",
-    "Yúber Quiñones"        => "{{bandera|COL}} [[Yúber Quiñones]]",
-
-    // DELANTEROS
-    "Gustavo Torres"        => "{{bandera|COL}} [[Gustavo Torres]]",
-    "Marco Pérez"           => "{{bandera|COL}} [[Marco Pérez Murillo|Marco Pérez]]",
-    "Alejandro Álvarez"     => "{{bandera|COL}} [[Alejandro Álvarez Vallejo|Alejandro Álvarez]]",
-    "Andrés Calderón"       => "{{bandera|COL}} [[Andrés Calderón]]",
-    "Luis Palacios"         => "{{bandera|COL}} [[Luis Miguel Palacios Fory|Luis Palacios]]",
-    "Anderson Plata"        => "{{bandera|COL}} [[Anderson Plata]]",
-
-],
-
-   // CLUB DEPORTES TOLIMA
-"Deportes Tolima" => [
-
-    // PORTEROS
-    "John Azcarate"       => "{{bandera|COL}} [[John Azcarate]]",
-    "Gali José Balanta"   => "{{bandera|COL}} [[Gali José Balanta]]",
-    "Neto Volpi"          => "{{bandera|BRA}} [[Neto Volpi]]",
-    "Luis Marquinez"      => "{{bandera|COL}} [[Luis Marquinez]]",
-
-    // DEFENSAS
-    "Anderson Angulo"     => "{{bandera|COL}} [[Anderson Angulo]]",
-    "Jan Carlos Angulo"   => "{{bandera|COL}} [[Juan Carlos Angulo]]",
-    "Juan José Mera"      => "{{bandera|COL}} [[Juan José Mera]]",
-    "Cristian Arrieta"    => "{{bandera|COL}} [[Cristian Arrieta]]",
-    "Junior Hernández"    => "{{bandera|COL}} [[Junior Hernández]]",
-    "Yhorman Hurtado"     => "{{bandera|COL}} [[Yhorman Hurtado]]",
-    "Michael Stiven Martinez" => "{{bandera|COL}} [[Michael Stiven Martinez]]",
-    "Shean Paul Barbosa"  => "{{bandera|COL}} [[Shean Paul Barbosa]]",
-
-    // CENTROCAMPISTAS
-    "Cristian Trujillo"   => "{{bandera|COL}} [[Cristian Trujillo]]",
-    "Juan Pablo Torres"   => "{{bandera|COL}} [[Juan Pablo Torres Patiño|Juan Pablo Torres]]",
-    "Elan Joseph Ricardo" => "{{bandera|BRA}} [[Elan Joseph Ricardo]]",
-    "Juan Nieto"    => "{{bandera|COL}} [[Juan Pablo Nieto]]",
-    "Víctor Manuel Reyes" => "{{bandera|COL}} [[Víctor Manuel Reyes]]",
-    "Sebastián Guzmán"    => "{{bandera|COL}} [[Sebastián Felipe Guzmán|Sebastián Guzmán]]",
-    "Bryan Rovira"        => "{{bandera|CHL}} [[Bryan Rovira]]",
-    "Luis Miguel Landázuri"=> "{{bandera|COL}} [[Luis Miguel Landázuri]]",
-    "Juan Torres"           => "{{bandera|COL}} [[Juan Pablo Torres Patiño|Juan Torres]]",
-    "Elan Ricardo"          => "{{bandera|COL}} [[Elan Ricardo]]"    
-
-    // DELANTEROS
-    "Jersson González"    => "{{bandera|COL}} [[Jersson González Niño|Jersson González]]",
-    "Ever Valencia"       => "{{bandera|COL}} [[Ever Valencia]]",
-    "Luis Sandoval"       => "{{bandera|COL}} [[Luis Fernando Sandoval|Luis Sandoval]]",
-    "Gonzalo Lencina"     => "{{bandera|ARG}} [[Gonzalo Lencina]]",
-    "Kelvin Flórez"       => "{{bandera|COL}} [[Kelvin Flórez]]",
-    "Adrián Parra"        => "{{bandera|COL}} [[Adrián Parra]]",
-    "Jeinner Fuentes"     => "{{bandera|COL}} [[Jeinner Fuentes]]",
-    "Edwar López"         => "{{bandera|COL}} [[Edwar López]]",
-    "Yoimar Moreno"       => "{{bandera|COL}} [[Yoimar Moreno]]",
-],
-   // FORTALEZA
-"Fortaleza" => [
-
-    // PORTEROS
-    "Miguel Silva"        => "{{bandera|VEN}} [[Miguel Alejandro Silva|Miguel Silva]]",
-    "Michael Barragán"    => "{{bandera|COL}} [[Michael Barragán]]",
-    "Cristian Santander" => "{{bandera|COL}} [[Cristian Santander]]",
-
-    // DEFENSAS
-    "Victor Lasso"        => "{{bandera|COL}} [[Victor Lasso]]",
-    "David Ramírez"       => "{{bandera|COL}} [[David Ramírez Pisciotti|David Ramírez]]",
-    "Jonathan Marulanda"  => "{{bandera|COL}} [[Jonathan Marulanda]]",
-    "Edwin Cabezas"       => "{{bandera|COL}} [[Edwin Cabezas]]",
-    "Miguel Pernía"       => "{{bandera|VEN}} [[Miguel Pernía]]",
-    "Santiago Cuero"      => "{{bandera|COL}} [[Santiago Cuero]]",
-    "Joan Cajares"        => "{{bandera|COL}} [[Joan Cajares]]",
-    "Harold Balanta"      => "{{bandera|COL}} [[Harold Balanta]]",
-
-    // MEDIOCAMPISTAS
-    "Yesid Díaz"          => "{{bandera|COL}} [[Yesid Díaz]]",
-    "Sebastián Navarro"   => "{{bandera|COL}} [[Sebastián Navarro]]",
-    "Jhon Velásquez"      => "{{bandera|COL}} [[Jhon Velásquez]]",
-    "Andrés Amaya"        => "{{bandera|COL}} [[Andrés Amaya]]",
-    "Leonardo Pico"       => "{{bandera|COL}} [[Leonardo Pico]]",
-    "Kevin Balanta"       => "{{bandera|COL}} [[Kevin Adrián Balanta|Kevin Balanta]]",
-    "Sebastián Ramírez"   => "{{bandera|COL}} [[Sebastián Ramírez Maya|Sebastián Ramírez]]",
-    "Jerónimo Barrera"    => "{{bandera|COL}} [[Jerónimo Barrera]]",
-    "José Guzmán"         => "{{bandera|COL}} [[José Guzmán]]",
-    "Jhon Solís"          => "{{bandera|COL}} [[Jhon Jairo Solís|Jhon Solís]]",
-    "Jerónimo Velásquez"  => "{{bandera|COL}} [[Jerónimo Velásquez]]",
-    "Andrés Arroyo"       => "{{bandera|COL}} [[Andrés Juan Arroyo|Andrés Arroyo]]",
-
-    // DELANTEROS
-    "Jader Martínez"      => "{{bandera|COL}} [[Jhon Jader Martínez|Jader Martínez]]",
-    "Sebastián Herrera"   => "{{bandera|COL}} [[Juan Sebastián Herrera|Sebastián Herrera]]",
-    "Jhon Sebastián Palacios" => "{{bandera|COL}} [[Jhon Sebastián Palacios]]",
-    "Jhoiner Salas"       => "{{bandera|COL}} [[Jhoiner Salas]]",
-    "Richardson Rivas"    => "{{bandera|COL}} [[Richardson Rivas]]",
-    "Teun Wilke"          => "{{bandera|MEX}} [[Teun Wilke]]",
-    "Franco Pulicastro"   => "{{bandera|ARG}} [[Franco Pulicastro]]",
-],
-
-   "Independiente Medellín" => [
-    // ARQUEROS
-    "Salvador Ichazo" => "{{bandera|URU}} [[Salvador Ichazo]]",
-    "José Luis Chunga" => "{{bandera|COL}} [[José Luis Chunga]]",
-    "Eder Chaux" => "{{bandera|COL}} [[Eder Chaux]]",
-    "Iker Blanco" => "{{bandera|COL}} [[Iker Blanco]]",
-    "Yimmy Gómez" => "{{bandera|COL}} [[Yimmy Gómez]]",
-    
-    // DEFENSAS
-    "Leyser Chaverra" => "{{bandera|COL}} [[Leyser Chaverra]]",
-    "Kevin Mantilla" => "{{bandera|COL}} [[Kevin Mantilla]]",
-    "Juan Viveros" => "{{bandera|COL}} [[Juan Manuel Viveros|Juan Viveros]]",
-    "John Montaño" => "{{bandera|COL}} [[John Edwin Montaño|John Montaño]]",
-    "Daniel Londoño" => "{{bandera|COL}} [[Daniel Londoño]]",
-    "José Ortiz" => "{{bandera|COL}} [[José Ortiz Cortés|José Ortiz]]",
-    "Malcom Palacios" => "{{bandera|COL}} [[Malcom Palacios]]",
-    "Marlon Balanta" => "{{bandera|COL}} [[Marlon Andres Balanta|Marlon Balanta]]",
-    "Luis Escorcia" => "{{bandera|COL}} [[Luis Fernando Escorcia|Luis Escorcia]]",
-    
-    // MEDIOCAMPISTAS
-    "Didier Moreno" => "{{bandera|COL}} [[Didier Moreno]]",
-    "Léider Berrío" => "{{bandera|COL}} [[Léider Berrío]]",
-    "Alexis Serna" => "{{bandera|COL}} [[Alexis Serna]]",
-    "Daniel Cataño" => "{{bandera|COL}} [[Daniel Cataño]]",
-    "Francisco Chaverra" => "{{bandera|COL}} [[Francisco Chaverra]]",
-    "Baldomero Perlaza" => "{{bandera|COL}} [[Baldomero Perlaza]]",
-    "Luis Maturana" => "{{bandera|COL}} [[Luis Maturana]]",
-    "Halam Loboa" => "{{bandera|COL}} [[Halam Loboa]]",
-    "Gerónimo Mancilla" => "{{bandera|COL}} [[Gerónimo Mancilla]]",
-    "Esneyder Mena" => "{{bandera|COL}} [[Esneyder Mena]]",
-    "Diego Moreno" => "{{bandera|COL}} [[Diego Moreno Quintero|Diego Moreno]]",
-    
-    // DELANTEROS
-    "Enzo Larrosa" => "{{bandera|URU}} [[Enzo Larrosa]]",
-    "Yony González" => "{{bandera|COL}} [[Yony González]]",
-    "Francisco Fydriszewski" => "{{bandera|ARG}} [[Francisco Fydriszewski]]",
-    "Nezareth Segura" => "{{bandera|COL}} [[Nezareth Segura]]",
-    "Jáder Valencia" => "{{bandera|COL}} [[Jáder Valencia]]",
-],
-
-   "Independiente Santa Fe" => [
-
-    // PORTEROS
-    "Andrés Mosquera"    => "{{bandera|COL}} [[Andrés Mosquera Marmolejo|Andrés Mosquera]]",
-    "Weimar Asprilla"    => "{{bandera|COL}} [[Weimar Asprilla Mena|Weimar Asprilla]]",
-    "Ángel Álvarez"      => "{{bandera|COL}} [[Ángel David Álvarez|Ángel Álvarez]]",
-    "Jhoyler Andrades"   => "{{bandera|COL}} [[Jhoyler Andrades]]",
-    "Carlos Nemocón"     => "{{bandera|COL}} [[Carlos Nemocón]]",
-
-    // DEFENSAS
-    "Víctor Moreno"      => "{{bandera|COL}} [[Víctor Andrés Moreno Córdoba|Víctor Moreno]]",
-    "Helibelton Palacios"=> "{{bandera|COL}} [[Helibelton Palacios]]",
-    "Iván Scarpeta"      => "{{bandera|COL}} [[Iván Scarpeta]]",
-    "Emanuel Olivera"    => "{{bandera|ARG}} [[Emanuel Olivera]]",
-    "Jeison Angulo"      => "{{bandera|COL}} [[Jeison Angulo]]",
-    "Santiago Tamayo"    => "{{bandera|COL}} [[Santiago Tamayo Gómez|Santiago Tamayo]]",
-    "Yeicar Perlaza"     => "{{bandera|COL}} [[Yeicar Perlaza]]",
-    "Christian Mafla"    => "{{bandera|COL}} [[Christian Mafla]]",
-    "Jhon Rentería"      => "{{bandera|COL}} [[Jhon Rentería]]",
-    "Juan Quintero"      => "{{bandera|COL}} [[Juan Quintero Fletcher|Juan Quintero]]",
-
-    // CENTROCAMPISTAS
-    "Kilian Toscano"     => "{{bandera|COL}} [[Kilian Toscano]]",
-    "Jhojan Torres"      => "{{bandera|COL}} [[Jhojan Torres]]",
-    "Alexis Zapata"      => "{{bandera|COL}} [[Alexis Zapata]]",
-    "Luis Palacios"      => "{{bandera|COL}} [[Luis Ángel Palacios|Luis Palacios]]",
-    "Daniel Torres"      => "{{bandera|COL}} [[Daniel Alejandro Torres|Daniel Torres]]",
-    "Yílmar Velásquez"   => "{{bandera|COL}} [[Yílmar Velásquez]]",
-    "Ewil Murillo"       => "{{bandera|COL}} [[Ewil Murillo]]",
-
-    // DELANTEROS
-    "Omar Fernández"     => "{{bandera|Chile}} [[Omar Fernández Frasica|Omar Fernández]]",
-    "Franco Fagúndez"    => "{{bandera|URU}} [[Franco Fagúndez]]",
-    "Hugo Rodallega"     => "{{bandera|COL}} [[Hugo Rodallega]]",
-    "Nahuel Bustos"      => "{{bandera|ARG}} [[Nahuel Bustos]]",
-    "Edwin Mosquera"     => "{{bandera|COL}} [[Edwin Stiven Mosquera|Edwin Mosquera]]",
-    "Jorge Ramos"        => "{{bandera|COL}} [[Jorge Luis Ramos|Jorge Ramos]]",
-    "Marlon Balanta"     => "{{bandera|COL}} [[Marlon Balanta]]",
-    "Joshef Zea"         => "{{bandera|COL}} [[Joshef Zea]]",
-    "Martín Palacios"    => "{{bandera|COL}} [[Martín Palacios]]",
-],
-   
-   // EQUIPO DESCONOCIDO
-"Inter Bogotá" => [
-
-    // PORTEROS
-    "Wuilker Fariñez"      => "{{bandera|VEN}} [[Wuilker Fariñez]]",
-    "Juan Carrasco"        => "{{bandera|COL}} [[Juan Carrasco (futbolista colombiano)|Juan Carrasco]]",
-    "Eduar Esteban"        => "{{bandera|COL}} [[Eduar Esteban]]",
-
-    // DEFENSAS
-    "Carlos Vivas"         => "{{bandera|VEN}} [[Carlos Vivas]]",
-    "Mateo Rodas"          => "{{bandera|COL}} [[Mateo Rodas]]",
-    "Joao Abonía"          => "{{bandera|COL}} [[Joao Abonía (futbolísta)|Joao Abonía]]",
-    "Yulián Gómez"         => "{{bandera|COL}} [[Yulián Gómez]]",
-    "Joan Castro"          => "{{bandera|COL}} [[Joan Castro]]",
-    "Kalazán Suárez"       => "{{bandera|COL}} [[Kalazán Suárez]]",
-    "Agustín Irazoque"     => "{{bandera|ARG}} [[Agustín Irazoque]]",
-    "Luis Mosquera"        => "{{bandera|MEX}} [[Luis Fernando Mosquera Gómez|Luis Mosquera]]",
-    "Miguel Amaya"         => "{{bandera|COL}} [[Miguel Amaya]]",
-
-    // CENTROCAMPISTAS
-    "Larry Vásquez"        => "{{bandera|COL}} [[Larry Vásquez]]",
-    "Fabricio Sanguinetti" => "{{bandera|URU}} [[Fabricio Sanguinetti]]",
-    "Samir Mayo"           => "{{bandera|COL}} [[Samir Mayo Herrera|Samir Mayo]]",
-    "Kevin Parra"          => "{{bandera|COL}} [[Kevin Parra]]",
-    "Facundo Boné"         => "{{bandera|URU}} [[Facundo Boné]]",
-    "Jean Colorado"        => "{{bandera|COL}} [[Jean Colorado]]",
-    "Dannovi Quiñones"     => "{{bandera|COL}} [[Dannovi Quiñones]]",
-    "Fabián Chaverra"      => "{{bandera|COL}} [[Fabián Chaverra]]",
-    "Dereck Moncada"       => "{{bandera|HON}} [[Dereck Moncada]]",
-    "Johan Caballero"      => "{{bandera|COL}} [[Johan Caballero]]",
-    "Rubén Manjarrés"      => "{{bandera|COL}} [[Rubén Manjarrés]]",
-
-    // DELANTEROS
-    "Juan Valencia"        => "{{bandera|COL}} [[Juan David Valencia Longa|Juan Valencia]]",
-    "Bayron Caicedo"       => "{{bandera|COL}} [[Bayron Caicedo]]",
-    "Emilio Gutiérrez"     => "{{bandera|COL}} [[Emilio Gutiérrez Bejarano|Emilio Gutiérrez]]",
-    "Hather Cuesta"        => "{{bandera|MEX}} [[Hather Emir Cuesta Murillo|Hather Cuesta]]",
-],
-
-       // JAGUARES FC
+    // ── JAGUARES DE CÓRDOBA ──────────────────────────────────
     "Jaguares de Córdoba" => [
-
-        // PORTEROS
-        "Diego Martínez"        => "{{bandera|COL}} [[Diego Alejandro Martínez|Diego Martínez]]",
-        "Franklin Mosquera"     => "{{bandera|COL}} [[Franklin Mosquera]]",
-
-        // DEFENSAS
-        "Kevin Saucedo"         => "{{bandera|COL}} [[Kevin Saucedo]]",
-        "Didier Bueno"          => "{{bandera|COL}} [[Didier Bueno]]",
-        "Yan Mosquera"          => "{{bandera|COL}} [[Yan Mosquera]]",
-        "Jonathan Lovera"       => "{{bandera|COL}} [[Jonathan Lovera]]",
-        "Mauricio Castaño"      => "{{bandera|COL}} [[Mauricio Castaño Grisales|Mauricio Castaño]]",
-        "Luis Jiménez"          => "{{bandera|COL}} [[Luis Enrique Jiménez|Luis Jiménez]]",
-        "Carlos Henao"          => "{{bandera|COL}} [[Carlos Henao]]",
-        "Jhon Altamiranda"      => "{{bandera|COL}} [[Jhon Altamiranda]]",
-        "Jhon Barrios"          => "{{bandera|COL}} [[Jhon Deivy Barrios|Jhon Barrios]]",
-        "Carlos Ordoñez"        => "{{bandera|COL}} [[Carlos Ordoñez]]",
-        "Alejandro Restrepo"    => "{{bandera|COL}} [[Alejandro Restrepo Restrepo|Alejandro Restrepo]]",
-
-        // CENTROCAMPISTAS
-        "Fabián Mosquera"       => "{{bandera|COL}} [[Fabián Mosquera]]",
-        "Duván Rodríguez"       => "{{bandera|COL}} [[Duvan Rodríguez]]",
-        "Cristian Álvarez"      => "{{bandera|ARG}} [[Cristián Marcelo Álvarez|Cristian Álvarez]]",
-        "Johan Hinestroza"      => "{{bandera|COL}} [[Johan Hinestroza]]",
-        "Bladimir Angulo"       => "{{bandera|COL}} [[Bladimir Angulo]]",
-        "Jader Maza"            => "{{bandera|COL}} [[Jader Maza]]",
-        "Jhonier Viveros"       => "{{bandera|COL}} [[Jhonier Viveros]]",
-        "Jafe Pérez"            => "{{bandera|COL}} [[Jafe Pérez]]",
-        "Royscer Colpa"         => "{{bandera|COL}} [[Royscer Colpa]]",
-        "Yairo Moreno"          => "{{bandera|COL}} [[Yairo Moreno]]",
-
-        // DELANTEROS
-        "Wilfrido de la Rosa"   => "{{bandera|COL}} [[Wilfrido de la Rosa]]",
-        "Samuel Perea"          => "{{bandera|COL}} [[Samuel Perea Mosquera|Samuel Perea]]",
-        "Andrés Rentería"       => "{{bandera|COL}} [[Andrés Rentería]]",
-        "Santiago Cubides"      => "{{bandera|COL}} [[Santiago Cubides]]",
-        "Darwin López"          => "{{bandera|COL}} [[Darwin López]]",
-        "Johar Mejía"           => "{{bandera|COL}} [[Johar Mejía]]",
-        "Kahiser Lenis"         => "{{bandera|PAN}} [[Kahiser Lenis]]",
-        "Kevin Mosquera"        => "{{bandera|COL}} [[Kevin Duván Mosquera|Kevin Mosquera]]",
-
+        "Diego Martínez"       => "{{bandera|COL}} [[Diego Alejandro Martínez|Diego Martínez]]",
+        "Franklin Mosquera"    => "{{bandera|COL}} [[Franklin Mosquera]]",
+        "Kevin Saucedo"        => "{{bandera|COL}} [[Kevin Saucedo]]",
+        "Didier Bueno"         => "{{bandera|COL}} [[Didier Bueno]]",
+        "Yan Mosquera"         => "{{bandera|COL}} [[Yan Mosquera]]",
+        "Jonathan Lovera"      => "{{bandera|COL}} [[Jonathan Lovera]]",
+        "Mauricio Castaño"     => "{{bandera|COL}} [[Mauricio Castaño Grisales|Mauricio Castaño]]",
+        "Luis Jiménez"         => "{{bandera|COL}} [[Luis Enrique Jiménez|Luis Jiménez]]",
+        "Carlos Henao"         => "{{bandera|COL}} [[Carlos Henao]]",
+        "Jhon Altamiranda"     => "{{bandera|COL}} [[Jhon Altamiranda]]",
+        "Jhon Barrios"         => "{{bandera|COL}} [[Jhon Deivy Barrios|Jhon Barrios]]",
+        "Carlos Ordoñez"       => "{{bandera|COL}} [[Carlos Ordoñez]]",
+        "Alejandro Restrepo"   => "{{bandera|COL}} [[Alejandro Restrepo Restrepo|Alejandro Restrepo]]",
+        "Fabián Mosquera"      => "{{bandera|COL}} [[Fabián Mosquera]]",
+        "Duván Rodríguez"      => "{{bandera|COL}} [[Duvan Rodríguez]]",
+        "Cristian Álvarez"     => "{{bandera|ARG}} [[Cristián Marcelo Álvarez|Cristian Álvarez]]",
+        "Johan Hinestroza"     => "{{bandera|COL}} [[Johan Hinestroza]]",
+        "Bladimir Angulo"      => "{{bandera|COL}} [[Bladimir Angulo]]",
+        "Jader Maza"           => "{{bandera|COL}} [[Jader Maza]]",
+        "Jhonier Viveros"      => "{{bandera|COL}} [[Jhonier Viveros]]",
+        "Jafe Pérez"           => "{{bandera|COL}} [[Jafe Pérez]]",
+        "Royscer Colpa"        => "{{bandera|COL}} [[Royscer Colpa]]",
+        "Yairo Moreno"         => "{{bandera|COL}} [[Yairo Moreno]]",
+        "Wilfrido de la Rosa"  => "{{bandera|COL}} [[Wilfrido de la Rosa]]",
+        "Samuel Perea"         => "{{bandera|COL}} [[Samuel Perea Mosquera|Samuel Perea]]",
+        "Andrés Rentería"      => "{{bandera|COL}} [[Andrés Rentería]]",
+        "Santiago Cubides"     => "{{bandera|COL}} [[Santiago Cubides]]",
+        "Darwin López"         => "{{bandera|COL}} [[Darwin López]]",
+        "Johar Mejía"          => "{{bandera|COL}} [[Johar Mejía]]",
+        "Kahiser Lenis"        => "{{bandera|PAN}} [[Kahiser Lenis]]",
+        "Kevin Mosquera"       => "{{bandera|COL}} [[Kevin Duván Mosquera|Kevin Mosquera]]",
     ],
 
-   "Junior" => [
+    // ── JUNIOR ───────────────────────────────────────────────
+    "Junior" => [
+        "Mauro Silveira"      => "{{bandera|URU}} [[Mauro Silveira]]",
+        "Jefersson Martínez"  => "{{bandera|COL}} [[Jefersson Martínez]]",
+        "Edwin Herrera"       => "{{bandera|COL}} [[Edwin Herrera]]",
+        "Daniel Rivera"       => "{{bandera|COL}} [[Daniel Rivera]]",
+        "Carlos Pérez"        => "{{bandera|COL}} [[Carlos Mario Pérez|Carlos Pérez]]",
+        "Jean Pestaña"        => "{{bandera|COL}} [[Jean Carlos Pestaña]]",
+        "Yeison Suárez"       => "{{bandera|COL}} [[Yeison Suárez]]",
+        "Jhon Navia"          => "{{bandera|COL}} [[Jhon Navia]]",
+        "Lucas Monzón"        => "{{bandera|URU}} [[Lucas Monzón]]",
+        "Jhomier Guerrero"    => "{{bandera|COL}} [[Jhomier Guerrero]]",
+        "Jermein Peña"        => "{{bandera|COL}} [[Jermein Peña]]",
+        "Dilan Villarreal"    => "{{bandera|COL}} [[Dilan Villarreal]]",
+        "Yimmi Chará"         => "{{bandera|COL}} [[Yimmi Chará]]",
+        "Juan Ríos"           => "{{bandera|COL}} [[Juan David Ríos]]",
+        "Kevin Pérez"         => "{{bandera|COL}} [[Kevin Pérez]]",
+        "Jannenson Sarmiento" => "{{bandera|COL}} [[Jannenson Sarmiento]]",
+        "Jesús Rivas"         => "{{bandera|COL}} [[Jesús Rivas]]",
+        "Guillermo Celis"     => "{{bandera|COL}} [[Guillermo Celis]]",
+        "Fabián Ángel"        => "{{bandera|COL}} [[Fabián Ángel]]",
+        "Guillermo Paiva"     => "{{bandera|PAR}} [[Guillermo Paiva]]",
+        "Luis Muriel"         => "{{bandera|COL}} [[Luis Muriel]]",
+        "Joel Canchimbo"      => "{{bandera|COL}} [[Joel Canchimbo]]",
+        "Teófilo Gutiérrez"   => "{{bandera|COL}} [[Teófilo Gutiérrez]]",
+        "Cristian Barrios"    => "{{bandera|COL}} [[Cristian Darío Barrios|Cristian Barrios]]",
+        "Bryan Castrillón"    => "{{bandera|COL}} [[Bryan Castrillón]]",
+        "Jaime Acosta"        => "{{bandera|COL}} [[Jaime Acosta]]",
+        "Sebastián Araújo"    => "{{bandera|COL}} [[Sebastián Araújo]] {{lesionado}}",
+        "Yeferson Moreno"     => "{{bandera|COL}} [[Yeferson Moreno]]",
+        "Harold Rivera"       => "{{bandera|COL}} [[Harold Rivera]]",
+        "Stiwart Acuña"       => "{{bandera|COL}} [[Stiwart Acuña]]",
+        "Carlos Bacca"        => "{{bandera|COL}} [[Carlos Bacca]] {{lesionado}}",
+        "Jesús Díaz"          => "{{bandera|COL}} [[Jesús Manuel Díaz|Jesús Díaz]]",
+        "Déiber Caicedo"      => "{{bandera|COL}} [[Déiber Caicedo]] {{lesionado}}",
+    ],
 
-    // PORTEROS
-    "Mauro Silveira"     => "{{bandera|URU}} [[Mauro Silveira]]",
-    "Jefersson Martínez" => "{{bandera|COL}} [[Jefersson Martínez]]",
-
-    // DEFENSAS
-    "Edwin Herrera"      => "{{bandera|COL}} [[Edwin Herrera]]",
-    "Daniel Rivera"      => "{{bandera|COL}} [[Daniel Rivera]]",
-    "Carlos Pérez"       => "{{bandera|COL}} [[Carlos Mario Pérez|Carlos Pérez]]",
-    "Jean Pestaña"       => "{{bandera|COL}} [[Jean Carlos Pestaña]]",
-    "Yeison Suárez"      => "{{bandera|COL}} [[Yeison Suárez]]",
-    "Jhon Navia"         => "{{bandera|COL}} [[Jhon Navia]]",
-    "Lucas Monzón"       => "{{bandera|URU}} [[Lucas Monzón]]",
-    "Jhomier Guerrero"   => "{{bandera|COL}} [[Jhomier Guerrero]]",
-    "Jermein Peña"       => "{{bandera|COL}} [[Jermein Peña]]",
-
-    // MEDIOCAMPISTAS
-    "Dilan Villarreal"   => "{{bandera|COL}} [[Dilan Villarreal]]",
-    "Yimmi Chará"        => "{{bandera|COL}} [[Yimmi Chará]]",
-    "Juan Ríos"    => "{{bandera|COL}} [[Juan David Ríos]]",
-    "Kevin Pérez"        => "{{bandera|COL}} [[Kevin Pérez]]",
-    "Jannenson Sarmiento"=> "{{bandera|COL}} [[Jannenson Sarmiento]]",
-    "Jesús Rivas"        => "{{bandera|COL}} [[Jesús Rivas]]",
-    "Guillermo Celis"    => "{{bandera|COL}} [[Guillermo Celis]]",
-    "Fabián Ángel"       => "{{bandera|COL}} [[Fabián Ángel]]",
-
-    // DELANTEROS
-    "Guillermo Paiva"    => "{{bandera|PAR}} [[Guillermo Paiva]]",
-    "Luis Muriel"=> "{{bandera|COL}} [[Luis Muriel]]",
-    "Joel Canchimbo"     => "{{bandera|COL}} [[Joel Canchimbo]]",
-    "Teófilo Gutiérrez" => "{{bandera|COL}} [[Teófilo Gutiérrez]]",
-    "Cristian Barrios"   => "{{bandera|COL}} [[Cristian Darío Barrios|Cristian Barrios]]",
-    "Bryan Castrillón"   => "{{bandera|COL}} [[Bryan Castrillón]]",
-
-    // JUGADORES SIN REGISTRAR
-    "Jaime Acosta"       => "{{bandera|COL}} [[Jaime Acosta]]",
-    "Sebastián Araújo"   => "{{bandera|COL}} [[Sebastián Araújo]] {{lesionado}}",
-    "Yeferson Moreno"    => "{{bandera|COL}} [[Yeferson Moreno]]",
-    "Harold Rivera"      => "{{bandera|COL}} [[Harold Rivera]]",
-    "Stiwart Acuña"      => "{{bandera|COL}} [[Stiwart Acuña]]",
-    "Carlos Bacca"       => "{{bandera|COL}} [[Carlos Bacca]] {{lesionado}}",
-    "Jesús Díaz"         => "{{bandera|COL}} [[Jesús Manuel Díaz|Jesús Díaz]]",
-    "Déiber Caicedo"     => "{{bandera|COL}} [[Déiber Caicedo]] {{lesionado}}",
-],
-   
-   // MILLONARIOS FC
-"Millonarios" => [
-
-    // PORTEROS
-    "Guillermo de Amores" => "{{bandera|URU}} [[Guillermo de Amores]]",
-    "Diego Novoa"        => "{{bandera|COL}} [[Diego Novoa]]",
-    "Iván Díaz"          => "{{bandera|COL}} [[Iván Díaz Amaris|Iván Díaz]]",
-    "David Rodríguez"    => "{{bandera|COL}} [[David Eduardo Rodríguez Burbano|David Rodríguez]]",
-
-    // DEFENSAS
-    "Carlos Sarabia"     => "{{bandera|COL}} [[Carlos Sarabia]]",
-    "Samuel Martín"      => "{{bandera|COL}} [[Samuel Martín]]",
-    "Sergio Mosquera"    => "{{bandera|COL}} [[Sergio Mosquera]]",
-    "Jorge Arias"        => "{{bandera|COL}} [[Jorge Arias]]",
-    "Danovis Banguero"   => "{{bandera|COL}} [[Danovis Banguero]]",
-    "Sebastián Valencia" => "{{bandera|COL}} [[Sebastián Valencia Isaza|Sebastián Valencia]]",
-    "Andrés Llinás"      => "{{bandera|COL}} [[Andrés Llinás]]",
-    "Álex Moreno"        => "{{bandera|COL}} [[Álex Moreno]]",
-    "Édgar Elizalde"     => "{{bandera|URU}} [[Édgar Elizalde]]",
-    "Nicolás Giraldo"    => "{{bandera|COL}} [[Nicolás Giraldo]]",
-    "Cristian Uparela"   => "{{bandera|COL}} [[Cristian Uparela]]",
-
-    // MEDIOCAMPISTAS
-    "Darwin Quintero"    => "{{bandera|COL}} [[Darwin Quintero]]",
-    "Dewar Victoria"     => "{{bandera|COL}} [[Dewar Victoria]]",
-    "David Silva" => "{{bandera|COL}} [[David Mackalister Silva]]",
-    "Rodrigo Ureña"      => "{{bandera|CHI}} [[Rodrigo Ureña]]",
-    "Mateo García"       => "{{bandera|COL}} [[Mateo García Rojas|Mateo García]]",
-    "Stiven Vega"        => "{{bandera|COL}} [[Stiven Vega]]",
-    "Sebastián del Castillo" => "{{bandera|COL}} [[Sebastián del Castillo]]",
-    "Juan Carlos Pereira" => "{{bandera|COL}} [[Juan Carlos Pereira]]",
-    "Johan Rodallega"    => "{{bandera|COL}} [[Johan Rodallega]]",
-    "Bayron García"      => "{{bandera|COL}} [[Bayron García]]",
-    "Santiago Castrillón" => "{{bandera|COL}} [[Santiago Castrillón]]",
-
-    // DELANTEROS
-    "Radamel Falcao"     => "{{bandera|COL}} [[Radamel Falcao]]",
-    "Beckham Castro"     => "{{bandera|COL}} [[Beckham Castro]]",
-    "Leonardo Castro"    => "{{bandera|COL}} [[Leo Castro|Leonardo Castro]]",
-    "Julián Angulo"      => "{{bandera|COL}} [[Julián Angulo Sevillano|Julián Angulo]]",
-    "Rodrigo Contreras"  => "{{bandera|ARG}} [[Rodrigo Nicolás Contreras|Rodrigo Contreras]]",
-    "Álex Castro"        => "{{bandera|COL}} [[Álex Castro]]",
-    "Jorge Hurtado"      => "{{bandera|COL}} [[Jorge Hurtado]]",
-    "Brayan Campaz"      => "{{bandera|COL}} [[Brayan Campaz]]",
-    "Brayan Cuero"       => "{{bandera|COL}} [[Brayan Cuero]]",
-    "Santiago Giordana"  => "{{bandera|ARG}} [[Santiago Giordana]]",
-
-],
-       // LLANEROS FÚTBOL CLUB
+    // ── LLANEROS ─────────────────────────────────────────────
     "Llaneros" => [
-
-        // PORTEROS
         "Miguel Ortega"        => "{{bandera|MEX}} [[Miguel Ortega]]",
         "Juan Loaiza"          => "{{bandera|COL}} [[Juan Camilo Loaiza|Juan Loaiza]]",
         "Roameth Romaña"       => "{{bandera|COL}} [[Roameth Romaña]]",
-
-        // DEFENSAS
         "Howell Mena"          => "{{bandera|COL}} [[Howell Mena]]",
         "Jhojan Escobar"       => "{{bandera|COL}} [[Jhojan Escobar]]",
         "Francisco Meza"       => "{{bandera|COL}} [[Francisco Meza]]",
@@ -758,8 +650,6 @@ $LinksPorEquipo = [
         "Alejandro Moralez"    => "{{bandera|COL}} [[Alejandro Moralez]]",
         "Juan Pertuz"          => "{{bandera|COL}} [[Juan David Pertuz|Juan Pertuz]]",
         "Jimmy Medranda"       => "{{bandera|COL}} [[Jimmy Medranda]]",
-
-        // MEDIOCAMPISTAS
         "Eyder Restrepo"       => "{{bandera|COL}} [[Eyder Restrepo]]",
         "Marlon Sierra"        => "{{bandera|COL}} [[Marlon Ricardo Sierra|Marlon Sierra]]",
         "Luis Miranda"         => "{{bandera|COL}} [[Luis Fernando Miranda|Luis Miranda]]",
@@ -772,58 +662,95 @@ $LinksPorEquipo = [
         "Kevin Caicedo"        => "{{bandera|COL}} [[Kevin Caicedo]]",
         "Jhon Vásquez"         => "{{bandera|COL}} [[Jhon Vásquez]]",
         "Andrés Domingo López" => "{{bandera|COL}} [[Andrés Domingo López]]",
-
-        // DELANTEROS
         "Manuel Barreiro"      => "{{bandera|COL}} [[Carlos Manuel Cortés Barreiro|Manuel Barreiro]]",
         "Jhonier Blanco"       => "{{bandera|COL}} [[Jhonier Blanco]]",
         "Érik Bodencer"        => "{{bandera|ARG}} [[Érik Bodencer]]",
         "Carlos Cortés"        => "{{bandera|COL}} [[Carlos Cortés Barreiro|Carlos Cortés]]",
     ],
 
-   // ONCE CALDAS
-"Once Caldas" => [
+    // ── MILLONARIOS ──────────────────────────────────────────
+    "Millonarios" => [
+        "Guillermo de Amores"    => "{{bandera|URU}} [[Guillermo de Amores]]",
+        "Diego Novoa"            => "{{bandera|COL}} [[Diego Novoa]]",
+        "Iván Díaz"              => "{{bandera|COL}} [[Iván Díaz Amaris|Iván Díaz]]",
+        "David Rodríguez"        => "{{bandera|COL}} [[David Eduardo Rodríguez Burbano|David Rodríguez]]",
+        "Carlos Sarabia"         => "{{bandera|COL}} [[Carlos Sarabia]]",
+        "Samuel Martín"          => "{{bandera|COL}} [[Samuel Martín]]",
+        "Sergio Mosquera"        => "{{bandera|COL}} [[Sergio Mosquera]]",
+        "Jorge Arias"            => "{{bandera|COL}} [[Jorge Arias]]",
+        "Danovis Banguero"       => "{{bandera|COL}} [[Danovis Banguero]]",
+        "Sebastián Valencia"     => "{{bandera|COL}} [[Sebastián Valencia Isaza|Sebastián Valencia]]",
+        "Andrés Llinás"          => "{{bandera|COL}} [[Andrés Llinás]]",
+        "Álex Moreno"            => "{{bandera|COL}} [[Álex Moreno]]",
+        "Édgar Elizalde"         => "{{bandera|URU}} [[Édgar Elizalde]]",
+        "Nicolás Giraldo"        => "{{bandera|COL}} [[Nicolás Giraldo]]",
+        "Cristian Uparela"       => "{{bandera|COL}} [[Cristian Uparela]]",
+        "Darwin Quintero"        => "{{bandera|COL}} [[Darwin Quintero]]",
+        "Dewar Victoria"         => "{{bandera|COL}} [[Dewar Victoria]]",
+        "David Silva"            => "{{bandera|COL}} [[David Mackalister Silva]]",
+        "Rodrigo Ureña"          => "{{bandera|CHI}} [[Rodrigo Ureña]]",
+        "Mateo García"           => "{{bandera|COL}} [[Mateo García Rojas|Mateo García]]",
+        "Stiven Vega"            => "{{bandera|COL}} [[Stiven Vega]]",
+        "Sebastián del Castillo" => "{{bandera|COL}} [[Sebastián del Castillo]]",
+        "Juan Carlos Pereira"    => "{{bandera|COL}} [[Juan Carlos Pereira]]",
+        "Johan Rodallega"        => "{{bandera|COL}} [[Johan Rodallega]]",
+        "Bayron García"          => "{{bandera|COL}} [[Bayron García]]",
+        "Santiago Castrillón"    => "{{bandera|COL}} [[Santiago Castrillón]]",
+        "Radamel Falcao"         => "{{bandera|COL}} [[Radamel Falcao]]",
+        "Beckham Castro"         => "{{bandera|COL}} [[Beckham Castro]]",
+        "Leonardo Castro"        => "{{bandera|COL}} [[Leo Castro|Leonardo Castro]]",
+        "Julián Angulo"          => "{{bandera|COL}} [[Julián Angulo Sevillano|Julián Angulo]]",
+        "Rodrigo Contreras"      => "{{bandera|ARG}} [[Rodrigo Nicolás Contreras|Rodrigo Contreras]]",
+        "Álex Castro"            => "{{bandera|COL}} [[Álex Castro]]",
+        "Jorge Hurtado"          => "{{bandera|COL}} [[Jorge Hurtado]]",
+        "Brayan Campaz"          => "{{bandera|COL}} [[Brayan Campaz]]",
+        "Brayan Cuero"           => "{{bandera|COL}} [[Brayan Cuero]]",
+        "Santiago Giordana"      => "{{bandera|ARG}} [[Santiago Giordana]]",
+    ],
 
-    // PORTEROS
-    "James Aguirre"        => "{{bandera|COL}} [[James Aguirre]]",
-    "Juan Gallego"         => "{{bandera|COL}} [[Juan Esteban Muñoz Gallego|Juan Gallego]]",
-    "Joan Parra"           => "{{bandera|COL}} [[Joan Felipe Parra Marin|Joan Parra]]",
+    // ── ONCE CALDAS ──────────────────────────────────────────
+    "Once Caldas" => [
+        "James Aguirre"        => "{{bandera|COL}} [[James Aguirre]]",
+        "Juan Gallego"         => "{{bandera|COL}} [[Juan Esteban Muñoz Gallego|Juan Gallego]]",
+        "Joan Parra"           => "{{bandera|COL}} [[Joan Felipe Parra Marin|Joan Parra]]",
+        "Jorge Cardona"        => "{{bandera|COL}} [[Jorge Luis Cardona|Jorge Cardona]]",
+        "Efraín Navarro"       => "{{bandera|COL}} [[Efraín Navarro]]",
+        "Stalin Valencia"      => "{{bandera|ECU}} [[Stalin Valencia]]",
+        "Juan Castaño"         => "{{bandera|COL}} [[Juan Felipe Castaño]]",
+        "Jáider Riquett"       => "{{bandera|COL}} [[Jáider Riquett]]",
+        "Juan David Cuesta"    => "{{bandera|COL}} [[Juan David Cuesta]]",
+        "Kevin Cuesta"         => "{{bandera|COL}} [[Kevin Cuesta]]",
+        "Kevin Tamayo"         => "{{bandera|COL}} [[Kevin Tamayo]]",
+        "Yeferson Rodallega"   => "{{bandera|COL}} [[Yeferson Rodallega]]",
+        "Iván Rojas"           => "{{bandera|COL}} [[Iván Rojas]]",
+        "Jaime Alvarado"       => "{{bandera|COL}} [[Jaime Alvarado]]",
+        "Michael Barrios"      => "{{bandera|COL}} [[Michael Barrios]]",
+        "Andrés Roa"           => "{{bandera|COL}} [[Andrés Felipe Roa|Andrés Roa]]",
+        "Esteban Beltrán"      => "{{bandera|COL}} [[Esteban Beltrán]]",
+        "Luis Sánchez"         => "{{bandera|COL}} [[Luis Francisco Sánchez|Luis Sánchez]]",
+        "Tomás García"         => "{{bandera|COL}} [[Tomás García Rojas|Tomás García]]",
+        "Kevin Villada"        => "{{bandera|COL}} [[Kevin Villada]]",
+        "Mateo Zuleta"         => "{{bandera|COL}} [[Mateo Zuleta]]",
+        "Yeiler Valencia"      => "{{bandera|COL}} [[Yeiler Valencia]]",
+        "Déinner Quiñones"     => "{{bandera|COL}} [[Déinner Quiñones]]",
+        "Robert Mejía"         => "{{bandera|COL}} [[Robert Mejía]]",
+        "Rafael Acuña"         => "{{bandera|COL}} [[Rafael Acuña]]",
+        "Jáder Quiñones"       => "{{bandera|COL}} [[Jáder Quiñones]]",
+        "Pipe Gómez"           => "{{bandera|COL}} [[Pipe Gómez]]",
+        "Jefry Zapata"         => "{{bandera|COL}} [[Jefry Zapata]]",
+        "Dayro Moreno"         => "{{bandera|COL}} [[Dayro Moreno]]",
+    ],
 
-    // DEFENSAS
-    "Jorge Cardona"        => "{{bandera|COL}} [[Jorge Luis Cardona|Jorge Cardona]]",
-    "Efraín Navarro"       => "{{bandera|COL}} [[Efraín Navarro]]",
-    "Stalin Valencia"      => "{{bandera|ECU}} [[Stalin Valencia]]",
-    "Juan Castaño"         => "{{bandera|COL}} [[Juan Felipe Castaño]]",
-    "Jáider Riquett"       => "{{bandera|COL}} [[Jáider Riquett]]",
-    "Juan David Cuesta"    => "{{bandera|COL}} [[Juan David Cuesta]]",
-    "Kevin Cuesta"         => "{{bandera|COL}} [[Kevin Cuesta]]",
-    "Kevin Tamayo"         => "{{bandera|COL}} [[Kevin Tamayo]]",
-    "Yeferson Rodallega"   => "{{bandera|COL}} [[Yeferson Rodallega]]",
+    ]; // end return
+}
 
-    // CENTROCAMPISTAS
-    "Iván Rojas"           => "{{bandera|COL}} [[Iván Rojas]]",
-    "Jaime Alvarado"       => "{{bandera|COL}} [[Jaime Alvarado]]",
-    "Michael Barrios"      => "{{bandera|COL}} [[Michael Barrios]]",
-    "Andrés Roa"           => "{{bandera|COL}} [[Andrés Felipe Roa|Andrés Roa]]",
-    "Esteban Beltrán"      => "{{bandera|COL}} [[Esteban Beltrán]]",
-    "Luis Sánchez"         => "{{bandera|COL}} [[Luis Francisco Sánchez|Luis Sánchez]]",
-    "Tomás García"         => "{{bandera|COL}} [[Tomás García Rojas|Tomás García]]",
-    "Kevin Villada"        => "{{bandera|COL}} [[Kevin Villada]]",
-    "Mateo Zuleta"         => "{{bandera|COL}} [[Mateo Zuleta]]",
-    "Yeiler Valencia"      => "{{bandera|COL}} [[Yeiler Valencia]]",
-    "Déinner Quiñones"     => "{{bandera|COL}} [[Déinner Quiñones]]",
-    "Robert Mejía"         => "{{bandera|COL}} [[Robert Mejía]]",
-    "Rafael Acuña"         => "{{bandera|COL}} [[Rafael Acuña]]",
-    "Jáder Quiñones"       => "{{bandera|COL}} [[Jáder Quiñones]]",
+/* ─────────────────────────────────────────────
+   Main: open DB, seed if empty, return array
+   ───────────────────────────────────────────── */
 
-    // DELANTEROS
-    "Pipe Gómez"           => "{{bandera|COL}} [[Pipe Gómez]]",
-    "Jefry Zapata"         => "{{bandera|COL}} [[Jefry Zapata]]",
-    "Dayro Moreno"         => "{{bandera|COL}} [[Dayro Moreno]]",
-
-   ],
-
-];
-
+$_jugadoresDb = jugadores_open_db();
+jugadores_seed($_jugadoresDb);
+$LinksPorEquipo = jugadores_load($_jugadoresDb);
+$_jugadoresDb->close();
 
 return $LinksPorEquipo;
-

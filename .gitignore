@@ -1,0 +1,7 @@
+# SQLite3 database (created at runtime; managed via /admin panel)
+data/*.db
+data/*.db-shm
+data/*.db-wal
+
+# Local admin credentials — copy config.example.php to config.local.php
+admin/config.local.php
