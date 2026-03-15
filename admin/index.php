@@ -992,6 +992,10 @@ document.getElementById('stats').textContent =
     <pre>equipo,nombre,wiki_link,nacionalidad,posicion
 Alianza,Carlos Pérez,{{bandera|COL}} [[Carlos Pérez]],COL,Delantero
 Alianza,Luis Gómez,,ARG,Portero</pre>
+    <p style="margin:12px 0 0; font-size:0.9rem;">
+        💾 <strong><a href="../data/jugadores_seed.csv" download>Descargar jugadores_seed.csv</a></strong>
+        — CSV precargado con los 585 jugadores originales, listo para importar.
+    </p>
 </div>
 
 <div class="card" style="max-width:520px;">
