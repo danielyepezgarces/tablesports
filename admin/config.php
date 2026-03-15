@@ -18,11 +18,10 @@ if (file_exists($localConfig)) {
     // -----------------------------------------------------------------------
     // Fallback defaults — override these values in config.local.php instead
     // of editing this file directly.
-    // Default password: TableSports2025!
     // -----------------------------------------------------------------------
 
     /** Bcrypt hash of the admin password. */
-    define('ADMIN_PASSWORD_HASH', '$2y$10$4SzDB8Mgw19ePvQR6TtdeuUmfRoliilpGpOJH0btweqdlAmzTBlJ2');
+    define('ADMIN_PASSWORD_HASH', '$2y$10$WNiaMSbNiwFJLKG5E5F/I.6vKxt4jCUjNfwDvbF6CqFOQ4hUArspm');
 
     /** Absolute path to the SQLite3 database file. */
     define('DB_PATH', __DIR__ . '/../data/jugadores.db');
