@@ -21,7 +21,7 @@ if (file_exists($localConfig)) {
     // -----------------------------------------------------------------------
 
     /** Bcrypt hash of the admin password. */
-    define('ADMIN_PASSWORD_HASH', '$2y$10$WNiaMSbNiwFJLKG5E5F/I.6vKxt4jCUjNfwDvbF6CqFOQ4hUArspm');
+    define('ADMIN_PASSWORD_HASH', '$2y$10$5dBLdLS/pJErg/dZerEgCOWL9F3us72NPYgRZgFj94II0XgTo6stK');
 
     /** Absolute path to the SQLite3 database file. */
     define('DB_PATH', __DIR__ . '/../data/jugadores.db');
