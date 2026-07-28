@@ -32,9 +32,9 @@ $postData = [
     'action' => 'get_dynamic_content_v5',
     'nonce' => $nonce,
     'type' => 'posiciones',
-    'competition_id' => '169679',
+    'competition_id' => '186027',
     'competition_type' => 'Liga BetPlay',
-    'phase_id' => '169782',
+    'phase_id' => '186219',
     'matchday' => '0'
 ];
 
